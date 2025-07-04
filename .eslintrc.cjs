@@ -1,7 +1,8 @@
 module.exports = {
   plugins: ['tailwindcss', '@tanstack/query', 'import'],
   extends: [
-    'next/core-web-vitals',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'plugin:tailwindcss/recommended',
     'plugin:@tanstack/query/recommended',
   ],
