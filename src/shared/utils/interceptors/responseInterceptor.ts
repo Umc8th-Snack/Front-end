@@ -1,7 +1,7 @@
 import type { AxiosError, AxiosResponse } from 'axios';
 
 import type { ApiErrorTypes, CustomAxiosErrorTypes } from '../../types/apiTypes';
-import { handleApiError } from '../handlers/errorHandler';
+import { handleApiError } from '../errorHandler';
 
 /**
  * Response 인터셉터 - 성공 핸들러

@@ -1,9 +1,9 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
-import { API_CONFIG, API_TIMEOUT, CONTENT_TYPE } from './constants/apiConstants';
-import { handleRequestError, handleRequestSuccess } from './interceptors/requestInterceptor';
-import { handleResponseError, handleResponseSuccess } from './interceptors/responseInterceptor';
+import { API_CONFIG, API_TIMEOUT, CONTENT_TYPE } from '../constants/apiConstants';
+import { handleRequestError, handleRequestSuccess } from '../utils/interceptors/requestInterceptor';
+import { handleResponseError, handleResponseSuccess } from '../utils/interceptors/responseInterceptor';
 
 // Axios 인스턴스 생성
 const axiosInstance: AxiosInstance = axios.create({

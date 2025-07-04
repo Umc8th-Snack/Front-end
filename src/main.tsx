@@ -6,7 +6,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import App from './App';
-import queryClient from './shared/queryClient';
+import queryClient from './shared/apis/queryClient';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

@@ -1,8 +1,8 @@
 import { QueryClient } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 
-import { HTTP_STATUS } from './apis/constants/apiConstants';
-import { QUERY_CONFIG, QUERY_RETRY_CONFIG } from './constants/queryConstants';
+import { HTTP_STATUS } from '../constants/apiConstants';
+import { QUERY_CONFIG, QUERY_RETRY_CONFIG } from '../constants/queryConstants';
 
 // tanstack-query 전역 에러 타입 등록
 declare module '@tanstack/react-query' {

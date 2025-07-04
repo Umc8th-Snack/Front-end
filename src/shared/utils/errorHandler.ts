@@ -1,5 +1,5 @@
-import type { CustomAxiosErrorTypes } from '../../types/apiTypes';
 import { ERROR_MESSAGES, HTTP_STATUS } from '../constants/apiConstants';
+import type { CustomAxiosErrorTypes } from '../types/apiTypes';
 
 /**
  * API 에러 처리 함수
