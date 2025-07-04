@@ -28,7 +28,13 @@
         "noUncheckedIndexedAccess": false, // Can be too strict for general use
         "exactOptionalPropertyTypes": false, // Can break existing patterns
         "noPropertyAccessFromIndexSignature": false, // Can be annoying
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+
+        /* Path mapping */
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        }
     },
     "include": ["src"]
 }
