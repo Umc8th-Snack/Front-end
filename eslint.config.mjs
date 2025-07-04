@@ -4,7 +4,6 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import react from 'eslint-plugin-react'
-import tailwindcss from 'eslint-plugin-tailwindcss'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import prettier from 'eslint-plugin-prettier'
 import prettierConfig from 'eslint-config-prettier'
@@ -43,7 +42,6 @@ export default tseslint.config(
       'react': react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      'tailwindcss': tailwindcss,
       'simple-import-sort': simpleImportSort,
       'prettier': prettier,
       'jsx-a11y': jsxA11y,
@@ -105,10 +103,6 @@ export default tseslint.config(
       '@typescript-eslint/no-misused-promises': 'error',
       '@typescript-eslint/await-thenable': 'error',
       
-      // TailwindCSS rules
-      ...tailwindcss.configs.recommended.rules,
-      'tailwindcss/no-custom-classname': 'off', // Allow custom classes for v4 @theme
-      'tailwindcss/classnames-order': 'warn',
       
       // Import rules
       'simple-import-sort/imports': 'error',
