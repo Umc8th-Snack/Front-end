@@ -8,9 +8,10 @@ import ProtectedRoute from './ProtectedRoute';
 
 const HomePage = lazy(() => import('@/pages/home'));
 const LoginPage = lazy(() => import('@/pages/login'));
-const SignupPage = lazy(() => import('@/pages/sign-up'));
+const SignupPage = lazy(() => import('@/pages/signup'));
 const ArticlePage = lazy(() => import('@/pages/article'));
-const MyPage = lazy(() => import('@/pages/my-page'));
+const MyPage = lazy(() => import('@/pages/mypage'));
+const InputBoxTestPage = lazy(() => import('@/pages/inputbox-test'));
 
 const routes: RouteObject[] = [
     {
@@ -57,6 +58,14 @@ const routes: RouteObject[] = [
                             <MyPage />
                         </Suspense>
                     </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'inputbox-test',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <InputBoxTestPage />
+                    </Suspense>
                 ),
             },
         ],
