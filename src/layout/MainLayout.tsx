@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+
+import LoginModal from '../pages/login/components/LoginModal';
 
 const MainLayout = () => {
     const location = useLocation();
     const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -48,9 +52,17 @@ const MainLayout = () => {
                                 </div>
                             </div>
                             <div className="flex items-center space-x-4">
-                                <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-900">
+                                {/* <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-900">
                                     로그인
-                                </Link>
+                                </Link> */}
+                                <button
+                                    onClick={() => setIsModalOpen(true)}
+                                    className="text-sm font-medium text-gray-700 hover:text-gray-900"
+                                >
+                                    로그인
+                                </button>
+                                <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
                                 <Link
                                     to="/signup"
                                     className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700"
