@@ -1,3 +1,6 @@
+/* Pretendard Font Import */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
 /* Tailwind CSS v4 Configuration
  * Using @tailwindcss/vite plugin for optimal performance
  * No postcss.config.js needed with Vite plugin
@@ -22,7 +25,10 @@
     --color-primary-900: oklch(0.3 0.12 240);
 
     /* Typography */
-    --font-sans: system-ui, -apple-system, sans-serif;
+    --font-sans:
+        'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
+        'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', sans-serif;
     --font-mono: 'Courier New', monospace;
 
     /* Spacing (extends default scale) */
@@ -37,4 +43,23 @@
     --animate-duration-fast: 150ms;
     --animate-duration-normal: 300ms;
     --animate-duration-slow: 500ms;
+}
+
+/* Global Font Application */
+body {
+    font-family:
+        'Pretendard',
+        -apple-system,
+        BlinkMacSystemFont,
+        system-ui,
+        Roboto,
+        'Helvetica Neue',
+        'Segoe UI',
+        'Apple SD Gothic Neo',
+        'Noto Sans KR',
+        'Malgun Gothic',
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        sans-serif;
 }
