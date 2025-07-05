@@ -1,5 +1,7 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
+import ChipTest from '@/pages/ChipTest';
+
 const MainLayout = () => {
     const location = useLocation();
     const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
@@ -59,6 +61,8 @@ const MainLayout = () => {
                                 </Link>
                             </div>
                         </div>
+                        {/* TODO: Chip의 UI를 보기 위한 임시 코드, 추후 지우기 */}
+                        <ChipTest />
                     </nav>
                 </header>
             )}
