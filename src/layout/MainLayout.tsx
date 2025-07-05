@@ -1,5 +1,7 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
+import SettingsDropdown from '@/shared/components/SettingsDropdown';
+
 const MainLayout = () => {
     const location = useLocation();
     const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
@@ -57,6 +59,10 @@ const MainLayout = () => {
                                 >
                                     회원가입
                                 </Link>
+
+                                {/* TODO: 네비게이션 바의 '설정' 버튼 클릭 시 드롭다운이 열리도록 구현 필요 */}
+                                {/* 현재는 SettingsDropdown UI 확인용 임시 코드 */}
+                                <SettingsDropdown />
                             </div>
                         </div>
                     </nav>
