@@ -1,7 +1,9 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+    "files": [],
+    "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
+
+    "compilerOptions": {
+        "typeRoots": ["./node_modules/@types", "./src/types"]
+    }
+    // 프로젝트 내에 커스텀 타입 정의 파일(.d.ts)을 만들었을 땐, 그 위치를 명확히 알려줘야 함
 }
