@@ -40,7 +40,7 @@ const SettingsDropdown = () => {
                                                 if (item.path) void navigate(item.path);
                                                 else if (item.onClick) item.onClick();
                                             }}
-                                            className="w-full text-left text-lg font-medium text-black/70 transition-colors hover:text-black"
+                                            className="w-full cursor-pointer text-left text-lg font-medium text-black/70 transition-colors hover:text-black"
                                         >
                                             {item.label}
                                         </button>
