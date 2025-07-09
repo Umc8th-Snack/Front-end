@@ -20,15 +20,6 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - name: ⬇️ Install pnpm via Corepack
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
-          pnpm --version
-
-      - name: 📥 Install dependencies
-        run: pnpm install
-
       - name: 🧹 Run ESLint
         run: pnpm run lint
 
