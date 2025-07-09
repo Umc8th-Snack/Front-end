@@ -20,6 +20,9 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
+      - name: ⬇️ Install pnpm
+        run: npm install -g pnpm   # ← 여기만 추가!
+
       - name: 📥 Install dependencies
         run: pnpm install
 
