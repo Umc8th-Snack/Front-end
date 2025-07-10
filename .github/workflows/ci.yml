@@ -1,35 +1,38 @@
-name: Frontend CI
+name: Frontend CI &
 
 on:
-  push:
-    branches: [develop]
-  pull_request:
-    branches: [develop]
+    push:
+        branches: [develop]
+    pull_request:
+        branches: [develop]
 
 jobs:
-  lint-typecheck-build:
-    runs-on: ubuntu-latest
+    build-and-deploy:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: 📦 Checkout repository
-        uses: actions/checkout@v4
+        steps:
+            - name: 📦 Checkout repository
+              uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js & pnpm
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
+            - name: 🟢 Setup Node.js (with pnpm cache)
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: 'pnpm'
 
-      - name: 📥 Install dependencies
-        run: |
-          corepack enable
-          pnpm install
+            - name: 🛠 Enable pnpm via Corepack
+              run: |
+                  corepack enable
+                  corepack prepare pnpm@latest --activate
 
-      - name: 🧹 Run ESLint
-        run: pnpm lint
+            - name: 📥 Install dependencies
+              run: pnpm install
 
-      - name: 🧪 Type check
-        run: pnpm type-check
+            - name: 🧹 Lint
+              run: pnpm lint
 
-      - name: 🏗️ Build project
-        run: pnpm build
+            - name: 🧪 Type Check
+              run: pnpm type-check
+
+            - name: 🏗️ Build
+              run: pnpm build
