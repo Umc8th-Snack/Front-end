@@ -14,16 +14,16 @@ jobs:
       - name: 📦 Checkout repository
         uses: actions/checkout@v4
 
+      - name: 🛠️ Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-
-      - name: 🛠 Install pnpm manually with PATH fix
-        run: |
-          npm install -g pnpm
-          echo "$(npm bin -g)" >> $GITHUB_PATH
 
       - name: 📥 Install dependencies
         run: pnpm install
@@ -40,11 +40,6 @@ jobs:
       - name: 🚀 Deploy to Vercel
         run: |
           npx vercel deploy --prod \
-            --token=$VERCEL_TOKEN \
-            --org-id=$VERCEL_ORG_ID \
-            --project-id=$VERCEL_PROJECT_ID
-
-            
-            
-
-            
+            --token=${{ secrets.VERCEL_TOKEN }} \
+            --org-id=${{ secrets.VERCEL_ORG_ID }} \
+            --project-id=${{ secrets.VERCEL_PROJECT_ID }}
