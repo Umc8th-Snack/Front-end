@@ -1,5 +1,7 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
+import SnackIcon from '@/assets/snack.svg?react';
+
 const MainLayout = () => {
     const location = useLocation();
     const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
@@ -11,8 +13,8 @@ const MainLayout = () => {
                     <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 items-center justify-between">
                             <div className="flex items-center">
-                                <Link to="/" className="text-xl font-bold text-gray-900">
-                                    Snack
+                                <Link to="/" className="flex items-center gap-2 text-xl font-bold text-gray-900">
+                                    <SnackIcon width={80} />
                                 </Link>
                                 <div className="ml-10 flex items-baseline space-x-4">
                                     <Link
