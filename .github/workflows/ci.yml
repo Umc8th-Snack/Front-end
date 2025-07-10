@@ -1,38 +1,43 @@
-name: Frontend CI &
+name: Frontend CI & Deploy to Vercel
 
 on:
-    push:
-        branches: [develop]
-    pull_request:
-        branches: [develop]
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
 
 jobs:
-    build-and-deploy:
-        runs-on: ubuntu-latest
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: 📦 Checkout repository
-              uses: actions/checkout@v4
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v4
 
-            - name: 🟢 Setup Node.js (with pnpm cache)
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-                  cache: 'pnpm'
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
 
-            - name: 🛠 Enable pnpm via Corepack
-              run: |
-                  corepack enable
-                  corepack prepare pnpm@latest --activate
+      - name: 🛠 Install pnpm manually
+        run: npm install -g pnpm
 
-            - name: 📥 Install dependencies
-              run: pnpm install
+      - name: 📥 Install dependencies
+        run: pnpm install
 
-            - name: 🧹 Lint
-              run: pnpm lint
+      - name: 🧹 Lint
+        run: pnpm lint
 
-            - name: 🧪 Type Check
-              run: pnpm type-check
+      - name: 🧪 Type Check
+        run: pnpm type-check
 
-            - name: 🏗️ Build
-              run: pnpm build
+      - name: 🏗️ Build
+        run: pnpm build
+
+      - name: 🚀 Deploy to Vercel
+        run: |
+          npx vercel deploy --prod \
+            --token=$VERCEL_TOKEN \
+            --org-id=$VERCEL_ORG_ID \
+            --project-id=$VERCEL_PROJECT_ID
