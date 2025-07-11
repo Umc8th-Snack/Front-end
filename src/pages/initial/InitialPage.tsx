@@ -48,7 +48,7 @@ const InitialPage = () => {
                     <div className="absolute top-1/2 left-[41.53%] h-[400px] w-px -translate-y-1/2 bg-black" />
 
                     {/* 오른쪽 폼 영역 */}
-                    <div className="absolute right-0 flex flex-col gap-8">
+                    <div className="absolute left-[47.64%] flex flex-col gap-8">
                         {/* 닉네임 입력 섹션 */}
                         <div>
                             <p className="font-['Pretendard'] text-[24px] leading-[36px] font-medium">
@@ -78,20 +78,39 @@ const InitialPage = () => {
                             </p>
 
                             {/* 카테고리 버튼 그리드 */}
-                            <div className="mt-6 grid w-[472px] grid-cols-4 gap-6">
-                                {categories.map((category) => (
-                                    <button
-                                        key={category}
-                                        onClick={() => toggleCategory(category)}
-                                        className={`h-[40px] w-[100px] rounded-[20.73px] border-[0.41px] border-black font-['Pretendard'] text-[18px] font-medium transition-colors ${
-                                            selectedCategories.includes(category)
-                                                ? 'border-[#0557E0] bg-[#0557E0] text-white'
-                                                : 'bg-white text-black hover:bg-gray-50'
-                                        }`}
-                                    >
-                                        {category}
-                                    </button>
-                                ))}
+                            <div className="mt-6 w-[472px]">
+                                {/* 첫 번째 줄: 3개 */}
+                                <div className="mb-6 flex gap-6">
+                                    {categories.slice(0, 3).map((category) => (
+                                        <button
+                                            key={category}
+                                            onClick={() => toggleCategory(category)}
+                                            className={`h-[40px] w-[100px] rounded-[20.73px] border-[0.41px] border-black font-['Pretendard'] text-[18px] font-medium transition-colors ${
+                                                selectedCategories.includes(category)
+                                                    ? 'border-[#0557E0] bg-[#0557E0] text-white'
+                                                    : 'bg-white text-black hover:bg-gray-50'
+                                            }`}
+                                        >
+                                            {category}
+                                        </button>
+                                    ))}
+                                </div>
+                                {/* 두 번째 줄: 4개 */}
+                                <div className="flex gap-6">
+                                    {categories.slice(3).map((category) => (
+                                        <button
+                                            key={category}
+                                            onClick={() => toggleCategory(category)}
+                                            className={`h-[40px] w-[100px] rounded-[20.73px] border-[0.41px] border-black font-['Pretendard'] text-[18px] font-medium transition-colors ${
+                                                selectedCategories.includes(category)
+                                                    ? 'border-[#0557E0] bg-[#0557E0] text-white'
+                                                    : 'bg-white text-black hover:bg-gray-50'
+                                            }`}
+                                        >
+                                            {category}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
