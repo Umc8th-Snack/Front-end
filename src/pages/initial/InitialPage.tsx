@@ -51,7 +51,12 @@ const InitialPage = () => {
                     <div className="absolute left-[47.64%] flex flex-col gap-8">
                         {/* 닉네임 입력 섹션 */}
                         <div>
-                            <p className="font-['Pretendard'] text-[24px] leading-[36px] font-medium">
+                            <p
+                                style={{
+                                    fontSize: 'var(--text-24px-medium)',
+                                    fontWeight: 'var(--text-24px-medium--font-weight)',
+                                }}
+                            >
                                 <span className="text-[#0557E0]">SNACK</span>
                                 <span className="text-black">에서 사용할 닉네임을 입력해주세요.</span>
                             </p>
@@ -62,18 +67,33 @@ const InitialPage = () => {
                                     onChange={(e) => setNickname(e.target.value)}
                                     placeholder="닉네임은 8자 이내로 설정해주세요."
                                     maxLength={8}
-                                    className="h-[56px] w-[400px] rounded-lg border border-black/30 px-4 font-['Pretendard'] text-[18px] placeholder:text-black/30 focus:border-[#0557E0] focus:outline-none"
+                                    className="h-[56px] w-[400px] rounded-lg border border-black/30 px-4 placeholder:text-black/30 focus:border-[#0557E0] focus:outline-none"
+                                    style={{
+                                        fontSize: 'var(--text-18px-medium)',
+                                        fontWeight: 'var(--text-18px-medium--font-weight)',
+                                    }}
                                 />
                             </div>
                         </div>
 
                         {/* 관심 카테고리 섹션 */}
                         <div className="mt-8">
-                            <p className="font-['Pretendard'] text-[24px] leading-[36px] font-medium">
+                            <p
+                                style={{
+                                    fontSize: 'var(--text-28px-semibold)',
+                                    fontWeight: 'var(--text-28px-semibold--font-weight)',
+                                }}
+                            >
                                 <span className="text-[#0557E0]">관심 카테고리</span>
                                 <span className="text-black">를 선택해주세요.</span>
                             </p>
-                            <p className="mt-2 font-['Pretendard'] text-[18px] leading-[27px] font-medium text-black/50">
+                            <p
+                                className="mt-2 text-black/50"
+                                style={{
+                                    fontSize: 'var(--text-18px-medium)',
+                                    fontWeight: 'var(--text-18px-medium--font-weight)',
+                                }}
+                            >
                                 선택한 관심 카테고리로 맞춤 피드를 생성해드려요.
                             </p>
 
@@ -85,11 +105,15 @@ const InitialPage = () => {
                                         <button
                                             key={category}
                                             onClick={() => toggleCategory(category)}
-                                            className={`h-[40px] w-[100px] rounded-[20.73px] border-[0.41px] border-black font-['Pretendard'] text-[18px] font-medium transition-colors ${
+                                            className={`h-[40px] w-[100px] rounded-[20.73px] border-[0.41px] border-black transition-colors ${
                                                 selectedCategories.includes(category)
                                                     ? 'border-[#0557E0] bg-[#0557E0] text-white'
                                                     : 'bg-white text-black hover:bg-gray-50'
                                             }`}
+                                            style={{
+                                                fontSize: 'var(--text-18px-medium)',
+                                                fontWeight: 'var(--text-18px-medium--font-weight)',
+                                            }}
                                         >
                                             {category}
                                         </button>
@@ -101,11 +125,15 @@ const InitialPage = () => {
                                         <button
                                             key={category}
                                             onClick={() => toggleCategory(category)}
-                                            className={`h-[40px] w-[100px] rounded-[20.73px] border-[0.41px] border-black font-['Pretendard'] text-[18px] font-medium transition-colors ${
+                                            className={`h-[40px] w-[100px] rounded-[20.73px] border-[0.41px] border-black transition-colors ${
                                                 selectedCategories.includes(category)
                                                     ? 'border-[#0557E0] bg-[#0557E0] text-white'
                                                     : 'bg-white text-black hover:bg-gray-50'
                                             }`}
+                                            style={{
+                                                fontSize: 'var(--text-18px-medium)',
+                                                fontWeight: 'var(--text-18px-medium--font-weight)',
+                                            }}
                                         >
                                             {category}
                                         </button>
