@@ -33,10 +33,22 @@ const InitialPage = () => {
 
                         {/* 인사말 */}
                         <div className="mt-8">
-                            <h1 className="font-['Pretendard'] text-[28px] leading-[42px] font-semibold text-[#0557E0]">
+                            <h1
+                                className="text-black"
+                                style={{
+                                    fontSize: 'var(--text-36px-semibold)',
+                                    fontWeight: 'var(--text-36px-semibold--font-weight)',
+                                }}
+                            >
                                 안녕하세요!
                             </h1>
-                            <p className="mt-2 font-['Pretendard'] text-[36px] leading-[54px] font-semibold text-black">
+                            <p
+                                className="mt-2 text-black"
+                                style={{
+                                    fontSize: 'var(--text-36px-semibold)',
+                                    fontWeight: 'var(--text-36px-semibold--font-weight)',
+                                }}
+                            >
                                 몇 가지 질문으로
                                 <br />
                                 스내커 님을 알아가고 싶어요.
