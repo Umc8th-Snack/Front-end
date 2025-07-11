@@ -21,7 +21,7 @@ const InitialPage = () => {
             <div className="relative flex h-full items-center justify-center">
                 <div className="relative flex h-[560px] w-[1440px] items-center justify-center">
                     {/* 왼쪽 영역: 이미지 + 인사말 */}
-                    <div className="absolute left-0 flex flex-col items-start">
+                    <div className="absolute top-[3.04%] left-0 flex flex-col items-start">
                         {/* 이미지 영역 */}
                         <div className="h-[300px] w-[300px]">
                             <img
