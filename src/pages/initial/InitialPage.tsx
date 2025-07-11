@@ -15,11 +15,11 @@ const InitialPage = () => {
     return (
         <div className="relative h-screen w-full overflow-hidden bg-white">
             {/* 배경 블러 효과 박스 */}
-            <div className="absolute top-1/2 left-1/2 h-[560px] w-[1440px] -translate-x-1/2 -translate-y-1/2 border-t-[3px] border-b-[3px] border-[#0557E0] shadow-[30px_30px_30px_rgba(0,0,0,0.1)] blur-[15px]" />
+            <div className="absolute top-1/2 left-1/2 h-[calc(100vh-8rem)] w-full -translate-x-1/2 -translate-y-1/2 border-t-[3px] border-b-[3px] border-[#0557E0] shadow-[30px_30px_30px_rgba(0,0,0,0.1)] blur-[15px]" />
 
             {/* 메인 컨텐츠 */}
             <div className="relative flex h-full items-center justify-center">
-                <div className="relative flex h-[560px] w-[1440px] items-center justify-center">
+                <div className="relative flex h-[calc(100vh-8rem)] w-full items-center justify-center">
                     {/* 이미지 영역 */}
                     <div className="absolute top-[3.04%] left-0">
                         <div className="h-[300px] w-[300px]">
