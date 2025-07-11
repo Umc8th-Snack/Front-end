@@ -15,11 +15,11 @@ const InitialPage = () => {
     return (
         <div className="relative h-screen w-full overflow-hidden bg-white">
             {/* 배경 블러 효과 박스 */}
-            <div className="absolute top-1/2 left-1/2 h-[calc(100vh-8rem)] w-full -translate-x-1/2 -translate-y-1/2 border-t-[3px] border-b-[3px] border-[#0557E0] shadow-[30px_30px_30px_rgba(0,0,0,0.1)] blur-[15px]" />
+            <div className="absolute top-1/2 left-1/2 h-[min(calc(100vh-8rem),560px)] w-full -translate-x-1/2 -translate-y-1/2 border-t-[3px] border-b-[3px] border-[#0557E0] shadow-[30px_30px_30px_rgba(0,0,0,0.1)] blur-[15px]" />
 
             {/* 메인 컨텐츠 */}
             <div className="relative flex h-full items-center justify-center">
-                <div className="relative flex h-[calc(100vh-8rem)] w-full items-center justify-center">
+                <div className="relative flex h-[min(calc(100vh-8rem),560px)] w-full items-center justify-center">
                     {/* 이미지 영역 */}
                     <div className="absolute top-[3.04%] left-0">
                         <div className="h-[300px] w-[300px]">
@@ -32,7 +32,7 @@ const InitialPage = () => {
                     </div>
 
                     {/* 인사말 */}
-                    <div className="absolute bottom-[13.93%] left-[5.63%]">
+                    <div className="absolute bottom-[14.2%] left-[5.63%]">
                         <h1
                             className="text-black"
                             style={{
@@ -43,7 +43,7 @@ const InitialPage = () => {
                             안녕하세요!
                         </h1>
                         <p
-                            className="mt-2 text-black"
+                            className="mt-6 text-black"
                             style={{
                                 fontSize: 'var(--text-36px-semibold)',
                                 fontWeight: 'var(--text-36px-semibold--font-weight)',
