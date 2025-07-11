@@ -20,9 +20,8 @@ const InitialPage = () => {
             {/* 메인 컨텐츠 */}
             <div className="relative flex h-full items-center justify-center">
                 <div className="relative flex h-[560px] w-[1440px] items-center justify-center">
-                    {/* 왼쪽 영역: 이미지 + 인사말 */}
-                    <div className="absolute top-[3.04%] left-0 flex flex-col items-start">
-                        {/* 이미지 영역 */}
+                    {/* 이미지 영역 */}
+                    <div className="absolute top-[3.04%] left-0">
                         <div className="h-[300px] w-[300px]">
                             <img
                                 src="/handGiftBox.png"
@@ -30,30 +29,30 @@ const InitialPage = () => {
                                 className="h-full w-full object-cover"
                             />
                         </div>
+                    </div>
 
-                        {/* 인사말 */}
-                        <div className="mt-8">
-                            <h1
-                                className="text-black"
-                                style={{
-                                    fontSize: 'var(--text-36px-semibold)',
-                                    fontWeight: 'var(--text-36px-semibold--font-weight)',
-                                }}
-                            >
-                                안녕하세요!
-                            </h1>
-                            <p
-                                className="mt-2 text-black"
-                                style={{
-                                    fontSize: 'var(--text-36px-semibold)',
-                                    fontWeight: 'var(--text-36px-semibold--font-weight)',
-                                }}
-                            >
-                                몇 가지 질문으로
-                                <br />
-                                스내커 님을 알아가고 싶어요.
-                            </p>
-                        </div>
+                    {/* 인사말 */}
+                    <div className="absolute bottom-[13.93%] left-[5.63%]">
+                        <h1
+                            className="text-black"
+                            style={{
+                                fontSize: 'var(--text-36px-semibold)',
+                                fontWeight: 'var(--text-36px-semibold--font-weight)',
+                            }}
+                        >
+                            안녕하세요!
+                        </h1>
+                        <p
+                            className="mt-2 text-black"
+                            style={{
+                                fontSize: 'var(--text-36px-semibold)',
+                                fontWeight: 'var(--text-36px-semibold--font-weight)',
+                            }}
+                        >
+                            몇 가지 질문으로
+                            <br />
+                            스내커 님을 알아가고 싶어요.
+                        </p>
                     </div>
 
                     {/* 세로선 */}
