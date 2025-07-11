@@ -10,7 +10,7 @@ const HomePage = lazy(() => import('@/pages/home/HomePage'));
 const LoginPage = lazy(() => import('@/pages/login/LoginPage'));
 const SignupPage = lazy(() => import('@/pages/signup/SignupPage'));
 const ArticlePage = lazy(() => import('@/pages/article/ArticlePage'));
-const MyPage = lazy(() => import('@/pages/my-page/MyPage'));
+const MyPage = lazy(() => import('@/pages/my/MyPage'));
 
 const routes: RouteObject[] = [
     {
