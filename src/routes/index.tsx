@@ -6,11 +6,13 @@ import MainLayout from '@/layout/MainLayout';
 import LoadingFallback from './LoadingFallback';
 import ProtectedRoute from './ProtectedRoute';
 
-const HomePage = lazy(() => import('@/pages/home'));
-const LoginPage = lazy(() => import('@/pages/login'));
-const SignupPage = lazy(() => import('@/pages/signup'));
-const ArticlePage = lazy(() => import('@/pages/article'));
-const MyPage = lazy(() => import('@/pages/mypage'));
+// Direct component imports with specific file paths
+const HomePage = lazy(() => import('@/pages/home/HomePage'));
+const InitialPage = lazy(() => import('@/pages/initial/InitialPage'));
+const LoginPage = lazy(() => import('@/pages/login/LoginPage'));
+const SignupPage = lazy(() => import('@/pages/signup/SignupPage'));
+const ArticlePage = lazy(() => import('@/pages/article/ArticlePage'));
+const MyPage = lazy(() => import('@/pages/my-page/MyPage'));
 
 const routes: RouteObject[] = [
     {
@@ -22,6 +24,14 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <HomePage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'initial',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <InitialPage />
                     </Suspense>
                 ),
             },
