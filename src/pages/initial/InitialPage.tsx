@@ -26,7 +26,7 @@ const InitialPage = () => {
                             {/* 이미지 영역 */}
                             <div className="h-[300px] w-[300px]">
                                 <img
-                                    src="https://placehold.co/300x300"
+                                    src="/handGiftBox.png"
                                     alt="Hand holding giftbox"
                                     className="h-full w-full object-cover"
                                 />
