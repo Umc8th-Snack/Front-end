@@ -1,51 +1,4 @@
-# name: Frontend CI & Deploy
-
-# on:
-#     push:
-#         branches: [develop]
-#     pull_request:
-#         branches: [develop]
-
-# jobs:
-#     build-and-deploy:
-#         runs-on: ubuntu-latest
-
-#         steps:
-#             - name: 📦 Checkout repository
-#               uses: actions/checkout@v4
-
-#             - name: 🛠 Install pnpm manually with PATH fix
-#               run: |
-#                   npm install -g pnpm
-#                   echo "$(npm bin -g)" >> $GITHUB_PATH
-
-#             - name: 🟢 Setup Node.js
-#               uses: actions/setup-node@v4
-#               with:
-#                   node-version: 20
-#                   cache: 'pnpm'
-
-#             - name: 📥 Install dependencies
-#               run: pnpm install
-
-#             - name: 🧹 Lint
-#               run: pnpm lint
-
-#             - name: 🧪 Type Check
-#               run: pnpm type-check
-
-#             - name: 🚀 Push output to build repository
-#               uses: cpina/github-action-push-to-another-repository@main
-#               env:
-#                   API_TOKEN_GITHUB: ${{ secrets.AUTO_ACTIONS }}
-#               with:
-#                   source-directory: .
-#                   destination-github-username: minjaehan
-#                   destination-repository-name: Front-end
-#                   user-email: ${{ secrets.EMAIL }}
-#                   commit-message: Sync from upstream
-#                   target-branch: develop
-name: Frontend CI & Sync to Fork
+name: Frontend CI (PR)
 
 on:
     push:
@@ -54,16 +7,14 @@ on:
         branches: [develop]
 
 jobs:
-    build-and-sync:
+    build-and-deploy:
         runs-on: ubuntu-latest
 
         steps:
-            - name: 📦 Checkout source code (full history)
+            - name: 📦 Checkout repository
               uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
 
-            - name: 🛠 Install pnpm
+            - name: 🛠 Install pnpm manually with PATH fix
               run: |
                   npm install -g pnpm
                   echo "$(npm bin -g)" >> $GITHUB_PATH
@@ -82,15 +33,3 @@ jobs:
 
             - name: 🧪 Type Check
               run: pnpm type-check
-
-            - name: 🚀 Force push to forked repository (for sync)
-
-              if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-              env:
-                  TOKEN: ${{ secrets.AUTO_ACTIONS }}
-                  EMAIL: ${{ secrets.EMAIL }}
-              run: |
-                  git config user.name "GitHub Actions Bot"
-                  git config user.email "$EMAIL"
-                  git remote add fork https://x-access-token:${TOKEN}@github.com/minjaehan/Front-end.git
-                  git push fork HEAD:develop --force
