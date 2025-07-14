@@ -1,0 +1,25 @@
+name: Sync Fork After Merge
+
+on:
+    push:
+        branches: [develop]
+
+jobs:
+    sync-to-fork:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: 📦 Checkout full history
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: 🚀 Force push to fork repo
+              env:
+                  TOKEN: ${{ secrets.AUTO_ACTIONS }}
+                  EMAIL: ${{ secrets.EMAIL }}
+              run: |
+                  git config user.name "GitHub Actions Bot"
+                  git config user.email "$EMAIL"
+                  git remote add fork https://x-access-token:${TOKEN}@github.com/minjaehan/Front-end.git
+                  git push fork HEAD:develop --force
