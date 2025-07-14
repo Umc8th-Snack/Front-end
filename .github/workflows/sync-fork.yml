@@ -1,27 +1,36 @@
-name: 🔄 Sync to Forked Repository
+name: Synchronize to Forked Repo
 
 on:
     push:
-        branches: [develop]
+        branches:
+            - develop
 
 jobs:
-    sync-fork:
+    sync:
+        name: Sync forked repo
         runs-on: ubuntu-latest
 
         steps:
-            - name: 📦 Checkout full history
+            - name: 📦 Checkout source (full history)
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
+                  token: ${{ secrets.AUTO_ACTIONS }}
+                  ref: develop
 
-            - name: 🚀 Push output to build repository
-              uses: cpina/github-action-push-to-another-repository@main
-              env:
-                  API_TOKEN_GITHUB: ${{ secrets.AUTO_ACTIONS }}
-              with:
-                  source-directory: .
-                  destination-github-username: minjaehan
-                  destination-repository-name: Front-end
-                  user-email: ${{ secrets.EMAIL }}
-                  commit-message: Sync from upstream
-                  target-branch: develop
+            - name: 🛠 Configure Git identity
+              run: |
+                  git config user.name "GitHub Actions Bot"
+                  git config user.email "${{ secrets.EMAIL }}"
+
+            - name: 🔁 Add forked repo remote
+              run: |
+                  git remote add forked-repo https://x-access-token:${{ secrets.AUTO_ACTIONS }}@github.com/minjaehan/Front-end.git
+
+            - name: 🚀 Push changes to forked repo
+              run: |
+                  git push -f forked-repo develop
+
+            - name: 🧹 Clean up
+              run: |
+                  git remote remove forked-repo
