@@ -1,6 +1,8 @@
-const SpringDots = () => {
+import type { SVGProps } from 'react';
+
+const SpringDots = (props: SVGProps<SVGSVGElement>) => {
     return (
-        <svg className="h-[82px] w-[28.5px]" viewBox="0 0 32 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 32 82" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
             <path
                 d="M27 12C27 12 13.2589 12.3006 9.34889 11.7586C-1.40351 10.2682 2.9952 1.99969 5.92767 1.99969"
                 stroke="#0557E0"
