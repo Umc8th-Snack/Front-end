@@ -4,6 +4,7 @@ export const ROUTES = {
     SIGNUP: '/signup',
     ARTICLE: '/article',
     MY_PAGE: '/mypage',
+    CUSTOM_FEED: '/custom-feed',
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];

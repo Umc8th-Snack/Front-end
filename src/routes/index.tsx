@@ -11,6 +11,7 @@ const LoginPage = lazy(() => import('@/pages/login/LoginPage'));
 const SignupPage = lazy(() => import('@/pages/signup/SignupPage'));
 const ArticlePage = lazy(() => import('@/pages/article/ArticlePage'));
 const MyPage = lazy(() => import('@/pages/my/MyPage'));
+const CustomFeedPage = lazy(() => import('@/pages/custom-feed/CustomFeedPage'));
 
 const routes: RouteObject[] = [
     {
@@ -55,6 +56,16 @@ const routes: RouteObject[] = [
                     <ProtectedRoute isAuthenticated={false}>
                         <Suspense fallback={<LoadingFallback />}>
                             <MyPage />
+                        </Suspense>
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'custom-feed',
+                element: (
+                    <ProtectedRoute isAuthenticated={false}>
+                        <Suspense fallback={<LoadingFallback />}>
+                            <CustomFeedPage />
                         </Suspense>
                     </ProtectedRoute>
                 ),
