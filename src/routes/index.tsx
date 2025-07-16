@@ -11,6 +11,8 @@ const ArticlePage = lazy(() => import('@/pages/article/ArticlePage'));
 const MyPage = lazy(() => import('@/pages/my/MyPage'));
 const CustomFeedPage = lazy(() => import('@/pages/custom-feed/CustomFeedPage'));
 const SearchPage = lazy(() => import('@/pages/search/SearchPage'));
+const PasswordChangePage = lazy(() => import('@/pages/pwd-change/PasswordChangePage'));
+const DeleteAccountPage = lazy(() => import('@/pages/delete-accout/DeleteAccountPage'));
 
 const routes: RouteObject[] = [
     {
@@ -50,6 +52,26 @@ const routes: RouteObject[] = [
                     <ProtectedRoute isAuthenticated={false}>
                         <Suspense fallback={<LoadingFallback />}>
                             <CustomFeedPage />
+                        </Suspense>
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'password-change',
+                element: (
+                    <ProtectedRoute isAuthenticated={false}>
+                        <Suspense fallback={<LoadingFallback />}>
+                            <PasswordChangePage />
+                        </Suspense>
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'delete-account',
+                element: (
+                    <ProtectedRoute isAuthenticated={false}>
+                        <Suspense fallback={<LoadingFallback />}>
+                            <DeleteAccountPage />
                         </Suspense>
                     </ProtectedRoute>
                 ),
