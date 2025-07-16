@@ -7,8 +7,6 @@ import LoadingFallback from './LoadingFallback';
 import ProtectedRoute from './ProtectedRoute';
 
 const HomePage = lazy(() => import('@/pages/home/HomePage'));
-const LoginPage = lazy(() => import('@/pages/login/LoginPage'));
-const SignupPage = lazy(() => import('@/pages/signup/SignupPage'));
 const ArticlePage = lazy(() => import('@/pages/article/ArticlePage'));
 const MyPage = lazy(() => import('@/pages/my/MyPage'));
 const CustomFeedPage = lazy(() => import('@/pages/custom-feed/CustomFeedPage'));
@@ -26,22 +24,7 @@ const routes: RouteObject[] = [
                     </Suspense>
                 ),
             },
-            {
-                path: 'login',
-                element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <LoginPage />
-                    </Suspense>
-                ),
-            },
-            {
-                path: 'signup',
-                element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <SignupPage />
-                    </Suspense>
-                ),
-            },
+
             {
                 path: 'article',
                 element: (
