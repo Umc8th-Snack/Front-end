@@ -1,14 +1,16 @@
+import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
 import SnackIcon from '@/assets/snack.svg?react';
+import LoginModal from '@/pages/login/components/LoginModal';
 
 const MainLayout = () => {
     const location = useLocation();
-    const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {!isAuthPage && (
+            {
                 <header className="bg-white shadow">
                     <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 items-center justify-between">
@@ -50,14 +52,18 @@ const MainLayout = () => {
                                 </div>
                             </div>
                             <div className="flex items-center space-x-4">
-                                <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-900">
-                                    로그인/회원가입
-                                </Link>
+                                <button
+                                    onClick={() => setIsModalOpen(true)}
+                                    className="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900"
+                                >
+                                    로그인
+                                </button>
+                                <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
                             </div>
                         </div>
                     </nav>
                 </header>
-            )}
+            }
             <main>
                 <Outlet />
             </main>
