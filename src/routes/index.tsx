@@ -13,6 +13,7 @@ const CustomFeedPage = lazy(() => import('@/pages/custom-feed/CustomFeedPage'));
 const SearchPage = lazy(() => import('@/pages/search/SearchPage'));
 const PasswordChangePage = lazy(() => import('@/pages/password-change/PasswordChangePage'));
 const DeleteAccountPage = lazy(() => import('@/pages/delete-account/DeleteAccountPage'));
+const AccordionTestPage = lazy(() => import('@/pages/test/AccordionTestPage'));
 
 const routes: RouteObject[] = [
     {
@@ -81,6 +82,14 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <SearchPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'accordion-test',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <AccordionTestPage />
                     </Suspense>
                 ),
             },
