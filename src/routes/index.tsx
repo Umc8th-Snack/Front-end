@@ -11,6 +11,7 @@ const LoginPage = lazy(() => import('@/pages/login/LoginPage'));
 const SignupPage = lazy(() => import('@/pages/signup/SignupPage'));
 const ArticlePage = lazy(() => import('@/pages/article/ArticlePage'));
 const MyPage = lazy(() => import('@/pages/my/MyPage'));
+const AccordionTestPage = lazy(() => import('@/pages/test/AccordionTestPage'));
 
 const routes: RouteObject[] = [
     {
@@ -57,6 +58,14 @@ const routes: RouteObject[] = [
                             <MyPage />
                         </Suspense>
                     </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'test/accordion',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <AccordionTestPage />
+                    </Suspense>
                 ),
             },
         ],
