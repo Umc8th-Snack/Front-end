@@ -12,6 +12,7 @@ const Navbar = () => {
 
     return (
         <header className="w-full">
+
             <div className="mx-auto flex h-[120px] w-full max-w-[1200px] items-center justify-between px-4 py-8 lg:px-0">
                 {/* 로고 */}
                 <div className="flex items-center">
@@ -28,6 +29,7 @@ const Navbar = () => {
                         />
                         <button className="hover:cursor-pointer">
                             <SearchIcon className="h-6 w-6 lg:h-7 lg:w-7" />
+
                         </button>
                     </div>
                 </div>
