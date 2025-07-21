@@ -9,21 +9,59 @@
  * All customizations should be placed within @theme block
  */
 @theme {
-    /* Colors */
-    --color-primary-50: oklch(0.95 0.02 240);
-    --color-primary-100: oklch(0.9 0.04 240);
-    --color-primary-200: oklch(0.8 0.08 240);
-    --color-primary-300: oklch(0.7 0.12 240);
-    --color-primary-400: oklch(0.6 0.16 240);
-    --color-primary-500: oklch(0.5 0.2 240);
-    --color-primary-600: oklch(0.45 0.18 240);
-    --color-primary-700: oklch(0.4 0.16 240);
-    --color-primary-800: oklch(0.35 0.14 240);
-    --color-primary-900: oklch(0.3 0.12 240);
+    /* 색상 */
+    --color-main: #0557e0;
+    --color-danger: #ea4335;
+    --color-kakao-yellow: #fee500;
+    --color-kakao-brown: #262200;
+    --color-naver-green: #03c75a;
+
+    --color-black: oklch(from #000000 l c h);
+    --color-black-70: oklch(from #000000 l c h / 0.7);
+    --color-black-50: oklch(from #000000 l c h / 0.5);
+    --color-black-30: oklch(from #000000 l c h / 0.3);
+
+    --color-main-70: oklch(from #0557e0 l c h / 0.7);
+    --color-main-50: oklch(from #0557e0 l c h / 0.5);
+    --color-main-30: oklch(from #0557e0 l c h / 0.3);
 
     /* Typography */
-    --font-sans: system-ui, -apple-system, sans-serif;
-    --font-mono: 'Courier New', monospace;
+
+    /* 폰트 */
+    --font-sans: 'Pretendard', 'sans-serif';
+
+    /* bold */
+    --text-20px-bold: 20px;
+    --text-20px-bold--font-weight: 700;
+
+    /* semibold */
+    --text-36px-semibold: 36px;
+    --text-36px-semibold--font-weight: 600;
+
+    --text-28px-semibold: 28px;
+    --text-28px-semibold--font-weight: 600;
+
+    --text-24px-semibold: 24px;
+    --text-24px-semibold--font-weight: 600;
+
+    /* medium */
+    --text-36px-medium: 36px;
+    --text-36px-medium--font-weight: 500;
+
+    --text-28px-medium: 28px;
+    --text-28px-medium--font-weight: 500;
+
+    --text-24px-medium: 24px;
+    --text-24px-medium--font-weight: 500;
+
+    --text-20px-medium: 20px;
+    --text-20px-medium--font-weight: 500;
+
+    --text-18px-medium: 18px;
+    --text-18px-medium--font-weight: 500;
+
+    --text-14px-medium: 14px;
+    --text-14px-medium--font-weight: 500;
 
     /* Spacing (extends default scale) */
     --spacing-18: 4.5rem;
@@ -37,4 +75,12 @@
     --animate-duration-fast: 150ms;
     --animate-duration-normal: 300ms;
     --animate-duration-slow: 500ms;
+}
+
+@layer base {
+    body {
+        font-family: var(--font-sans);
+        line-height: 1.5;
+        color: var(--color-black);
+    }
 }

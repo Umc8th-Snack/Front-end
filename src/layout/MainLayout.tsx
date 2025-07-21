@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
-import SettingsDropdown from '@/shared/components/SettingsDropdown';
+import SnackIcon from '@/assets/snack.svg?react';
 
 const MainLayout = () => {
     const location = useLocation();
@@ -13,8 +13,8 @@ const MainLayout = () => {
                     <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 items-center justify-between">
                             <div className="flex items-center">
-                                <Link to="/" className="text-xl font-bold text-gray-900">
-                                    Snack
+                                <Link to="/" className="flex items-center gap-2 text-xl font-bold text-gray-900">
+                                    <SnackIcon width={80} />
                                 </Link>
                                 <div className="ml-10 flex items-baseline space-x-4">
                                     <Link
@@ -25,17 +25,17 @@ const MainLayout = () => {
                                                 : 'text-gray-700 hover:bg-gray-700 hover:text-white'
                                         }`}
                                     >
-                                        홈
+                                        홈/메인피드
                                     </Link>
                                     <Link
-                                        to="/article"
+                                        to="/custom-feed"
                                         className={`rounded-md px-3 py-2 text-sm font-medium ${
-                                            location.pathname === '/article'
+                                            location.pathname === '/custom-feed'
                                                 ? 'bg-gray-900 text-white'
                                                 : 'text-gray-700 hover:bg-gray-700 hover:text-white'
                                         }`}
                                     >
-                                        기사
+                                        맞춤피드
                                     </Link>
                                     <Link
                                         to="/mypage"
@@ -51,18 +51,8 @@ const MainLayout = () => {
                             </div>
                             <div className="flex items-center space-x-4">
                                 <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-900">
-                                    로그인
+                                    로그인/회원가입
                                 </Link>
-                                <Link
-                                    to="/signup"
-                                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-                                >
-                                    회원가입
-                                </Link>
-
-                                {/* TODO: 네비게이션 바의 '설정' 버튼 클릭 시 드롭다운이 열리도록 구현 필요 */}
-                                {/* 현재는 SettingsDropdown UI 확인용 임시 코드 */}
-                                <SettingsDropdown />
                             </div>
                         </div>
                     </nav>
