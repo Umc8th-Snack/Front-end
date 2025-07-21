@@ -1,5 +1,5 @@
 //테스트를 위해 임시로 만든 데이터입니다!
-import type { GlossaryItem } from '../../types/accordionTypes';
+import type { GlossaryItem, QuizItem } from '../../types/accordionTypes';
 
 // 용어집 테스트 데이터
 export const glossaryTestData: GlossaryItem[] = [
@@ -25,4 +25,15 @@ export const glossaryTestData: GlossaryItem[] = [
     },
 ];
 
-// API 연결 후에는 받아오는 데이터로 대체될 예정입니다.
+export const quizData: QuizItem[] = [
+    {
+        question: '이번 프로젝트의 서비스 명은?',
+        options: ['스넉', '스낵', '스낵면', '스웩'],
+        answer: 0,
+    },
+    {
+        question: '지금은 무슨 계절인가요?',
+        options: ['봄', '여름', '가을', '겨울'],
+        answer: 0,
+    },
+];

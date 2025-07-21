@@ -9,3 +9,9 @@ export interface AccordionProps {
     isExpanded?: boolean;
     onToggle?: () => void;
 }
+
+export interface QuizItem {
+    question: string;
+    options: string[];
+    answer: number; // 정답 인덱스
+}

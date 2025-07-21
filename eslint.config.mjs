@@ -60,6 +60,7 @@ export default tseslint.config(
       }
     },
     rules: {
+      'no-unused-vars': 'off',
       // JavaScript/TypeScript rules
       ...js.configs.recommended.rules,
       ...tseslint.configs.recommended.rules,
