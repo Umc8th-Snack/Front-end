@@ -25,12 +25,12 @@ const SettingsDropdown = () => {
             {/* TODO: font-family 적용 필요 */}
             {/* TODO: 레이아웃 적용 시 위치 수정하기 */}
             {open && (
-                <div className="font-pretendard absolute right-0 z-50 mt-[120px] flex h-[610px] w-[320px] flex-col justify-center rounded-xl bg-white p-6 shadow-lg">
-                    <h2 className="mb-10 text-center text-[28px] leading-tight font-semibold text-black">설정</h2>
+                <div className="absolute right-0 z-50 mt-[120px] flex h-[610px] w-[320px] flex-col justify-center rounded-xl bg-white p-6 shadow-lg">
+                    <h2 className="text-24px-semibold mb-10 text-center">설정</h2>
 
                     {settingsData.map((section, i) => (
                         <div key={section.category} className={i === 0 ? '' : 'mt-6'}>
-                            <h3 className="mb-6 pl-3 text-[24px] font-semibold text-black">{section.category}</h3>
+                            <h3 className="text-20px-medium text-black-70 mb-6 pl-3">{section.category}</h3>
                             <ul className="flex flex-col gap-3 pl-3">
                                 {section.items.map((item) => (
                                     <li key={item.label}>
@@ -40,7 +40,7 @@ const SettingsDropdown = () => {
                                                 if (item.path) void navigate(item.path);
                                                 else if (item.onClick) item.onClick();
                                             }}
-                                            className="w-full cursor-pointer text-left text-lg font-medium text-black/70 transition-colors hover:text-black"
+                                            className="text-18px-medium text-black-50 w-full cursor-pointer text-left transition-colors hover:text-black"
                                         >
                                             {item.label}
                                         </button>
