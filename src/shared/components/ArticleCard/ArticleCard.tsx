@@ -1,11 +1,9 @@
-import React from 'react';
-
 interface ArticleCardProps {
     title?: string;
     imageUrl?: string;
 } // 백엔드 연동 시 imgaeUrl 변경 필요
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ title = 'article title', imageUrl = '' }) => {
+function ArticleCard({ title = 'article title', imageUrl = '' }: ArticleCardProps) {
     return (
         <div className="flex w-[260px] flex-col items-center rounded-xl border border-gray-200 bg-white p-6">
             {/* 이미지*/}
@@ -26,6 +24,6 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ title = 'article title', imag
             </div>
         </div>
     );
-};
+}
 
 export default ArticleCard;
