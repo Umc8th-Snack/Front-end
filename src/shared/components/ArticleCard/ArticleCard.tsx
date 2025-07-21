@@ -17,9 +17,7 @@ function ArticleCard({ title = 'article title', imageUrl = '' }: ArticleCardProp
 
             {/* 기사 제목 */}
             <div className="w-full">
-                <div className="mb-2 overflow-hidden text-[20px] font-bold text-ellipsis whitespace-nowrap">
-                    {title}
-                </div>
+                <div className="text-20px-bold mb-2 overflow-hidden text-ellipsis whitespace-nowrap">{title}</div>
                 <div className="w-full border-b border-gray-500" />
             </div>
         </div>
