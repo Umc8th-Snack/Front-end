@@ -29,11 +29,11 @@ const Accordion: React.FC<AccordionProps> = ({ title, data, isExpanded = false, 
             <div className="flex w-full justify-center">
                 <button
                     onClick={onToggle}
-                    className="flex w-full items-center justify-center space-x-2 rounded-lg bg-gray-100 px-8 py-2 text-gray-700 transition-colors hover:bg-gray-200"
+                    className="flex w-full cursor-pointer items-center justify-center space-x-2 rounded-lg bg-gray-100 px-8 py-2 text-gray-700 transition-colors hover:bg-gray-200"
                 >
-                    <span className="text-sm">{isExpanded ? '접어두기' : '펼쳐보기'}</span>
+                    <span className="text-14px-medium">{isExpanded ? '접어두기' : '펼쳐보기'}</span>
                     <span className={`transform transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
-                        <ChevronIcon width={14} />
+                        <ChevronIcon width={15} />
                     </span>
                 </button>
             </div>
