@@ -14,7 +14,7 @@ interface Props {
     onClose: () => void;
 }
 
-const ConsentModal: React.FC<Props> = ({ onClose }) => {
+function ConsentModal({ onClose }: Props) {
     const [personalInfoConsent, setPersonalInfoConsent] = useState(true);
     const [adInfoConsent, setAdInfoConsent] = useState(true);
     const modalRef = useRef<HTMLDivElement>(null);
@@ -69,7 +69,7 @@ const ConsentModal: React.FC<Props> = ({ onClose }) => {
             </div>
         </div>
     );
-};
+}
 
 // TODO: 테스트용 더미 컴포넌트, 실제 사용시 삭제
 export const DummyConsentModal = () => {
