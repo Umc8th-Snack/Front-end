@@ -28,14 +28,3 @@ const ToggleSwitch = ({ checked, onChange, disabled = false }: ToggleSwitchProps
 };
 
 export default ToggleSwitch;
-
-// // 사용 예시
-// const [isOn, setIsOn] = useState(false);
-//             <div className="space-y-6 p-8">
-//                 <h1 className="font-semibold text-[var(--text-24px-semibold)]">ToggleSwitch 테스트</h1>
-
-//                 <div className="flex items-center gap-4">
-//                     <ToggleSwitch checked={isOn} onChange={setIsOn} />
-//                     <span className="font-medium text-[var(--text-18px-medium)]">상태: {isOn ? 'ON' : 'OFF'}</span>
-//                 </div>
-//             </div>
