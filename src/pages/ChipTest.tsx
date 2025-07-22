@@ -1,7 +1,7 @@
 // TODO: Chip 컴포넌트가 레이아웃에 통합되면 이 파일 삭제하기
 import { useState } from 'react';
 
-import Chip from '../shared/components/Chip';
+import Chip from '../shared/components/CategoryChip/CategoryChip';
 
 const categories = ['정치', '경제', '사회'];
 
