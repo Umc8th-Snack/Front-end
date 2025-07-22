@@ -40,7 +40,7 @@ function ShareModal({ onClose }: { onClose: () => void }) {
             >
                 {/* 닫기 버튼 */}
                 <button
-                    className="absolute top-[25px] right-[25px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center"
+                    className="absolute top-[12px] right-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center"
                     onClick={onClose}
                 >
                     <XIcon />
