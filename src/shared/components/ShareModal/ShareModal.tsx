@@ -1,21 +1,13 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
+import XIcon from '@/shared/assets/icons/close-x.svg?react';
 import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
 import NaverIcon from '@/shared/assets/icons/logo-naver-mail.svg?react';
-// TODO: 닫기 버튼 SVGR로 변경 이후 TwitterIcon의 네이밍 변경 필요
 import TwitterIcon from '@/shared/assets/icons/logo-x.svg?react';
 
 import CircleShareButton from './CircleShareButton';
 import CopyLinkBox from './CopyLinkBox';
 import ShareToast from './ShareToast';
-
-// TODO: SVGR 컴포넌트로 변환
-const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg width={35} height={35} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-        <path d="M18 6L6 18" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
-        <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
-    </svg>
-);
 
 // TODO: 리펙토링 필요
 // 현재는 모달 내부에서 직접 닫기 버튼을 구현하고 있지만, 별도의 컴포넌트로 분리하는 것이 좋을 것 같습니다.
@@ -51,11 +43,11 @@ function ShareModal({ onClose }: { onClose: () => void }) {
                     className="absolute top-[25px] right-[25px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center"
                     onClick={onClose}
                 >
-                    <XIcon className="h-[37.5px] w-[37.5px]" />
+                    <XIcon />
                 </button>
 
                 {/* 타이틀 */}
-                <div className="text-36px-semibold mt-[30px] mb-[32px] h-[54px] text-center leading-[54px] text-black">
+                <div className="text-36px-semibold mt-[24px] mb-[36px] text-center leading-[54px] text-black">
                     공유하기
                 </div>
 
