@@ -1,11 +1,12 @@
 import React, { useRef, useState } from 'react';
 
+import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
+import NaverIcon from '@/shared/assets/icons/logo-naver-mail.svg?react';
+// TODO: 닫기 버튼 SVGR로 변경 이후 TwitterIcon의 네이밍 변경 필요
+import TwitterIcon from '@/shared/assets/icons/logo-x.svg?react';
+
 import CircleShareButton from './CircleShareButton';
 import CopyLinkBox from './CopyLinkBox';
-import KakaoIcon from './icons/logo-kakao.svg?react';
-import NaverIcon from './icons/logo-naver-mail.svg?react';
-// TODO: 닫기 버튼 SVGR로 변경 이후 TwitterIcon의 네이밍 변경 필요
-import TwitterIcon from './icons/logo-x.svg?react';
 import ShareToast from './ShareToast';
 
 // TODO: SVGR 컴포넌트로 변환
