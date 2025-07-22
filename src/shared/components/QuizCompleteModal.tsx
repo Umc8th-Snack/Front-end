@@ -41,10 +41,10 @@ const QuizCompleteModal = ({ onClose, onConfirm }: Props) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={handleOverlayClick}>
-            <div ref={modalRef} className="relative h-[350px] w-[350px] rounded-[9.375px] bg-white shadow-md">
+            <div ref={modalRef} className="relative h-[350px] w-[350px] rounded-[10px] bg-white shadow-md">
                 {/* 닫기 버튼 */}
                 <button
-                    className="absolute top-[8px] right-[8px] flex h-[22px] w-[22px] cursor-pointer items-center justify-center"
+                    className="absolute top-[12px] right-[8px] flex h-[22px] w-[22px] cursor-pointer items-center justify-center"
                     onClick={onClose}
                 >
                     <XIcon className="text-black-70" />
