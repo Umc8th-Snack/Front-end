@@ -58,7 +58,7 @@ function QuizExitModal({ onClose, onContinue, onExit }: Props) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={handleOverlayClick}>
             <div ref={modalRef} className="relative h-[350px] w-[350px] rounded-[9.375px] bg-white shadow-md">
                 {/* 닫기 버튼 */}
-                <button onClick={onClose} className="absolute top-3 right-3">
+                <button onClick={onClose} className="absolute top-3 right-3 cursor-pointer">
                     <XIcon />
                 </button>
 
@@ -69,21 +69,20 @@ function QuizExitModal({ onClose, onContinue, onExit }: Props) {
                     남았어요!
                 </div>
 
-                {/* 브라우저 해상도, 기기에 따라 버튼 border 굵기가 1px로 반올림되어 렌더링될 수 있음 */}
                 {/* 이어풀기 */}
                 <button
                     onClick={onContinue}
-                    className="border-black-50 absolute top-[209px] left-1/2 flex h-[40px] w-[240px] -translate-x-1/2 cursor-pointer items-center justify-center rounded-[5px] border border-[0.63px]"
+                    className="border-black-50 hover:bg-main text-black-70 absolute top-[209px] left-1/2 flex h-[40px] w-[240px] -translate-x-1/2 cursor-pointer items-center justify-center rounded-[5px] border border-[0.63px] hover:border-none hover:text-white"
                 >
-                    <span className="text-18px-medium text-black-70">이어풀기</span>
+                    <span className="text-18px-medium group-hover:text-white">이어풀기</span>
                 </button>
 
                 {/* 중단하기 */}
                 <button
                     onClick={onExit}
-                    className="border-black-50 absolute top-[273px] left-1/2 flex h-[40px] w-[240px] -translate-x-1/2 cursor-pointer items-center justify-center rounded-[5px] border border-[0.63px]"
+                    className="border-black-50 text-black-70 hover:bg-danger/90 absolute top-[273px] left-1/2 flex h-[40px] w-[240px] -translate-x-1/2 cursor-pointer items-center justify-center rounded-[5px] border border-[0.63px] hover:border-none hover:text-white"
                 >
-                    <span className="text-18px-medium text-black-70">중단하기</span>
+                    <span className="text-18px-medium group-hover:text-white">중단하기</span>
                 </button>
             </div>
         </div>
