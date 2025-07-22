@@ -15,8 +15,8 @@ const TodayGreetingBanner = ({ nickname }: TodayGreetingBannerProps) => {
     });
 
     return (
-        <div className="flex items-center">
-            <div className="border-black-30 relative flex h-[110px] w-[1121px] items-center gap-6 rounded-2xl border bg-white px-4 shadow-[0_4px_10px_rgba(0,0,0,0.25)]">
+        <div className="flex w-full items-center justify-center">
+            <div className="border-black-30 relative flex h-[110px] w-full max-w-[1121px] min-w-[600px] items-center gap-6 rounded-2xl border bg-white px-4 shadow-[0_4px_10px_rgba(0,0,0,0.25)]">
                 {/* 스프링 장식 */}
                 <div className="absolute top-1/2 -left-[8px] -translate-y-1/2">
                     <SpringDots className="h-[82px] w-[28.5px]" />
