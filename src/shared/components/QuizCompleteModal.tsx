@@ -22,7 +22,7 @@ const DummyQuizCompleteModal = () => {
     return <QuizCompleteModal onClose={handleClose} onConfirm={handleConfirm} />;
 };
 
-const QuizCompleteModal: React.FC<Props> = ({ onClose, onConfirm }) => {
+const QuizCompleteModal = ({ onClose, onConfirm }: Props) => {
     const modalRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -65,9 +65,9 @@ const QuizCompleteModal: React.FC<Props> = ({ onClose, onConfirm }) => {
                 {/* 확인하러 가기 버튼 */}
                 <button
                     onClick={onConfirm}
-                    className="border-black-50 absolute top-[270px] left-1/2 flex h-[40px] w-[240px] -translate-x-1/2 cursor-pointer items-center justify-center rounded-[5px] border border-[0.63px]"
+                    className="border-black-50 text-black-70 hover:bg-main absolute top-[270px] left-1/2 flex h-[40px] w-[240px] -translate-x-1/2 cursor-pointer items-center justify-center rounded-[5px] border border-[0.63px] hover:border-none hover:text-white"
                 >
-                    <span className="text-18px-medium text-black-70">확인하러 가기</span>
+                    <span className="text-18px-medium">확인하러 가기</span>
                 </button>
             </div>
         </div>
