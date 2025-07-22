@@ -7,7 +7,7 @@ interface ChipProps {
 function CategoryChip({ label, selected, onClick }: ChipProps) {
     return (
         <button
-            className={`h-[40px] w-[100px] cursor-pointer rounded-full text-sm font-medium ${selected ? 'bg-[#0066FF] text-white' : 'border border-black bg-white text-black'} transition hover:opacity-80`}
+            className={`text-18px-medium h-[40px] w-[100px] cursor-pointer rounded-full ${selected ? 'bg-main text-white' : 'border border-black bg-white text-black'} transition hover:opacity-80`}
             onClick={onClick}
         >
             {label}
