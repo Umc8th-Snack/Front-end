@@ -36,7 +36,7 @@ function ShareModal({ onClose }: { onClose: () => void }) {
         >
             <div
                 ref={modalRef}
-                className="relative flex w-[600px] flex-col items-center rounded-[8px] bg-white px-[40px] py-[40px]"
+                className="relative flex w-[600px] flex-col items-center rounded-[10px] bg-white px-[40px] py-[40px]"
             >
                 {/* 닫기 버튼 */}
                 <button
