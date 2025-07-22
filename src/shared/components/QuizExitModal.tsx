@@ -1,5 +1,3 @@
-// TODO: 라우팅 설정 후 QuizExitModal.tsx의 폴더상 위치 바꾸기
-
 // TODO: 폴더 구조 설정 후 XIcon 위치 바꾸기
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -41,7 +39,7 @@ const DummyQuizExitModal = () => {
     return <QuizExitModal onClose={handleClose} onContinue={handleContinue} onExit={handleExit} />;
 };
 
-const QuizExitModal: React.FC<Props> = ({ onClose, onContinue, onExit }) => {
+function QuizExitModal({ onClose, onContinue, onExit }: Props) {
     const modalRef = useRef<HTMLDivElement>(null);
 
     // ESC 키로 닫기
@@ -99,7 +97,7 @@ const QuizExitModal: React.FC<Props> = ({ onClose, onContinue, onExit }) => {
             </div>
         </div>
     );
-};
+}
 
 // 임시 export:
 export default DummyQuizExitModal;
