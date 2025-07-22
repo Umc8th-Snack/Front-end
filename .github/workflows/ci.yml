@@ -1,0 +1,33 @@
+name: Frontend CI (PR)
+
+on:
+    pull_request:
+        branches: [develop]
+
+jobs:
+    CI:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: 📦 Checkout repository
+              uses: actions/checkout@v4
+
+            - name: 🛠 Install pnpm manually with PATH fix
+              run: |
+                  npm install -g pnpm
+                  echo "$(npm bin -g)" >> $GITHUB_PATH
+
+            - name: 🟢 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: 'pnpm'
+
+            - name: 📥 Install dependencies
+              run: pnpm install
+
+            - name: 🧹 Lint
+              run: pnpm lint
+
+            - name: 🧪 Type Check
+              run: pnpm type-check
