@@ -8,10 +8,6 @@ export const settingsData = [
         ],
     },
     {
-        category: '피드',
-        items: [{ label: '관심 카테고리 변경', path: '/settings/feed' }],
-    },
-    {
         category: '기타',
         items: [
             { label: '정보 동의 설정', path: '/settings/privacy' },

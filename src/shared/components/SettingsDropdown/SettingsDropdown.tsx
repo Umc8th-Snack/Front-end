@@ -19,19 +19,19 @@ const SettingsDropdown = () => {
                 onClick={() => setOpen((prev) => !prev)}
                 className="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900"
             >
-                설정
+                임시 설정 버튼 (누르면 드롭다운이 열립니다)
             </button>
 
             {/* TODO: font-family 적용 필요 */}
             {/* TODO: 레이아웃 적용 시 위치 수정하기 */}
             {open && (
-                <div className="absolute right-0 z-50 mt-[120px] flex h-[610px] w-[320px] flex-col justify-center rounded-xl bg-white p-6 shadow-lg">
+                <div className="border-black-30 z-50 flex h-[431px] w-[320px] flex-col justify-center rounded-[10px] border border-[0.5px] bg-white p-6 shadow-[-4px_4px_8px_0px_rgba(0,0,0,0.15)]">
                     <h2 className="text-24px-semibold mb-10 text-center">설정</h2>
 
                     {settingsData.map((section, i) => (
                         <div key={section.category} className={i === 0 ? '' : 'mt-6'}>
-                            <h3 className="text-20px-medium text-black-70 mb-6 pl-3">{section.category}</h3>
-                            <ul className="flex flex-col gap-3 pl-3">
+                            <h3 className="text-20px-medium text-black-70 mb-4 pl-3">{section.category}</h3>
+                            <ul className="flex flex-col gap-1.5 pl-3">
                                 {section.items.map((item) => (
                                     <li key={item.label}>
                                         <button
@@ -48,9 +48,7 @@ const SettingsDropdown = () => {
                                 ))}
                             </ul>
 
-                            {i < settingsData.length - 1 && (
-                                <hr className="w-0.85 mx-auto mt-4 border-t border-black/30" />
-                            )}
+                            {i < settingsData.length - 1 && <hr className="w-0.85 border-black-30 mx-auto mt-4" />}
                         </div>
                     ))}
                 </div>
