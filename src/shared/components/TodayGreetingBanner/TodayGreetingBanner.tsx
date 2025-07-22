@@ -1,5 +1,5 @@
-import CalendarIcon from './CalendarIcon';
-import SpringDots from './SpringDots';
+import CalendarIcon from '@/shared/assets/icons/calendar-icon.svg?react';
+import SpringDots from '@/shared/assets/icons/spring-dots.svg?react';
 
 interface TodayGreetingBannerProps {
     nickname?: string;
