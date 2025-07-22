@@ -22,7 +22,6 @@ const SettingsDropdown = () => {
                 임시 설정 버튼 (누르면 드롭다운이 열립니다)
             </button>
 
-            {/* TODO: font-family 적용 필요 */}
             {/* TODO: 레이아웃 적용 시 위치 수정하기 */}
             {open && (
                 <div className="border-black-30 z-50 flex h-[431px] w-[320px] flex-col justify-center rounded-[10px] border border-[0.5px] bg-white p-6 shadow-[-4px_4px_8px_0px_rgba(0,0,0,0.15)]">
