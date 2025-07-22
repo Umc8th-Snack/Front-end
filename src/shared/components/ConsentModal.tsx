@@ -1,14 +1,7 @@
-// TODO: 폴더 구조 설정 후 XIcon 위치 바꾸기, SVGR로 변경
 import React, { useEffect, useRef, useState } from 'react';
 
+import XIcon from '@/shared/assets/icons/close-x.svg?react';
 import ToggleSwitch from '@/shared/components/ToggleSwitch';
-
-const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-        <path d="M18 6L6 18" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
-        <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
-    </svg>
-);
 
 interface Props {
     onClose: () => void;
@@ -44,7 +37,7 @@ function ConsentModal({ onClose }: Props) {
                     className="absolute top-[8px] right-[8px] flex h-[24px] w-[24px] cursor-pointer items-center justify-center"
                     onClick={onClose}
                 >
-                    <XIcon className="text-black" />
+                    <XIcon />
                 </button>
 
                 {/* 제목 */}
