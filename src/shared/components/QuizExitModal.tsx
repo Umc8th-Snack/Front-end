@@ -58,7 +58,7 @@ function QuizExitModal({ onClose, onContinue, onExit }: Props) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={handleOverlayClick}>
             <div ref={modalRef} className="relative h-[350px] w-[350px] rounded-[10px] bg-white shadow-md">
                 {/* 닫기 버튼 */}
-                <button onClick={onClose} className="absolute top-3 right-3 cursor-pointer">
+                <button onClick={onClose} className="absolute top-[12px] right-[8px] cursor-pointer">
                     <XIcon />
                 </button>
 
