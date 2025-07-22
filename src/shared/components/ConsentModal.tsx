@@ -30,11 +30,11 @@ function ConsentModal({ onClose }: Props) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={handleOverlayClick}>
             <div
                 ref={modalRef}
-                className="relative h-[250px] w-[440px] rounded-[8px] bg-white shadow-[0px_2.5px_2.5px_rgba(0,0,0,0.25)]"
+                className="relative h-[250px] w-[440px] rounded-[10px] bg-white shadow-[0px_2.5px_2.5px_rgba(0,0,0,0.25)]"
             >
                 {/* 닫기 버튼 */}
                 <button
-                    className="absolute top-[8px] right-[8px] flex h-[24px] w-[24px] cursor-pointer items-center justify-center"
+                    className="absolute top-[12px] right-[8px] flex h-[24px] w-[24px] cursor-pointer items-center justify-center"
                     onClick={onClose}
                 >
                     <XIcon />
