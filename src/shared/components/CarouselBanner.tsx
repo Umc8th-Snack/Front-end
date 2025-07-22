@@ -69,12 +69,12 @@ export default function CardNewsCarousel() {
 
             {/* Dot Pagination */}
             <div className="flex gap-2">
-                {scrollSnaps.map((card) => (
+                {scrollSnaps.map((dot, i) => (
                     <button
-                        key={card}
-                        onClick={() => scrollTo(card)}
+                        key={dot}
+                        onClick={() => scrollTo(i)}
                         className={`h-2 w-2 rounded-full transition-colors duration-300 ${
-                            card === selectedIndex ? 'w-4 bg-black' : 'bg-gray-300'
+                            i === selectedIndex ? 'w-4 bg-black' : 'bg-gray-300'
                         }`}
                     />
                 ))}
