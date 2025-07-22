@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import XIcon from './icons/close-x.svg';
+import XIcon from '@/shared/assets/icons/close-x.svg?react';
 
 interface Props {
     onClose: () => void;
@@ -58,10 +58,7 @@ function QuizExitModal({ onClose, onContinue, onExit }: Props) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={handleOverlayClick}>
             <div ref={modalRef} className="relative h-[350px] w-[350px] rounded-[9.375px] bg-white shadow-md">
                 {/* 닫기 버튼 */}
-                <button
-                    className="absolute top-[8px] right-[8px] flex h-[22px] w-[22px] cursor-pointer items-center justify-center"
-                    onClick={onClose}
-                >
+                <button onClick={onClose} className="absolute top-3 right-3">
                     <XIcon />
                 </button>
 
