@@ -1,12 +1,6 @@
-// TODO: 폴더 구조 설정 후 XIcon 위치 바꾸기
 import React, { useEffect, useRef, useState } from 'react';
 
-const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-        <path d="M18 6L6 18" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
-        <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
-    </svg>
-);
+import XIcon from './icons/close-x.svg';
 
 interface Props {
     onClose: () => void;
@@ -68,7 +62,7 @@ function QuizExitModal({ onClose, onContinue, onExit }: Props) {
                     className="absolute top-[8px] right-[8px] flex h-[22px] w-[22px] cursor-pointer items-center justify-center"
                     onClick={onClose}
                 >
-                    <XIcon className="text-black-70" />
+                    <XIcon />
                 </button>
 
                 {/* 문구 */}
