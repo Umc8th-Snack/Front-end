@@ -1,16 +1,7 @@
-// TODO: 라우팅 설정 후 QuizCompleteModal.tsx의 폴더상 위치 바꾸기
-
-// TODO: 폴더 구조 설정 후 XIcon 위치 바꾸기, SVGR로 변경
 import React, { useEffect, useRef, useState } from 'react';
 
-import ThumbsUpIcon from '@/assets/thumbs-up.svg?react';
-
-const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-        <path d="M18 6L6 18" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
-        <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
-    </svg>
-);
+import XIcon from '@/shared/assets/icons/close-x.svg?react';
+import ThumbsUpIcon from '@/shared/assets/icons/thumbs-up.svg?react';
 
 interface Props {
     onClose: () => void;
@@ -65,8 +56,6 @@ const QuizCompleteModal: React.FC<Props> = ({ onClose, onConfirm }) => {
                     다 푸셨네요! <br />
                     정답을 확인해 볼까요?
                 </div>
-
-                {/* TODO: 폴더 구조 변경 후 thumbs-up.svg 위치 바꾸기 */}
 
                 {/* 아이콘 영역 */}
                 <div className="absolute top-[148px] left-1/2 flex -translate-x-1/2 flex-col items-center">
