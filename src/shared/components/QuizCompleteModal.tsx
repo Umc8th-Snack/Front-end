@@ -51,13 +51,13 @@ const QuizCompleteModal = ({ onClose, onConfirm }: Props) => {
                 </button>
 
                 {/* 메시지 */}
-                <div className="text-24px-semibold absolute top-[40px] left-1/2 h-[108px] w-[211px] -translate-x-1/2">
+                <div className="text-24px-semibold absolute top-[35px] left-1/2 w-[240px] -translate-x-1/2 text-center">
                     퀴즈를 다 푸셨네요! <br />
                     정답을 확인해 볼까요?
                 </div>
 
                 {/* 아이콘 영역 */}
-                <div className="absolute top-[135px] left-1/2 flex -translate-x-1/2 flex-col items-center">
+                <div className="absolute top-[130px] left-1/2 flex -translate-x-1/2 flex-col items-center">
                     <ThumbsUpIcon className="h-[112px] w-[112px]" />
                 </div>
 
