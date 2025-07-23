@@ -27,14 +27,12 @@ const TodayGreetingBanner = ({ nickname }: TodayGreetingBannerProps) => {
                     {/* 캘린더 아이콘 + 날짜 */}
                     <div className="flex items-center gap-[10px]">
                         <CalendarIcon className={nickname ? 'h-[16.67px] w-[16.67px]' : 'h-[40px] w-[40px]'} />
-                        <p className={nickname ? 'text-14px-medium leading-[17px]' : 'text-24px-medium leading-[36px]'}>
-                            오늘은 {formatted}이에요.
-                        </p>
+                        <p className={nickname ? 'text-14px-medium' : 'text-24px-medium'}>오늘은 {formatted}이에요.</p>
                     </div>
 
                     {/* 맞춤 피드 안내 */}
                     {nickname && (
-                        <p className="text-24px-semibold mt-[6px] leading-[36px] text-black">
+                        <p className="text-24px-semibold mt-[6px] text-black">
                             {nickname}님을 위한 오늘의 맞춤 피드를 보여드려요.
                         </p>
                     )}
