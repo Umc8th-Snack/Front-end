@@ -80,7 +80,7 @@ function QuizExitModal({ onClose, onContinue, onExit }: Props) {
                 {/* 중단하기 */}
                 <button
                     onClick={onExit}
-                    className="border-black-50 text-black-70 hover:bg-danger/90 absolute top-[273px] left-1/2 flex h-[40px] w-[240px] -translate-x-1/2 cursor-pointer items-center justify-center rounded-[5px] border border-[0.63px] hover:border-none hover:text-white"
+                    className="border-black-50 text-black-70 hover:bg-danger absolute top-[273px] left-1/2 flex h-[40px] w-[240px] -translate-x-1/2 cursor-pointer items-center justify-center rounded-[5px] border border-[0.63px] hover:border-none hover:text-white"
                 >
                     <span className="text-18px-medium group-hover:text-white">중단하기</span>
                 </button>
