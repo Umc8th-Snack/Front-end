@@ -6,7 +6,7 @@ const SummarizedNews = () => {
     const newsContent =
         '간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 ';
     return (
-        <div className="relative top-[291px] left-[120px] flex w-[690px] flex-col rounded-[30px] border-[3px] border-[rgba(5,87,224,0.3)] bg-white px-[30px] pt-[30px] pb-[28px]">
+        <div className="border-main-30 relative top-[291px] left-[120px] flex w-[690px] flex-col rounded-[30px] border-[3px] bg-white px-[30px] pt-[30px] pb-[28px]">
             <div className="flex justify-between">
                 <div className="flex space-x-[8px]">
                     <RectangleIcon />
@@ -17,7 +17,7 @@ const SummarizedNews = () => {
                     <ShareIcon />
                 </div>
             </div>
-            <div className="text-18px-medium mt-[5px] break-words text-gray-900">{newsContent}</div>
+            <div className="text-18px-medium text-black-70 mt-[5px] break-words">{newsContent}</div>
         </div>
     );
 };
