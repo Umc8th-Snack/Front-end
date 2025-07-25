@@ -1,4 +1,4 @@
-import CardNewsCarousel from '@/shared/components/CarouselBanner';
+import CardNewsCarousel from '@/shared/components/OnboardingCard/OnboardingCard';
 
 const HomePage = () => {
     return (

@@ -12,7 +12,7 @@ const cards = [
     { id: '카드 3', description: 'text' },
 ];
 
-export default function CardNewsCarousel() {
+export default function OnboardingCard() {
     const [emblaRef, embla] = useEmblaCarousel({ loop: false, align: 'center' });
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
