@@ -1,11 +1,7 @@
-import CardNewsCarousel from '@/shared/components/OnboardingCard/OnboardingCard';
 
 const HomePage = () => {
-    return (
-        <div className="flex min-h-screen justify-center">
-            <CardNewsCarousel />
-        </div>
-    );
+    return <div className="home-page"></div>;
+
 };
 
 export default HomePage;
