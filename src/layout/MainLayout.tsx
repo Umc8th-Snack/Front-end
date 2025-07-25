@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
 import SnackIcon from '@/assets/snack.svg?react';
-import LoginModal from '@/pages/login/components/LoginModal';
+import LoginModal from '@/shared/components/loginModal/LoginModal';
 
 const MainLayout = () => {
     const location = useLocation();
