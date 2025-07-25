@@ -2,7 +2,7 @@ import BookMarkIcon from '@/shared/assets/Bookmark.svg?react';
 import RectangleIcon from '@/shared/assets/Rectangle105.svg?react';
 import ShareIcon from '@/shared/assets/Share.svg?react';
 
-const SummarizedNews = () => {
+const SummarizedNewsContainer = () => {
     const newsContent =
         '간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 ';
     return (
@@ -22,4 +22,4 @@ const SummarizedNews = () => {
     );
 };
 
-export default SummarizedNews;
+export default SummarizedNewsContainer;

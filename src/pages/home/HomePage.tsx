@@ -1,11 +1,5 @@
-import SummerizedNews from '@/shared/components/SummarizedNews/SummarizedNews';
-
 const HomePage = () => {
-    return (
-        <div className="home-page">
-            <SummerizedNews />
-        </div>
-    );
+    return <div className="home-page"></div>;
 };
 
 export default HomePage;
