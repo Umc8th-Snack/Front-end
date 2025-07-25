@@ -57,7 +57,7 @@ export default function CardNewsCarousel() {
                         {cards.map((card) => (
                             <div
                                 key={card.id}
-                                className="scroll-snap-center flex h-[280px] min-w-[50%] flex-shrink-0 flex-col justify-center rounded-3xl border border-gray-400 bg-white p-10"
+                                className="scroll-snap-center flex h-[280px] min-w-[50%] flex-shrink-0 flex-col justify-center rounded-[24px] border border-gray-400 bg-white p-10"
                             >
                                 <h3 className="mb-2 text-xl font-bold">{card.id}</h3>
                                 <p className="text-lg text-gray-700">{card.description}</p>
