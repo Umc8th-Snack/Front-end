@@ -37,7 +37,7 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                 </div>
 
                 {/* 소셜 로그인 버튼 */}
-                <div className="mt-18 flex flex-col items-center gap-4">
+                <div className="text-20px-medium mt-18 flex flex-col items-center gap-4">
                     <SocialLoginButton
                         text="Google 로그인"
                         icon={<GoogleIcon />}
