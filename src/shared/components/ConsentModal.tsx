@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
 import ToggleSwitch from '@/shared/components/ToggleSwitch';
 
-interface Props {
+interface ConsentModalProps {
     onClose: () => void;
 }
 
-function ConsentModal({ onClose }: Props) {
+const ConsentModal = ({ onClose }: ConsentModalProps) => {
     const [personalInfoConsent, setPersonalInfoConsent] = useState(true);
     const [adInfoConsent, setAdInfoConsent] = useState(true);
     const modalRef = useRef<HTMLDivElement>(null);
@@ -62,7 +62,7 @@ function ConsentModal({ onClose }: Props) {
             </div>
         </div>
     );
-}
+};
 
 // TODO: 테스트용 더미 컴포넌트, 실제 사용시 삭제
 export const DummyConsentModal = () => {
