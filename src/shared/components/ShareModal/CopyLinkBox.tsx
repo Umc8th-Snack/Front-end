@@ -1,9 +1,9 @@
-interface Props {
+interface CopyLinkBoxProps {
     link: string;
     onCopy: () => void;
 }
 
-function CopyLinkBox({ link, onCopy }: Props) {
+function CopyLinkBox({ link, onCopy }: CopyLinkBoxProps) {
     return (
         <div className="flex h-[60px] w-full max-w-[456px] items-center rounded-[8px] border border-black/50 px-[10px]">
             <input

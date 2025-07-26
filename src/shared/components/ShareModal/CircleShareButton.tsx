@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface Props {
+interface CircleShareButtonProps {
     icon: React.ReactNode;
     label: string;
     filled?: boolean;
@@ -16,7 +16,7 @@ function CircleShareButton({
     bgColor = 'bg-white',
     borderColor = '',
     textColor = 'text-black-70',
-}: Props) {
+}: CircleShareButtonProps) {
     const filledStyle = `bg-white ${borderColor} border`;
     const finalStyle = filled ? bgColor : filledStyle;
 
