@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
 import ThumbsUpIcon from '@/shared/assets/icons/thumbs-up.svg?react';
 
-interface Props {
+interface QuizCompleteModalProps {
     onClose: () => void;
     onConfirm: () => void;
 }
@@ -22,7 +22,7 @@ const DummyQuizCompleteModal = () => {
     return <QuizCompleteModal onClose={handleClose} onConfirm={handleConfirm} />;
 };
 
-const QuizCompleteModal = ({ onClose, onConfirm }: Props) => {
+const QuizCompleteModal = ({ onClose, onConfirm }: QuizCompleteModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
