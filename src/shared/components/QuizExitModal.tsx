@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
 
-interface Props {
+interface QuizExitModalProps {
     onClose: () => void;
     onContinue: () => void;
     onExit: () => void;
@@ -33,7 +33,7 @@ const DummyQuizExitModal = () => {
     return <QuizExitModal onClose={handleClose} onContinue={handleContinue} onExit={handleExit} />;
 };
 
-function QuizExitModal({ onClose, onContinue, onExit }: Props) {
+const QuizExitModal = ({ onClose, onContinue, onExit }: QuizExitModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
 
     // ESC 키로 닫기
@@ -87,7 +87,7 @@ function QuizExitModal({ onClose, onContinue, onExit }: Props) {
             </div>
         </div>
     );
-}
+};
 
 // 임시 export:
 export default DummyQuizExitModal;
