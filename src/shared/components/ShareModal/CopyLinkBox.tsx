@@ -3,7 +3,7 @@ interface CopyLinkBoxProps {
     onCopy: () => void;
 }
 
-function CopyLinkBox({ link, onCopy }: CopyLinkBoxProps) {
+const CopyLinkBox = ({ link, onCopy }: CopyLinkBoxProps) => {
     return (
         <div className="flex h-[60px] w-full max-w-[456px] items-center rounded-[8px] border border-black/50 px-[10px]">
             <input
@@ -19,6 +19,6 @@ function CopyLinkBox({ link, onCopy }: CopyLinkBoxProps) {
             </button>
         </div>
     );
-}
+};
 
 export default CopyLinkBox;

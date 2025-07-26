@@ -9,14 +9,14 @@ interface CircleShareButtonProps {
     textColor?: string; // ex: 'text-black-70'
 }
 
-function CircleShareButton({
+const CircleShareButton = ({
     icon,
     label,
     filled = true,
     bgColor = 'bg-white',
     borderColor = '',
     textColor = 'text-black-70',
-}: CircleShareButtonProps) {
+}: CircleShareButtonProps) => {
     const filledStyle = `bg-white ${borderColor} border`;
     const finalStyle = filled ? bgColor : filledStyle;
 
@@ -28,6 +28,6 @@ function CircleShareButton({
             <span className={`text-18px-medium mt-[10px] ${textColor}`}>{label}</span>
         </div>
     );
-}
+};
 
 export default CircleShareButton;

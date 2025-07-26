@@ -11,7 +11,7 @@ import ShareToast from './ShareToast';
 
 // TODO: 리펙토링 필요
 // 현재는 모달 내부에서 직접 닫기 버튼을 구현하고 있지만, 별도의 컴포넌트로 분리하는 것이 좋을 것 같습니다.
-function ShareModal({ onClose }: { onClose: () => void }) {
+const ShareModal = ({ onClose }: { onClose: () => void }) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const [showToast, setShowToast] = useState(false);
 
@@ -81,7 +81,7 @@ function ShareModal({ onClose }: { onClose: () => void }) {
             </div>
         </div>
     );
-}
+};
 
 export default ShareModal;
 

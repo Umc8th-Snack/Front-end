@@ -6,7 +6,7 @@ interface ShareToastProps {
     onDone?: () => void; // 토스트가 사라질 때 호출
 }
 
-function ShareToast({ message, duration = 500, onDone }: ShareToastProps) {
+const ShareToast = ({ message, duration = 500, onDone }: ShareToastProps) => {
     const [fadeOut, setFadeOut] = useState(false);
 
     useEffect(() => {
@@ -34,6 +34,6 @@ function ShareToast({ message, duration = 500, onDone }: ShareToastProps) {
             <span className="text-24px-semibold">{message}</span>
         </div>
     );
-}
+};
 
 export default ShareToast;
