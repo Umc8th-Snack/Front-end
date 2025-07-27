@@ -1,14 +1,16 @@
+import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
 import SnackIcon from '@/assets/snack.svg?react';
+import LoginModal from '@/shared/components/loginModal/LoginModal';
 
 const MainLayout = () => {
     const location = useLocation();
-    const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {!isAuthPage && (
+            {
                 <header className="bg-white shadow">
                     <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 items-center justify-between">
@@ -25,17 +27,17 @@ const MainLayout = () => {
                                                 : 'text-gray-700 hover:bg-gray-700 hover:text-white'
                                         }`}
                                     >
-                                        홈
+                                        홈/메인피드
                                     </Link>
                                     <Link
-                                        to="/article"
+                                        to="/custom-feed"
                                         className={`rounded-md px-3 py-2 text-sm font-medium ${
-                                            location.pathname === '/article'
+                                            location.pathname === '/custom-feed'
                                                 ? 'bg-gray-900 text-white'
                                                 : 'text-gray-700 hover:bg-gray-700 hover:text-white'
                                         }`}
                                     >
-                                        기사
+                                        맞춤피드
                                     </Link>
                                     <Link
                                         to="/mypage"
@@ -50,20 +52,18 @@ const MainLayout = () => {
                                 </div>
                             </div>
                             <div className="flex items-center space-x-4">
-                                <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-900">
-                                    로그인
-                                </Link>
-                                <Link
-                                    to="/signup"
-                                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+                                <button
+                                    onClick={() => setIsModalOpen(true)}
+                                    className="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900"
                                 >
-                                    회원가입
-                                </Link>
+                                    로그인
+                                </button>
+                                <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
                             </div>
                         </div>
                     </nav>
                 </header>
-            )}
+            }
             <main>
                 <Outlet />
             </main>

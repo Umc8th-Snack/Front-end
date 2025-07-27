@@ -86,6 +86,7 @@ export default tseslint.config(
             'react/jsx-no-constructed-context-values': 'error',
             'react/no-unstable-nested-components': 'error',
 
+            // JS no-unused-vars disabled
             'no-unused-vars': 'off',
             // TypeScript specific rules
             '@typescript-eslint/no-unused-vars': [
