@@ -13,6 +13,7 @@ const CustomFeedPage = lazy(() => import('@/pages/custom-feed/CustomFeedPage'));
 const SearchPage = lazy(() => import('@/pages/search/SearchPage'));
 const PasswordChangePage = lazy(() => import('@/pages/password-change/PasswordChangePage'));
 const DeleteAccountPage = lazy(() => import('@/pages/delete-account/DeleteAccountPage'));
+const EditProfilePage = lazy(() => import('@/pages/my/EditProfilePage'));
 
 const routes: RouteObject[] = [
     {
@@ -79,6 +80,14 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <SearchPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'mypage/edit-profile',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <EditProfilePage />
                     </Suspense>
                 ),
             },

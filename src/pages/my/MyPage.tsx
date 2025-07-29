@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const MyPage = () => {
     const [tab, setTab] = useState<'memo' | 'scrap'>('memo');
@@ -18,9 +19,11 @@ const MyPage = () => {
                 <p className="mt-2 text-sm text-gray-500">소개글을 작성해보세요!</p>
 
                 {/* 프로필 편집 버튼 */}
-                <button className="mt-4 rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600">
-                    프로필 편집
-                </button>
+                <Link to="/mypage/edit-profile">
+                    <button className="mt-4 rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600">
+                        프로필 편집
+                    </button>
+                </Link>
             </section>
 
             {/* 탭 메뉴 */}
