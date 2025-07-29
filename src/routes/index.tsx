@@ -39,11 +39,9 @@ const routes: RouteObject[] = [
             {
                 path: 'mypage',
                 element: (
-                    <ProtectedRoute isAuthenticated={false}>
-                        <Suspense fallback={<LoadingFallback />}>
-                            <MyPage />
-                        </Suspense>
-                    </ProtectedRoute>
+                    <Suspense fallback={<LoadingFallback />}>
+                        <MyPage />
+                    </Suspense>
                 ),
             },
             {
