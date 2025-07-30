@@ -39,8 +39,21 @@ const QuizCompleteModal = ({ onClose, onConfirm }: QuizCompleteModalProps) => {
         }
     };
 
+    const handleOverlayKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Escape') {
+            onClose();
+        }
+    };
+
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={handleOverlayClick}>
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+            onClick={handleOverlayClick}
+            onKeyDown={handleOverlayKeyDown}
+            tabIndex={-1}
+            role="button"
+            aria-label="Close modal"
+        >
             <div ref={modalRef} className="relative h-[350px] w-[350px] rounded-[10px] bg-white shadow-md">
                 {/* 닫기 버튼 */}
                 <button
