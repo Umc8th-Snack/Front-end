@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
-import ToggleSwitch from '@/shared/components/ToggleSwitch';
+import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
 
 interface ConsentModalProps {
     onClose: () => void;
