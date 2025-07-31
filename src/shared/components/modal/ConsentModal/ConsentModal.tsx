@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
-import ToggleSwitch from '@/shared/components/ToggleSwitch';
+import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
 
 interface ConsentModalProps {
     onClose: () => void;
@@ -26,8 +26,21 @@ const ConsentModal = ({ onClose }: ConsentModalProps) => {
         }
     };
 
+    const handleOverlayKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Escape') {
+            onClose();
+        }
+    };
+
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={handleOverlayClick}>
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+            onClick={handleOverlayClick}
+            onKeyDown={handleOverlayKeyDown}
+            tabIndex={-1}
+            role="button"
+            aria-label="Close modal"
+        >
             <div
                 ref={modalRef}
                 className="relative h-[250px] w-[440px] rounded-[10px] bg-white shadow-[0px_2.5px_2.5px_rgba(0,0,0,0.25)]"

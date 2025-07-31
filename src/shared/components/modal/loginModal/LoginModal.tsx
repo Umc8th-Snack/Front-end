@@ -1,3 +1,5 @@
+import React from 'react';
+
 import GoogleIcon from '@/assets/GoogleIcon.svg?react';
 import SnackIcon from '@/assets/snack.svg?react';
 import XIcon from '@/assets/XIcon.svg?react';
@@ -12,11 +14,28 @@ interface ModalProps {
 const LoginModal = ({ isOpen, onClose }: ModalProps) => {
     if (!isOpen) return null;
 
+    const handleOverlayKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Escape') {
+            onClose();
+        }
+    };
+
     return (
-        <div className="bg-black-50 fixed inset-0 flex items-center justify-center" onClick={onClose}>
+        <div
+            className="bg-black-50 fixed inset-0 flex items-center justify-center"
+            onClick={onClose}
+            onKeyDown={handleOverlayKeyDown}
+            tabIndex={-1}
+            role="button"
+            aria-label="Close modal"
+        >
             <div
                 className="absolute h-[640px] w-[440px] rounded-[15px] bg-white shadow-xl"
                 onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => e.stopPropagation()}
+                tabIndex={-1}
+                role="button"
+                aria-label="Modal content"
             >
                 {/* 닫기 버튼 */}
                 <button
