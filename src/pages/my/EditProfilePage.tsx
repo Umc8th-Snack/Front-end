@@ -21,7 +21,7 @@ const EditProfilePage = () => {
 
     return (
         <div className="mx-auto max-w-xl px-4 py-12">
-            <h1 className="mb-8 text-center text-xl font-bold">프로필 편집</h1>
+            <h1 className="text-36px-semibold mt-10 text-center">프로필 편집</h1>
 
             <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
                 <label className="mb-1 block text-sm">

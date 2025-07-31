@@ -13,7 +13,7 @@ const MyPage = lazy(() => import('@/pages/my/MyPage'));
 const CustomFeedPage = lazy(() => import('@/pages/custom-feed/CustomFeedPage'));
 const SearchPage = lazy(() => import('@/pages/search/SearchPage'));
 const PasswordChangePage = lazy(() => import('@/pages/settings/PasswordChangePage'));
-const DeleteAccountPage = lazy(() => import('@/pages/delete-account/DeleteAccountPage'));
+const DeleteAccountPage = lazy(() => import('@/pages/settings/DeleteAccountPage'));
 const EditProfilePage = lazy(() => import('@/pages/my/EditProfilePage'));
 const AccordionTestPage = lazy(() => import('@/pages/test/AccordionTestPage'));
 

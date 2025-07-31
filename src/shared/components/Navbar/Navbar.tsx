@@ -5,13 +5,24 @@ import { Link, useLocation } from 'react-router-dom';
 import SearchIcon from '@/shared/assets/search.svg?react';
 import SnackLogo from '@/shared/assets/snack.svg?react';
 
+import ConsentModal from '../modal/ConsentModal/ConsentModal';
 import SettingsDropdown from '../modal/SettingsDropdown/SettingsDropdown';
 
 const Navbar = () => {
-    const [isLoggedIn] = useState(false);
+    const [isLoggedIn] = useState(true);
     const [nickname] = useState('스내커');
     const location = useLocation();
     const [settingsOpen, setSettingsOpen] = useState(false);
+    //정보동의설정 모달 상태
+    const [isConsentModalOpen, setIsConsentModalOpen] = useState(false);
+
+    const handleOpenConsentModal = () => {
+        setIsConsentModalOpen(true);
+    };
+
+    const handleCloseConsentModal = () => {
+        setIsConsentModalOpen(false);
+    };
 
     return (
         <header className="w-full">
@@ -67,7 +78,11 @@ const Navbar = () => {
                                 >
                                     설정
                                 </button>
-                                <SettingsDropdown open={settingsOpen} setOpen={setSettingsOpen} />
+                                <SettingsDropdown
+                                    open={settingsOpen}
+                                    setOpen={setSettingsOpen}
+                                    onShowConsentModal={handleOpenConsentModal}
+                                />
                             </div>
                         </>
                     ) : (
@@ -81,6 +96,7 @@ const Navbar = () => {
                         </>
                     )}
                 </nav>
+                {isConsentModalOpen && <ConsentModal onClose={handleCloseConsentModal} />}
             </div>
         </header>
     );
