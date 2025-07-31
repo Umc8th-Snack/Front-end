@@ -17,6 +17,7 @@ const DeleteAccountPage = lazy(() => import('@/pages/settings/DeleteAccountPage'
 const EditProfilePage = lazy(() => import('@/pages/my/EditProfilePage'));
 const AccordionTestPage = lazy(() => import('@/pages/test/AccordionTestPage'));
 const ForgotPasswordPage = lazy(() => import('@/pages/forgot-password/ForgotPasswordPage'));
+const QuizCommentary = lazy(() => import('@/pages/test/QuizCommentaryPage'));
 
 const routes: RouteObject[] = [
     {
@@ -37,6 +38,14 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <ArticlePage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'article/quiz-commentary',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <QuizCommentary />
                     </Suspense>
                 ),
             },
