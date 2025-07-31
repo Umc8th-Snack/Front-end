@@ -5,8 +5,8 @@ import Pagination from './components/Pagination';
 import Profile from './components/Profile';
 import ScrapCard from './components/ScrapCard';
 import TabMenu from './components/TabMenu';
-import dummyMemos from './data/DummyMemos';
-import dummyScraps from './data/DummyScraps';
+import dummyMemos from './DummyData/DummyMemos';
+import dummyScraps from './DummyData/DummyScraps';
 import type { Memo, Scrap } from './types/types';
 
 //마이페이지
