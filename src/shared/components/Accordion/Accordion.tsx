@@ -1,5 +1,4 @@
 //통합 아코디언 컴포넌트
-
 import ChevronIcon from '@/assets/chevronIcon.svg?react';
 import SnackIcon from '@/assets/snackIcon.svg?react';
 
