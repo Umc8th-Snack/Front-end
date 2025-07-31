@@ -1,5 +1,7 @@
+import DummySignupModal from '@/shared/components/modal/SignupModal/SignupModal';
+
 const HomePage = () => {
-    return <div className="home-page"></div>;
+    return <DummySignupModal />;
 };
 
 export default HomePage;
