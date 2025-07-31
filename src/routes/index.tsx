@@ -6,12 +6,13 @@ import MainLayout from '@/layout/MainLayout';
 import LoadingFallback from './LoadingFallback';
 import ProtectedRoute from './ProtectedRoute';
 
+const EmailChangePage = lazy(() => import('@/pages/settings/EmailChangePage'));
 const HomePage = lazy(() => import('@/pages/home/HomePage'));
 const ArticlePage = lazy(() => import('@/pages/article/ArticlePage'));
 const MyPage = lazy(() => import('@/pages/my/MyPage'));
 const CustomFeedPage = lazy(() => import('@/pages/custom-feed/CustomFeedPage'));
 const SearchPage = lazy(() => import('@/pages/search/SearchPage'));
-const PasswordChangePage = lazy(() => import('@/pages/password-change/PasswordChangePage'));
+const PasswordChangePage = lazy(() => import('@/pages/settings/PasswordChangePage'));
 const DeleteAccountPage = lazy(() => import('@/pages/delete-account/DeleteAccountPage'));
 const EditProfilePage = lazy(() => import('@/pages/my/EditProfilePage'));
 const AccordionTestPage = lazy(() => import('@/pages/test/AccordionTestPage'));
@@ -67,16 +68,6 @@ const routes: RouteObject[] = [
                 ),
             },
             {
-                path: 'delete-account',
-                element: (
-                    <ProtectedRoute isAuthenticated={false}>
-                        <Suspense fallback={<LoadingFallback />}>
-                            <DeleteAccountPage />
-                        </Suspense>
-                    </ProtectedRoute>
-                ),
-            },
-            {
                 path: 'search',
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
@@ -85,7 +76,7 @@ const routes: RouteObject[] = [
                 ),
             },
             {
-                path: 'mypage/edit-profile',
+                path: '/mypage/edit-profile',
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <EditProfilePage />
@@ -97,6 +88,30 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <AccordionTestPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/settings/password',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <PasswordChangePage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/settings/email',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <EmailChangePage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/settings/delete',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <DeleteAccountPage />
                     </Suspense>
                 ),
             },
