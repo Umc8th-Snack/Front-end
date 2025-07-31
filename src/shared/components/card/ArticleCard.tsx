@@ -1,24 +1,58 @@
+import cultureIcon from '@/shared/assets/article/culture.svg?react';
+import ecomonyIcon from '@/shared/assets/article/ecomony.svg?react';
+import etcIcon from '@/shared/assets/article/etc.svg?react';
+import politicsIcon from '@/shared/assets/article/politics.svg?react';
+import scienceIcon from '@/shared/assets/article/science.svg?react';
+import societyIcon from '@/shared/assets/article/society.svg?react';
+import worldIcon from '@/shared/assets/article/world.svg?react';
+
 interface ArticleCardProps {
     title?: string;
-    imageUrl?: string;
-} // 백엔드 연동 시 imgaeUrl 변경 필요
+    category?: string; // 기사 카테고리 (사회, 정치, 경제 등)
+}
 
-function ArticleCard({ title = 'article title', imageUrl = '' }: ArticleCardProps) {
+// 카테고리별 SVG 아이콘 컴포넌트
+const CategoryIcon = ({ category }: { category?: string }) => {
+    const SocietyIcon = societyIcon;
+    const PoliticsIcon = politicsIcon;
+    const EconomyIcon = ecomonyIcon;
+    const ScienceIcon = scienceIcon;
+    const CultureIcon = cultureIcon;
+    const WorldIcon = worldIcon;
+    const EtcIcon = etcIcon;
+
+    // 카테고리별 아이콘 반환(임의로 한글로 설정했습니다! 추후 변동 필요)
+    switch (category) {
+        case '사회':
+            return <SocietyIcon className="h-12 w-12" />;
+        case '정치':
+            return <PoliticsIcon className="h-12 w-12" />;
+        case '경제':
+            return <EconomyIcon className="h-12 w-12" />;
+        case '과학':
+            return <ScienceIcon className="h-12 w-12" />;
+        case '문화':
+            return <CultureIcon className="h-12 w-12" />;
+        case '세계':
+            return <WorldIcon className="h-12 w-12" />;
+        case '기타':
+            return <EtcIcon className="h-12 w-12" />;
+        default:
+            return <SocietyIcon className="h-12 w-12" />;
+    }
+};
+
+function ArticleCard({ title = 'article title', category = '사회' }: ArticleCardProps) {
     return (
-        <div className="flex w-[260px] flex-col items-center rounded-xl border border-gray-200 bg-white p-6">
-            {/* 이미지*/}
-            <div className="relative mb-6 flex h-[120px] w-full items-center justify-center overflow-hidden rounded-lg bg-gray-200">
-                {imageUrl ? (
-                    <img src={imageUrl} alt="article_img" className="h-full w-full object-cover" />
-                ) : (
-                    <span className="z-10 text-lg font-bold text-gray-700 select-none">사진</span>
-                )}
+        <div className="bg-main-10 m-5 flex h-[220px] w-[210px] flex-col rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] p-6">
+            {/* 카테고리 아이콘 */}
+            <div className="mb-4 flex w-full justify-start">
+                <CategoryIcon category={category} />
             </div>
 
             {/* 기사 제목 */}
-            <div className="w-full">
-                <div className="text-20px-medium mb-2 overflow-hidden text-ellipsis whitespace-nowrap">{title}</div>
-                <div className="w-full border-b border-gray-500" />
+            <div className="flex w-full flex-1 items-center">
+                <div className="text-20px-medium line-clamp-3 overflow-hidden text-ellipsis">{title}</div>
             </div>
         </div>
     );
