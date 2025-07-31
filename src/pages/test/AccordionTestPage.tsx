@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
-import Accordion from '@/shared/components/Accordion/Accordion';
-import { glossaryTestData, quizData } from '@/shared/components/Accordion/testData';
+import Accordion from '@/pages/article/components/Accordion/Accordion';
+import { glossaryTestData, quizData } from '@/pages/article/components/Accordion/testData';
 
 const AccordionTestPage = () => {
     const [glossaryExpanded, setGlossaryExpanded] = useState(false);
     const [quizExpanded, setQuizExpanded] = useState(false);
 
     return (
-        <div className="min-h-screen p-8">
+        <div className="min-h-screen">
             <div className="mx-auto max-w-4xl">
                 <div className="grid grid-cols-2 gap-8">
                     <div className="space-y-4">

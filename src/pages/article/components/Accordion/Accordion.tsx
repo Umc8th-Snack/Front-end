@@ -1,8 +1,8 @@
 //통합 아코디언 컴포넌트
 import ChevronIcon from '@/assets/chevronIcon.svg?react';
 import SnackIcon from '@/assets/snackIcon.svg?react';
+import type { AccordionProps, GlossaryItem, QuizItem } from '@/pages/article/components/Accordion';
 
-import type { AccordionProps, GlossaryItem, QuizItem } from '../../types/accordionTypes';
 import GlossaryContent from './GlossaryContent';
 import QuizContent from './QuizContent';
 
@@ -14,7 +14,7 @@ const Accordion = ({
 }: AccordionProps | { title: string; data: QuizItem[]; isExpanded?: boolean; onToggle?: () => void }) => {
     const isQuiz = data.length > 0 && 'question' in data[0];
     return (
-        <div className="border-main-30 max-w-md rounded-lg border-[3px] bg-white p-6">
+        <div className="border-main-30 max-w-md rounded-[16px] border-[3px] bg-white p-6">
             {/* 헤더 */}
             <div className="mb-4 flex flex-col items-start space-x-3">
                 <div className="mb-2 flex items-center space-x-2">
