@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import TodayGreetingBanner from '@/shared/components/banner/TodayGreetingBanner';
+import OnboardingCard from '@/shared/components/card/OnboardingCard';
 import CategoryChips from '@/shared/components/chip/CategoryChips';
 
 const HomePage = () => {
@@ -17,6 +18,11 @@ const HomePage = () => {
             {/* 인사말 배너 */}
             <div className="mb-8">
                 <TodayGreetingBanner />
+            </div>
+
+            {/* 온보딩 카드 */}
+            <div className="mb-8 flex justify-center">
+                <OnboardingCard />
             </div>
 
             {/* 카테고리 선택 */}

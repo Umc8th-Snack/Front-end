@@ -32,7 +32,7 @@ export default function OnboardingCard() {
     }, [embla]);
 
     return (
-        <section className="relative top-[195px] flex h-[280px] w-[1200px] flex-col items-center space-y-10 px-2">
+        <section className="flex h-[280px] w-[1200px] flex-col items-center space-y-10 px-2">
             {/* 캐러셀 박스 */}
             <div className="relative w-full">
                 {/* 좌우 버튼 */}
