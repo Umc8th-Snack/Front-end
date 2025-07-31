@@ -1,13 +1,11 @@
 //용어집 Content
-import React from 'react';
-
 import type { GlossaryItem } from '../../types/accordionTypes';
 
 interface GlossaryContentProps {
     data: GlossaryItem[];
 }
 
-const GlossaryContent: React.FC<GlossaryContentProps> = ({ data }) => {
+const GlossaryContent = ({ data }: GlossaryContentProps) => {
     return (
         <div className="mb-4 space-y-3 rounded-2xl border-1 border-gray-300 bg-white p-6">
             {data.map((item, index) => (
