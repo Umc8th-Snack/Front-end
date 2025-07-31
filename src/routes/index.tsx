@@ -13,11 +13,8 @@ const CustomFeedPage = lazy(() => import('@/pages/custom-feed/CustomFeedPage'));
 const SearchPage = lazy(() => import('@/pages/search/SearchPage'));
 const PasswordChangePage = lazy(() => import('@/pages/password-change/PasswordChangePage'));
 const DeleteAccountPage = lazy(() => import('@/pages/delete-account/DeleteAccountPage'));
-<<<<<<< feat/mypage-view-publishing/#88
 const EditProfilePage = lazy(() => import('@/pages/my/EditProfilePage'));
-=======
 const AccordionTestPage = lazy(() => import('@/pages/test/AccordionTestPage'));
->>>>>>> develop
 
 const routes: RouteObject[] = [
     {
@@ -88,17 +85,18 @@ const routes: RouteObject[] = [
                 ),
             },
             {
-<<<<<<< feat/mypage-view-publishing/#88
                 path: 'mypage/edit-profile',
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <EditProfilePage />
-=======
+                    </Suspense>
+                ),
+            },
+            {
                 path: 'accordion-test',
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <AccordionTestPage />
->>>>>>> develop
                     </Suspense>
                 ),
             },
