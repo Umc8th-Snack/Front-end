@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 import InputBox from '../../box/InputBox/InputBox';
 
@@ -27,7 +27,7 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
 
     const handleForgotPasswordClick = () => {
         onClose();
-        navigate('/forgot-password');
+        void navigate('/forgot-password');
     };
 
     const isFormValid = formData.email.trim() && formData.password.trim();
