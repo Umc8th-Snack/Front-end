@@ -40,7 +40,7 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
             </div>
 
             {/* 입력 필드 */}
-            <div className="mt-16 flex flex-col gap-2 px-12">
+            <div className="mt-5 flex flex-col gap-2 px-12">
                 <InputBox
                     label="이메일"
                     name="email"
@@ -74,7 +74,7 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
             </div>
 
             {/* 회원가입 버튼 */}
-            <div className="mt-8 flex px-12">
+            <div className="mt-6 flex px-12">
                 <button
                     onClick={handleSignupSubmit}
                     disabled={!isFormValid}
