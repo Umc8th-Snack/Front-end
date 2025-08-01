@@ -61,7 +61,7 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
             aria-label="Close modal"
         >
             <div
-                className="absolute h-[640px] w-[440px] rounded-[15px] bg-white shadow-xl"
+                className="relative h-[640px] w-[440px] rounded-[15px] bg-white shadow-xl"
                 onClick={(e) => e.stopPropagation()}
                 onKeyDown={(e) => e.stopPropagation()}
                 tabIndex={-1}
@@ -122,46 +122,41 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                             <p className="text-28px-medium mt-1 text-black">뉴스를 간식처럼,</p>
                         </div>
 
-                        {/* 이메일 로그인 폼 */}
-                        <div className="mt-18 px-12">
-                            {/* 입력 필드 */}
-                            <div className="flex flex-col gap-2">
-                                <InputBox
-                                    label="이메일"
-                                    name="email"
-                                    placeholder="이메일을 입력해주세요"
-                                    onChange={handleChange}
-                                    value={formData.email}
-                                />
-                                <InputBox
-                                    label="비밀번호"
-                                    name="password"
-                                    placeholder="비밀번호를 입력해주세요"
-                                    type="password"
-                                    onChange={handleChange}
-                                    value={formData.password}
-                                />
-                            </div>
+                        {/* 입력 필드 */}
+                        <div className="mt-18 flex flex-col gap-2 px-12">
+                            <InputBox
+                                label="이메일"
+                                name="email"
+                                placeholder="이메일을 입력해주세요"
+                                onChange={handleChange}
+                                value={formData.email}
+                            />
+                            <InputBox
+                                label="비밀번호"
+                                name="password"
+                                placeholder="비밀번호를 입력해주세요"
+                                type="password"
+                                onChange={handleChange}
+                                value={formData.password}
+                            />
+                        </div>
 
-                            {/* 로그인 버튼 */}
-                            <div className="flex">
-                                <button
-                                    onClick={handleLoginSubmit}
-                                    disabled={!isFormValid}
-                                    className={`text-20px-medium mt-8 h-[56px] w-full rounded-md py-3 text-white ${
-                                        isFormValid ? 'bg-main cursor-pointer' : 'bg-black-30 cursor-not-allowed'
-                                    }`}
-                                >
-                                    로그인
-                                </button>
-                            </div>
+                        {/* 비밀번호 찾기 */}
+                        <div className="text-18px text-black-30 absolute right-0 bottom-[60px] left-0 text-center">
+                            <button className="cursor-pointer hover:underline">비밀번호를 잊으셨나요?</button>
+                        </div>
 
-                            {/* 비밀번호 찾기 */}
-                            <div className="text-black-30 text-16px-medium mt-4 text-center">
-                                <button className="cursor-pointer text-gray-600 hover:underline">
-                                    비밀번호를 잊으셨나요?
-                                </button>
-                            </div>
+                        {/* 로그인 버튼 */}
+                        <div className="absolute right-0 bottom-[135px] left-0 flex px-12">
+                            <button
+                                onClick={handleLoginSubmit}
+                                disabled={!isFormValid}
+                                className={`text-20px-medium h-[56px] w-full rounded-md py-3 text-white ${
+                                    isFormValid ? 'bg-main cursor-pointer' : 'bg-black-30 cursor-not-allowed'
+                                }`}
+                            >
+                                로그인
+                            </button>
                         </div>
                     </>
                 )}
