@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import InputBox from '../../box/InputBox/InputBox';
+import ErrorMessage from '../../message/ErrorMessage';
 
 interface EmailSignupFormProps {
     onClose: () => void;
@@ -13,6 +14,16 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
         confirmPassword: '',
         nickname: '',
     });
+
+    // 비밀번호 유효성 검사 함수
+    const isPasswordValid = (password: string) => {
+        const hasLetter = /[a-zA-Z]/.test(password);
+        const hasNumber = /\d/.test(password);
+        const isLongEnough = password.length >= 8;
+        return hasLetter && hasNumber && isLongEnough;
+    };
+
+    const showPasswordError = formData.password.length > 0 && !isPasswordValid(formData.password);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -27,7 +38,7 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
 
     const isFormValid =
         formData.email.trim() &&
-        formData.password.trim() &&
+        isPasswordValid(formData.password) &&
         formData.confirmPassword.trim() &&
         formData.password === formData.confirmPassword &&
         formData.nickname.trim();
@@ -48,14 +59,24 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
                     onChange={handleChange}
                     value={formData.email}
                 />
-                <InputBox
-                    label="비밀번호"
-                    name="password"
-                    placeholder="비밀번호를 입력해주세요"
-                    type="password"
-                    onChange={handleChange}
-                    value={formData.password}
-                />
+                <div>
+                    <div className="flex items-center gap-2">
+                        <label htmlFor="password" className="text-18px-medium text-black">
+                            비밀번호
+                        </label>
+                        {showPasswordError && (
+                            <ErrorMessage message="비밀번호는 영문, 숫자 조합 8자 이상 입력해 주세요." />
+                        )}
+                    </div>
+                    <input
+                        name="password"
+                        placeholder="비밀번호를 입력해주세요"
+                        type="password"
+                        onChange={handleChange}
+                        value={formData.password}
+                        className="text-18px-medium hover:border-main focus:ring-main mt-2 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
+                    />
+                </div>
                 <InputBox
                     label="비밀번호 확인"
                     name="confirmPassword"

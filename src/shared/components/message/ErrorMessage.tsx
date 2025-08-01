@@ -9,9 +9,9 @@ interface ErrorMessageProps {
 
 const ErrorMessage = ({ message = 'E90004', className = '' }: ErrorMessageProps) => {
     return (
-        <div className={`flex items-center gap-2 ${className}`}>
+        <div className={`flex items-center gap-0.5 ${className}`}>
             <ErrorAlertIcon />
-            <span className="text-9px-medium text-danger">{message}</span>
+            <span className="text-danger text-[9px]">{message}</span>
         </div>
     );
 };
