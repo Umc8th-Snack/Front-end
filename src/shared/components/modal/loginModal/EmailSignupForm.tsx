@@ -69,6 +69,7 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
                         )}
                     </div>
                     <input
+                        id="password"
                         name="password"
                         placeholder="비밀번호를 입력해주세요"
                         type="password"
