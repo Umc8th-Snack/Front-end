@@ -13,7 +13,7 @@ const Profile = () => {
             <div className="flex items-center justify-between gap-92">
                 <p className="text-20px-medium text-black-30 mt-6">소개글을 작성해보세요!</p>
                 <Link to="/mypage/edit-profile">
-                    <button className="bg-main text-18px-medium mt-4 rounded-[8px] px-4 py-2 text-white hover:bg-blue-700">
+                    <button className="bg-main text-18px-medium mt-4 cursor-pointer rounded-[8px] px-4 py-2 text-white hover:bg-blue-700">
                         프로필 편집
                     </button>
                 </Link>
