@@ -5,6 +5,7 @@ import XIcon from '@/assets/XIcon.svg?react';
 import SnackIcon from '@/shared/assets/snack.svg?react';
 
 import EmailLoginForm from './EmailLoginForm';
+import EmailSignupForm from './EmailSignupForm';
 import SocialLoginButton from './SocialLoginButton';
 
 interface ModalProps {
@@ -12,17 +13,23 @@ interface ModalProps {
     onClose: () => void;
 }
 
+type ModalMode = 'social' | 'emailLogin' | 'emailSignup';
+
 const LoginModal = ({ isOpen, onClose }: ModalProps) => {
-    const [isEmailLoginMode, setIsEmailLoginMode] = useState(false);
+    const [modalMode, setModalMode] = useState<ModalMode>('social');
     if (!isOpen) return null;
 
     const handleEmailLoginClick = () => {
-        setIsEmailLoginMode(true);
+        setModalMode('emailLogin');
+    };
+
+    const handleEmailSignupClick = () => {
+        setModalMode('emailSignup');
     };
 
     const handleClose = () => {
         // 모달 닫을 때 상태 초기화
-        setIsEmailLoginMode(false);
+        setModalMode('social');
         onClose();
     };
 
@@ -57,7 +64,7 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                     <XIcon />
                 </button>
 
-                {!isEmailLoginMode ? (
+                {modalMode === 'social' && (
                     <>
                         <div className="mt-12 text-center">
                             <p className="text-36px-semibold text-black">스낵</p>
@@ -93,12 +100,19 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                         {/* 하단 회원가입 안내 */}
                         <div className="text-black-30 text-18px-medium mt-15 flex items-center justify-center gap-4">
                             <span>아직 회원이 아니신가요?</span>
-                            <button className="cursor-pointer text-black hover:underline">이메일로 회원가입</button>
+                            <button
+                                className="cursor-pointer text-black hover:underline"
+                                onClick={handleEmailSignupClick}
+                            >
+                                이메일로 회원가입
+                            </button>
                         </div>
                     </>
-                ) : (
-                    <EmailLoginForm onClose={handleClose} />
                 )}
+
+                {modalMode === 'emailLogin' && <EmailLoginForm onClose={handleClose} />}
+
+                {modalMode === 'emailSignup' && <EmailSignupForm onClose={handleClose} />}
             </div>
         </div>
     );
