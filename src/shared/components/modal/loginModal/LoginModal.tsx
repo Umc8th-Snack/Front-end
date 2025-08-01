@@ -125,7 +125,7 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                         {/* 이메일 로그인 폼 */}
                         <div className="mt-18 px-12">
                             {/* 입력 필드 */}
-                            <div className="flex flex-col gap-1 pb-2">
+                            <div className="flex flex-col gap-4 pb-2">
                                 <InputBox
                                     label="이메일"
                                     name="email"
