@@ -33,7 +33,7 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
             </div>
 
             {/* 입력 필드 */}
-            <div className="mt-18 flex flex-col gap-2 px-12">
+            <div className="mt-16 flex flex-col gap-2 px-12">
                 <InputBox
                     label="이메일"
                     name="email"
@@ -57,7 +57,7 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
             </div>
 
             {/* 로그인 버튼 */}
-            <div className="absolute right-0 bottom-[135px] left-0 flex px-12">
+            <div className="mt-8 flex px-12">
                 <button
                     onClick={handleLoginSubmit}
                     disabled={!isFormValid}
