@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { isPasswordValid, validateNickname } from '@/shared/utils/validation';
+
 import InputBox from '../../box/InputBox/InputBox';
 import ErrorMessage from '../../message/ErrorMessage';
 
@@ -17,44 +19,11 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
 
     const [nicknameError, setNicknameError] = useState<string>('');
 
-    // 비밀번호 유효성 검사 함수
-    const isPasswordValid = (password: string) => {
-        const hasLetter = /[a-zA-Z]/.test(password);
-        const hasNumber = /\d/.test(password);
-        const isLongEnough = password.length >= 8;
-        return hasLetter && hasNumber && isLongEnough;
-    };
-
     const showPasswordError = formData.password.length > 0 && !isPasswordValid(formData.password);
 
     // 비밀번호 확인 검사
     const showPasswordMismatchError =
         formData.confirmPassword.length > 0 && formData.password !== formData.confirmPassword;
-
-    // 닉네임 유효성 검사 함수
-    const validateNickname = (nickname: string) => {
-        const trimmed = nickname.trim();
-
-        if (trimmed.length === 0) {
-            return '';
-        }
-
-        if (trimmed.length < 2) {
-            return '닉네임은 2자 이상 12자 이내로 입력해 주세요.';
-        }
-
-        if (trimmed.length > 12) {
-            return '닉네임은 2자 이상 12자 이내로 입력해 주세요.';
-        }
-
-        // 한글, 영문, 숫자만 허용
-        const isValidFormat = /^[ㄱ-ㅣ가-힣a-zA-Z0-9]+$/.test(trimmed);
-        if (!isValidFormat) {
-            return '닉네임은 한글, 영문, 숫자로만 입력해 주세요.';
-        }
-
-        return '';
-    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -97,7 +66,7 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
             </div>
 
             {/* 입력 필드 */}
-            <div className="mt-5 flex flex-col gap-2 px-12">
+            <div className="mt-5 flex flex-col gap-4 px-12">
                 <InputBox
                     label="이메일"
                     name="email"
@@ -160,7 +129,7 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
             </div>
 
             {/* 회원가입 버튼 */}
-            <div className="mt-6 flex px-12">
+            <div className="mt-8 flex px-12">
                 <button
                     onClick={handleSignupSubmit}
                     disabled={!isFormValid}
