@@ -4,8 +4,13 @@ interface ArticleCardProps {
 }
 
 function ArticleCard({ title = 'article title', category = '기타' }: ArticleCardProps) {
+    const truncatedTitle = title.length > 28 ? title.slice(0, 28) + '...' : title;
+
     return (
-        <div className="relative flex w-[260px] flex-col items-center rounded-xl border border-gray-200 bg-white p-6">
+        <div
+            className="relative h-[210px] w-[255px]"
+            style={{ backgroundColor: '#0557E01A', borderRadius: '22px 8px 22px 8px' }}
+        >
             {/* 카테고리 로고 */}
             <div className="absolute top-[21px] left-[21px]">
                 <img
@@ -16,8 +21,8 @@ function ArticleCard({ title = 'article title', category = '기타' }: ArticleCa
             </div>
 
             {/* 기사 제목 */}
-            <div className="mt-[71px] w-full">
-                <div className="text-20px-medium mb-2 overflow-hidden text-ellipsis whitespace-nowrap">{title}</div>
+            <div className="absolute right-0 bottom-0 left-0 px-[33px] pb-[28px]">
+                <div className="text-20px-medium text-black">{truncatedTitle}</div>
             </div>
         </div>
     );
