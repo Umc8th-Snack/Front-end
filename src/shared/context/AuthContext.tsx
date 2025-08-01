@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { tokenUtils } from '@/shared/utils/auth';
 
@@ -42,16 +42,16 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         initializeAuth();
     }, []);
 
-    const login = (token: string, userData: User) => {
+    const login = useCallback((token: string, userData: User) => {
         tokenUtils.setAccessToken(token);
         setUser(userData);
-    };
+    }, []);
 
-    const logout = () => {
+    const logout = useCallback(() => {
         tokenUtils.removeAccessToken();
         setUser(null);
         // TODO: 로그아웃 API 호출 (refresh token 무효화)
-    };
+    }, []);
 
     const value = useMemo<AuthContextType>(
         () => ({
