@@ -6,6 +6,7 @@ import SnackIcon from '@/shared/assets/snack.svg?react';
 
 import EmailLoginForm from './EmailLoginForm';
 import EmailSignupForm from './EmailSignupForm';
+import SignupCompleteForm from './SignupCompleteForm';
 import SocialLoginButton from './SocialLoginButton';
 
 interface ModalProps {
@@ -13,7 +14,7 @@ interface ModalProps {
     onClose: () => void;
 }
 
-type ModalMode = 'social' | 'emailLogin' | 'emailSignup';
+type ModalMode = 'social' | 'emailLogin' | 'emailSignup' | 'signupComplete';
 
 const LoginModal = ({ isOpen, onClose }: ModalProps) => {
     const [modalMode, setModalMode] = useState<ModalMode>('social');
@@ -25,6 +26,10 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
 
     const handleEmailSignupClick = () => {
         setModalMode('emailSignup');
+    };
+
+    const handleSignupComplete = () => {
+        setModalMode('signupComplete');
     };
 
     const handleClose = () => {
@@ -112,7 +117,11 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
 
                 {modalMode === 'emailLogin' && <EmailLoginForm onClose={handleClose} />}
 
-                {modalMode === 'emailSignup' && <EmailSignupForm onClose={handleClose} />}
+                {modalMode === 'emailSignup' && (
+                    <EmailSignupForm onClose={handleClose} onSignupComplete={handleSignupComplete} />
+                )}
+
+                {modalMode === 'signupComplete' && <SignupCompleteForm onClose={handleClose} />}
             </div>
         </div>
     );

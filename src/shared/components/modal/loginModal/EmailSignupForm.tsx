@@ -7,9 +7,10 @@ import ErrorMessage from '../../message/ErrorMessage';
 
 interface EmailSignupFormProps {
     onClose: () => void;
+    onSignupComplete: () => void;
 }
 
-const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
+const EmailSignupForm = ({ onSignupComplete }: EmailSignupFormProps) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -47,7 +48,7 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
 
         // TODO: 실제 회원가입 API 호출
         console.log('회원가입 성공!');
-        onClose();
+        onSignupComplete();
     };
 
     const isFormValid =
