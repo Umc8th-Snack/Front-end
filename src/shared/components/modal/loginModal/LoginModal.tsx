@@ -54,7 +54,9 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
             aria-label="Close modal"
         >
             <div
-                className="relative h-[640px] w-[440px] rounded-[15px] bg-white shadow-xl"
+                className={`relative w-[440px] rounded-[15px] bg-white shadow-xl ${
+                    modalMode === 'signupComplete' ? 'h-[484px]' : 'h-[640px]'
+                }`}
                 onClick={(e) => e.stopPropagation()}
                 onKeyDown={(e) => e.stopPropagation()}
                 tabIndex={-1}

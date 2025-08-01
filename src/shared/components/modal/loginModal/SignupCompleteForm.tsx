@@ -21,7 +21,7 @@ const SignupCompleteForm = ({ onClose }: SignupCompleteFormProps) => {
             </div>
 
             {/* 확인 버튼 */}
-            <div className="mt-12 flex px-12">
+            <div className="mt-10 flex px-12">
                 <button
                     onClick={onClose}
                     className="text-20px-medium bg-main h-[56px] w-full cursor-pointer rounded-md py-3 text-white"
