@@ -30,29 +30,31 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleLoginSubmit = () => {
-        console.log('로그인 데이터:', formData);
-        // TODO: 실제 로그인 API 호출
+    const handleClose = () => {
+        // 모달 닫을 때 상태 초기화
+        setIsEmailLoginMode(false);
+        setFormData({ email: '', password: '' });
         onClose();
     };
 
-    const handleBackToSocial = () => {
-        setIsEmailLoginMode(false);
-        setFormData({ email: '', password: '' });
+    const handleLoginSubmit = () => {
+        console.log('로그인 데이터:', formData);
+        // TODO: 실제 로그인 API 호출
+        handleClose();
     };
 
     const isFormValid = formData.email.trim() && formData.password.trim();
 
     const handleOverlayKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Escape') {
-            onClose();
+            handleClose();
         }
     };
 
     return (
         <div
             className="bg-black-50 fixed inset-0 z-50 flex items-center justify-center"
-            onClick={onClose}
+            onClick={handleClose}
             onKeyDown={handleOverlayKeyDown}
             tabIndex={-1}
             role="button"
@@ -68,7 +70,7 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
             >
                 {/* 닫기 버튼 */}
                 <button
-                    onClick={onClose}
+                    onClick={handleClose}
                     className="absolute top-3 right-3 cursor-pointer text-gray-400 hover:text-gray-600"
                 >
                     <XIcon />
@@ -115,19 +117,13 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                     </>
                 ) : (
                     <>
+                        <div className="mt-12 text-center">
+                            <p className="text-36px-semibold text-black">스낵</p>
+                            <p className="text-28px-medium mt-1 text-black">뉴스를 간식처럼,</p>
+                        </div>
+
                         {/* 이메일 로그인 폼 */}
-                        <div className="p-12">
-                            {/* 뒤로 가기 버튼 */}
-                            <button
-                                onClick={handleBackToSocial}
-                                className="text-16px-medium mb-6 cursor-pointer text-gray-600 hover:text-gray-800"
-                            >
-                                ← 뒤로 가기
-                            </button>
-
-                            {/* 타이틀 */}
-                            <h2 className="text-28px-semibold pb-6 text-center">로그인</h2>
-
+                        <div className="mt-18 px-12">
                             {/* 입력 필드 */}
                             <div className="flex flex-col gap-1 pb-2">
                                 <InputBox
