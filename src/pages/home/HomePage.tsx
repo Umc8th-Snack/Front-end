@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import TodayGreetingBanner from '@/shared/components/banner/TodayGreetingBanner';
+import TodayGreetingBanner from '@/shared/components/banner/TodayGreetingBanner/TodayGreetingBanner/TodayGreetingBanner';
 import ArticleCard from '@/shared/components/card/ArticleCard';
 import OnboardingCard from '@/shared/components/card/OnboardingCard';
 import CategoryChips from '@/shared/components/chip/CategoryChips';
 
 const HomePage = () => {
-    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>(['정치']);
 
     const categories = ['정치', '경제', '사회', '국제', '스포츠', '연예', 'IT/과학'];
 

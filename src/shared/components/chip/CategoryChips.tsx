@@ -10,7 +10,7 @@ function Chip({ label, selected, onClick }: ChipProps) {
     return (
         <button
             className={`text-18px-medium h-[40px] w-[100px] cursor-pointer rounded-full ${
-                selected ? 'bg-main text-white' : 'border border-black bg-white text-black'
+                selected ? 'bg-main text-white' : 'border-[0.41px] border-black bg-white text-black'
             } transition hover:opacity-80`}
             onClick={onClick}
         >
