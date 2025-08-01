@@ -13,7 +13,7 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
     if (!isOpen) return null;
 
     return (
-        <div className="bg-black-50 fixed inset-0 flex items-center justify-center" onClick={onClose}>
+        <div className="bg-black-50 fixed inset-0 z-50 flex items-center justify-center" onClick={onClose}>
             <div
                 className="absolute h-[640px] w-[440px] rounded-[15px] bg-white shadow-xl"
                 onClick={(e) => e.stopPropagation()}
