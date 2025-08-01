@@ -35,7 +35,7 @@ const HomePage = () => {
             </div>
 
             {/* 카테고리 선택 */}
-            <div className="mx-auto mb-12 max-w-[1121px] px-4">
+            <div className="mx-auto mb-12 max-w-[1121px]">
                 <CategoryChips
                     categories={categories}
                     initialSelected={selectedCategories}
