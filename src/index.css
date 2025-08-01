@@ -24,6 +24,7 @@
     --color-main-70: oklch(from #0557e0 l c h / 0.7);
     --color-main-50: oklch(from #0557e0 l c h / 0.5);
     --color-main-30: oklch(from #0557e0 l c h / 0.3);
+    --color-main-10: oklch(from #0557e0 l c h / 0.1);
 
     /* Typography */
 
