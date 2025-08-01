@@ -25,6 +25,10 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
 
     const showPasswordError = formData.password.length > 0 && !isPasswordValid(formData.password);
 
+    // 비밀번호 확인 검사
+    const showPasswordMismatchError =
+        formData.confirmPassword.length > 0 && formData.password !== formData.confirmPassword;
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -78,14 +82,23 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
                         className="text-18px-medium hover:border-main focus:ring-main mt-2 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
                     />
                 </div>
-                <InputBox
-                    label="비밀번호 확인"
-                    name="confirmPassword"
-                    placeholder="비밀번호를 다시 입력해주세요"
-                    type="password"
-                    onChange={handleChange}
-                    value={formData.confirmPassword}
-                />
+                <div>
+                    <div className="flex items-center gap-2">
+                        <label htmlFor="confirmPassword" className="text-18px-medium text-black">
+                            비밀번호 확인
+                        </label>
+                        {showPasswordMismatchError && <ErrorMessage message="비밀번호가 일치하지 않습니다." />}
+                    </div>
+                    <input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="비밀번호를 다시 입력해주세요"
+                        type="password"
+                        onChange={handleChange}
+                        value={formData.confirmPassword}
+                        className="text-18px-medium hover:border-main focus:ring-main mt-2 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
+                    />
+                </div>
                 <InputBox
                     label="닉네임"
                     name="nickname"
