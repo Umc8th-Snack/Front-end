@@ -45,7 +45,7 @@ const HomePage = () => {
 
             {/* 기사 카드 그리드 */}
             <div className="mx-auto max-w-[1121px] px-4">
-                <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {articleData.map((article, index) => (
                         <ArticleCard key={index} title={article.title} imageUrl={article.imageUrl} />
                     ))}
