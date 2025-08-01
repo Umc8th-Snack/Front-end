@@ -14,6 +14,7 @@ const SearchPage = lazy(() => import('@/pages/search/SearchPage'));
 const PasswordChangePage = lazy(() => import('@/pages/password-change/PasswordChangePage'));
 const DeleteAccountPage = lazy(() => import('@/pages/delete-account/DeleteAccountPage'));
 const AccordionTestPage = lazy(() => import('@/pages/test/AccordionTestPage'));
+const ForgotPasswordPage = lazy(() => import('@/pages/forgot-password/ForgotPasswordPage'));
 
 const routes: RouteObject[] = [
     {
@@ -90,6 +91,14 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <AccordionTestPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'forgot-password',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <ForgotPasswordPage />
                     </Suspense>
                 ),
             },

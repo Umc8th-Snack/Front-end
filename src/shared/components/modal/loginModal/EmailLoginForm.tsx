@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import InputBox from '../../box/InputBox/InputBox';
 
@@ -7,6 +8,7 @@ interface EmailLoginFormProps {
 }
 
 const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -21,6 +23,11 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
         console.log('로그인 데이터:', formData);
         // TODO: 실제 로그인 API 호출
         onClose();
+    };
+
+    const handleForgotPasswordClick = () => {
+        onClose();
+        navigate('/forgot-password');
     };
 
     const isFormValid = formData.email.trim() && formData.password.trim();
@@ -53,7 +60,9 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
 
             {/* 비밀번호 찾기 */}
             <div className="text-black-30 absolute right-0 bottom-[60px] left-0 text-center text-[18px]">
-                <button className="cursor-pointer hover:underline">비밀번호를 잊으셨나요?</button>
+                <button className="cursor-pointer hover:underline" onClick={handleForgotPasswordClick}>
+                    비밀번호를 잊으셨나요?
+                </button>
             </div>
 
             {/* 로그인 버튼 */}
