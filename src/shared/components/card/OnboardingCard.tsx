@@ -1,15 +1,24 @@
 import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback, useEffect, useState } from 'react';
 
+import OnBoardingCard0 from '@/assets/OnBoardingCard0.svg?react';
+import OnBoardingCard1 from '@/assets/OnBoardingCard1.svg?react';
+import OnBoardingCard2 from '@/assets/OnBoardingCard2.svg?react';
+import OnBoardingCard3 from '@/assets/OnBoardingCard3.svg?react';
+import OnBoardingCard4 from '@/assets/OnBoardingCard4.svg?react';
+import OnBoardingCard5 from '@/assets/OnBoardingCard5.svg?react';
 import LeftActiveArrowIcon from '@/shared/assets/left-arrow-active.svg?react';
 import LeftInactiveArrowIcon from '@/shared/assets/left-arrow-inactive.svg?react';
 import RightActiveArrowIcon from '@/shared/assets/right-arrow-active.svg?react';
 import RightInactiveArrowIcon from '@/shared/assets/right-arrow-inactive.svg?react';
 
 const cards = [
-    { id: '카드 1', description: 'text' },
-    { id: '카드 2', description: 'text' },
-    { id: '카드 3', description: 'text' },
+    { id: 'card0', icon: OnBoardingCard0, title: 'OnBoarding Card 0' },
+    { id: 'card1', icon: OnBoardingCard1, title: 'OnBoarding Card 1' },
+    { id: 'card2', icon: OnBoardingCard2, title: 'OnBoarding Card 2' },
+    { id: 'card3', icon: OnBoardingCard3, title: 'OnBoarding Card 3' },
+    { id: 'card4', icon: OnBoardingCard4, title: 'OnBoarding Card 4' },
+    { id: 'card5', icon: OnBoardingCard5, title: 'OnBoarding Card 5' },
 ];
 
 export default function OnboardingCard() {
@@ -43,6 +52,7 @@ export default function OnboardingCard() {
                 >
                     {isStart ? <LeftInactiveArrowIcon /> : <LeftActiveArrowIcon />}
                 </button>
+
                 <button
                     onClick={scrollNext}
                     disabled={isEnd}
@@ -54,15 +64,17 @@ export default function OnboardingCard() {
                 {/* Embla 캐러셀 */}
                 <div className="overflow-hidden" ref={emblaRef}>
                     <div className="scroll-snap-x scroll-snap-mandatory flex gap-7">
-                        {cards.map((card) => (
-                            <div
-                                key={card.id}
-                                className="scroll-snap-center flex h-[280px] min-w-[50%] flex-shrink-0 flex-col justify-center rounded-[24px] border border-gray-400 bg-white p-10"
-                            >
-                                <h3 className="mb-2 text-xl font-bold">{card.id}</h3>
-                                <p className="text-lg text-gray-700">{card.description}</p>
-                            </div>
-                        ))}
+                        {cards.map((card) => {
+                            const IconComponent = card.icon;
+                            return (
+                                <div
+                                    key={card.id}
+                                    className="scroll-snap-center flex h-[280px] flex-shrink-0 flex-col rounded-[24px]"
+                                >
+                                    <IconComponent className="h-full w-full object-contain" />
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

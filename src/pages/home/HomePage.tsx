@@ -27,7 +27,6 @@ const HomePage = () => {
 
             {/* 카테고리 선택 */}
             <div className="mx-auto max-w-[1121px] px-4">
-                <h2 className="text-24px-semibold mb-4 text-black">관심 카테고리를 선택해주세요</h2>
                 <CategoryChips
                     categories={categories}
                     initialSelected={selectedCategories}
