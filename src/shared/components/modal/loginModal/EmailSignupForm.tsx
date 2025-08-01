@@ -15,6 +15,8 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
         nickname: '',
     });
 
+    const [nicknameError, setNicknameError] = useState<string>('');
+
     // 비밀번호 유효성 검사 함수
     const isPasswordValid = (password: string) => {
         const hasLetter = /[a-zA-Z]/.test(password);
@@ -29,14 +31,53 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
     const showPasswordMismatchError =
         formData.confirmPassword.length > 0 && formData.password !== formData.confirmPassword;
 
+    // 닉네임 유효성 검사 함수
+    const validateNickname = (nickname: string) => {
+        const trimmed = nickname.trim();
+
+        if (trimmed.length === 0) {
+            return '';
+        }
+
+        if (trimmed.length < 2) {
+            return '닉네임은 2자 이상 12자 이내로 입력해 주세요.';
+        }
+
+        if (trimmed.length > 12) {
+            return '닉네임은 2자 이상 12자 이내로 입력해 주세요.';
+        }
+
+        // 한글, 영문, 숫자만 허용
+        const isValidFormat = /^[ㄱ-ㅣ가-힣a-zA-Z0-9]+$/.test(trimmed);
+        if (!isValidFormat) {
+            return '닉네임은 한글, 영문, 숫자로만 입력해 주세요.';
+        }
+
+        return '';
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+
+        // 닉네임 실시간 유효성 검사
+        if (name === 'nickname') {
+            const error = validateNickname(value);
+            setNicknameError(error);
+        }
     };
 
     const handleSignupSubmit = () => {
         console.log('회원가입 데이터:', formData);
+
+        // 닉네임 중복 검사 (더미 데이터 - 실제로는 백엔드 API 호출)
+        if (formData.nickname.trim() === '스내커') {
+            setNicknameError('이미 사용중인 닉네임입니다.');
+            return;
+        }
+
         // TODO: 실제 회원가입 API 호출
+        console.log('회원가입 성공!');
         onClose();
     };
 
@@ -45,7 +86,8 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
         isPasswordValid(formData.password) &&
         formData.confirmPassword.trim() &&
         formData.password === formData.confirmPassword &&
-        formData.nickname.trim();
+        formData.nickname.trim() &&
+        nicknameError === '';
 
     return (
         <>
@@ -99,13 +141,22 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
                         className="text-18px-medium hover:border-main focus:ring-main mt-2 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
                     />
                 </div>
-                <InputBox
-                    label="닉네임"
-                    name="nickname"
-                    placeholder="닉네임을 입력해주세요"
-                    onChange={handleChange}
-                    value={formData.nickname}
-                />
+                <div>
+                    <div className="flex items-center gap-2">
+                        <label htmlFor="nickname" className="text-18px-medium text-black">
+                            닉네임
+                        </label>
+                        {nicknameError && <ErrorMessage message={nicknameError} />}
+                    </div>
+                    <input
+                        id="nickname"
+                        name="nickname"
+                        placeholder="닉네임을 입력해주세요"
+                        onChange={handleChange}
+                        value={formData.nickname}
+                        className="text-18px-medium hover:border-main focus:ring-main mt-2 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
+                    />
+                </div>
             </div>
 
             {/* 회원가입 버튼 */}
