@@ -25,12 +25,12 @@ const HomePage = () => {
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             {/* 인사말 배너 */}
-            <div className="mb-8">
+            <div className="mb-[51px]">
                 <TodayGreetingBanner />
             </div>
 
             {/* 온보딩 카드 */}
-            <div className="mb-8 flex justify-center">
+            <div className="mb-[67px] flex justify-center">
                 <OnboardingCard />
             </div>
 

@@ -41,7 +41,7 @@ export default function OnboardingCard() {
     }, [embla]);
 
     return (
-        <section className="flex h-[322px] max-w-[1135px] flex-col items-center space-y-10 px-2">
+        <section className="flex h-[322px] max-w-[1135px] flex-col items-center space-y-8 px-2">
             {/* 캐러셀 박스 */}
             <div className="relative w-full">
                 {/* 좌우 버튼 */}
