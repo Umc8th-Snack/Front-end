@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
 import queryClient from './shared/apis/queryClient';
-import { AuthProvider } from './shared/context/AuthContext';
+import AuthProvider from './shared/context/AuthContext';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
