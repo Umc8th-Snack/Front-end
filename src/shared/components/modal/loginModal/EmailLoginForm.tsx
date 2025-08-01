@@ -52,7 +52,7 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
             </div>
 
             {/* 비밀번호 찾기 */}
-            <div className="text-18px-medium text-black-30 absolute right-0 bottom-[60px] left-0 text-center">
+            <div className="text-black-30 absolute right-0 bottom-[60px] left-0 text-center text-[18px]">
                 <button className="cursor-pointer hover:underline">비밀번호를 잊으셨나요?</button>
             </div>
 

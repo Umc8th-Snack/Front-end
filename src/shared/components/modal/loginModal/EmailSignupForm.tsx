@@ -90,7 +90,7 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
                         type="password"
                         onChange={handleChange}
                         value={formData.password}
-                        className="text-18px-medium hover:border-main focus:ring-main mt-2 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
+                        className="text-18px-medium hover:border-main focus:ring-main mt-1 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
                     />
                 </div>
                 <div>
@@ -107,7 +107,7 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
                         type="password"
                         onChange={handleChange}
                         value={formData.confirmPassword}
-                        className="text-18px-medium hover:border-main focus:ring-main mt-2 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
+                        className="text-18px-medium hover:border-main focus:ring-main mt-1 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
                     />
                 </div>
                 <div>
@@ -123,7 +123,7 @@ const EmailSignupForm = ({ onClose }: EmailSignupFormProps) => {
                         placeholder="닉네임을 입력해주세요"
                         onChange={handleChange}
                         value={formData.nickname}
-                        className="text-18px-medium hover:border-main focus:ring-main mt-2 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
+                        className="text-18px-medium hover:border-main focus:ring-main mt-1 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
                     />
                 </div>
             </div>

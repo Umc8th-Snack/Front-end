@@ -6,7 +6,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const InputBox = ({ label, className, ...props }: InputProps) => {
     return (
-        <div className="my-1 flex w-full flex-col gap-2">
+        <div className="my-1 flex w-full flex-col gap-1">
             {label && <label className="text-18px-medium text-black">{label}</label>}
             <input
                 {...props}
