@@ -22,7 +22,7 @@ const cards = [
 ];
 
 export default function OnboardingCard() {
-    const [emblaRef, embla] = useEmblaCarousel({ loop: false, align: 'center' });
+    const [emblaRef, embla] = useEmblaCarousel({ loop: false, align: 'start' });
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
@@ -41,7 +41,7 @@ export default function OnboardingCard() {
     }, [embla]);
 
     return (
-        <section className="flex h-[322px] w-[1200px] flex-col items-center space-y-10 px-2">
+        <section className="flex h-[322px] max-w-[1135px] flex-col items-center space-y-10 px-2">
             {/* 캐러셀 박스 */}
             <div className="relative w-full">
                 {/* 좌우 버튼 */}
