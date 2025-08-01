@@ -8,13 +8,16 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
 import queryClient from './shared/apis/queryClient';
+import { AuthProvider } from './shared/context/AuthContext';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
+            <AuthProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </AuthProvider>
             {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
         </QueryClientProvider>
     </StrictMode>

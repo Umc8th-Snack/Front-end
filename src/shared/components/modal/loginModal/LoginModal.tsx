@@ -1,8 +1,8 @@
 import React from 'react';
 
 import GoogleIcon from '@/assets/GoogleIcon.svg?react';
-import SnackIcon from '@/assets/snack.svg?react';
 import XIcon from '@/assets/XIcon.svg?react';
+import SnackIcon from '@/shared/assets/snack.svg?react';
 
 import SocialLoginButton from './SocialLoginButton';
 
