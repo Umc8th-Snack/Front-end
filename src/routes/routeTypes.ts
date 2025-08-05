@@ -6,6 +6,7 @@ export const ROUTES = {
     SEARCH: '/search',
     PASSWORD_CHANGE: '/password-change',
     DELETE_ACCOUNT: '/delete-account',
+    EDIT_PROFILE: '/mypage/edit-profile',
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
