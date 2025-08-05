@@ -6,7 +6,7 @@ const SummarizedNewsContainer = () => {
     const newsContent =
         '간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 ';
     return (
-        <div className="border-main-30 relative top-[291px] left-[120px] flex w-[690px] flex-col rounded-[30px] border-[3px] bg-white px-[30px] pt-[30px] pb-[28px]">
+        <div className="border-main-30 w-[690px] rounded-[30px] border-[3px] bg-white px-[30px] pt-[30px] pb-[28px]">
             <div className="flex justify-between">
                 <div className="flex space-x-[8px]">
                     <RectangleIcon />
