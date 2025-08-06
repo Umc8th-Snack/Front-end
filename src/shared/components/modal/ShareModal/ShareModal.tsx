@@ -2,8 +2,9 @@ import { useRef, useState } from 'react';
 
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
 import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
-import NaverIcon from '@/shared/assets/icons/logo-naver-mail.svg?react';
+import NaverMailIcon from '@/shared/assets/icons/logo-naver-mail.svg?react';
 import TwitterIcon from '@/shared/assets/icons/logo-x.svg?react';
+import { handleNaverMailShare } from '@/shared/utils/gmailShare';
 import { handleKakaoShare } from '@/shared/utils/kakaoShare';
 import { handleTwitterShare } from '@/shared/utils/twitterShare';
 
@@ -80,11 +81,14 @@ function ShareModal({ onClose }: { onClose: () => void }) {
                     />
 
                     <CircleShareButton
-                        icon={<NaverIcon width={60} height={60} />}
+                        icon={<NaverMailIcon width={60} height={60} />}
                         label="네이버 메일"
                         filled={false}
                         borderColor="border-naver-green"
                         textColor="text-black-70"
+                        onClick={() => {
+                            handleNaverMailShare(shareUrl, title, description);
+                        }}
                     />
                 </div>
 
