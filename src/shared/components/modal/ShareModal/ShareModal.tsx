@@ -4,6 +4,7 @@ import XIcon from '@/shared/assets/icons/close-x.svg?react';
 import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
 import NaverIcon from '@/shared/assets/icons/logo-naver-mail.svg?react';
 import TwitterIcon from '@/shared/assets/icons/logo-x.svg?react';
+import { handleKakaoShare } from '@/shared/utils/kakaoShare';
 
 import CircleShareButton from './CircleShareButton';
 import CopyLinkBox from './CopyLinkBox';
@@ -14,6 +15,11 @@ import ShareToast from './ShareToast';
 function ShareModal({ onClose }: { onClose: () => void }) {
     const modalRef = useRef<HTMLDivElement>(null);
     const [showToast, setShowToast] = useState(false);
+
+    const shareUrl = 'https://snacknews.site/article/123'; // TODO: 임의로 설정, 백에서 받아 온 링크로 변경
+    const title = '스낵 공유 테스트 제목';
+    const description = '스낵 공유 테스트 description입니다.';
+    const image = 'https://picsum.photos/200'; // TODO: 스낵 로고로 변경
 
     const handleCopy = async () => {
         try {
@@ -58,6 +64,9 @@ function ShareModal({ onClose }: { onClose: () => void }) {
                         label="카카오톡"
                         bgColor="bg-kakao-yellow"
                         textColor="text-black-70"
+                        onClick={() => {
+                            void handleKakaoShare(shareUrl, title, description, image);
+                        }}
                     />
 
                     <CircleShareButton icon={<TwitterIcon width={40} height={41} />} label="X" bgColor="bg-black" />
