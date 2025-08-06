@@ -5,6 +5,7 @@ import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
 import NaverIcon from '@/shared/assets/icons/logo-naver-mail.svg?react';
 import TwitterIcon from '@/shared/assets/icons/logo-x.svg?react';
 import { handleKakaoShare } from '@/shared/utils/kakaoShare';
+import { handleTwitterShare } from '@/shared/utils/twitterShare';
 
 import CircleShareButton from './CircleShareButton';
 import CopyLinkBox from './CopyLinkBox';
@@ -69,7 +70,14 @@ function ShareModal({ onClose }: { onClose: () => void }) {
                         }}
                     />
 
-                    <CircleShareButton icon={<TwitterIcon width={40} height={41} />} label="X" bgColor="bg-black" />
+                    <CircleShareButton
+                        icon={<TwitterIcon width={40} height={41} />}
+                        label="X"
+                        bgColor="bg-black"
+                        onClick={() => {
+                            void handleTwitterShare(shareUrl, `${title} - 스낵에서 읽어보세요!`);
+                        }}
+                    />
 
                     <CircleShareButton
                         icon={<NaverIcon width={60} height={60} />}
@@ -82,6 +90,7 @@ function ShareModal({ onClose }: { onClose: () => void }) {
 
                 {/* 링크 복사 박스 */}
                 <div className="mb-[20px] flex w-full max-w-[456px] flex-col items-center gap-[20px]">
+                    {/* TODO: 실제 링크로 변경 */}
                     <CopyLinkBox onCopy={() => void handleCopy()} link="https://snack.news/article/123" />
                 </div>
 
