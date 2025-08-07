@@ -1,8 +1,17 @@
-export type Memo = {
-    id: number;
-    date: string;
+export interface Memo {
+    memoId: number;
     content: string;
-};
+    createdAt: string;
+    articleUrl: string;
+}
+
+export interface MemoListResponse {
+    memos: Memo[];
+    page: number;
+    size: number;
+    totalPages: number;
+    totalElements: number;
+}
 
 export type Scrap = {
     id: number;
