@@ -2,8 +2,8 @@ import { useRef, useState } from 'react';
 
 import { createShareLink } from '@/shared/apis/shareApi';
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
+import GmailIcon from '@/shared/assets/icons/logo-gmail.svg?react';
 import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
-import NaverMailIcon from '@/shared/assets/icons/logo-naver-mail.svg?react';
 import TwitterIcon from '@/shared/assets/icons/logo-x.svg?react';
 import { handleGmailShare } from '@/shared/utils/gmailShare';
 import { handleKakaoShare } from '@/shared/utils/kakaoShare';
@@ -93,10 +93,10 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
                         }
                     />
                     <CircleShareButton
-                        icon={<NaverMailIcon width={60} height={60} />}
-                        label="네이버 메일"
+                        icon={<GmailIcon width={60} height={60} />}
+                        label="Gmail"
                         filled={false}
-                        borderColor="border-naver-green"
+                        borderColor="border-black-50"
                         textColor="text-black-70"
                         onClick={() =>
                             void (async () => {
