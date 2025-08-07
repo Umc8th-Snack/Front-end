@@ -2,9 +2,12 @@ import BookMarkIcon from '@/shared/assets/Bookmark.svg?react';
 import RectangleIcon from '@/shared/assets/Rectangle105.svg?react';
 import ShareIcon from '@/shared/assets/Share.svg?react';
 
-const SummarizedNewsContainer = () => {
-    const newsContent =
-        '간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 간추린뉴스 내용 ';
+interface SummarizedNewsContainerProps {
+    summary: string;
+}
+
+const SummarizedNewsContainer = ({ summary }: SummarizedNewsContainerProps) => {
+    const newsContent = `${summary}`;
     return (
         <div className="border-main-30 w-[690px] rounded-[30px] border-[3px] bg-white px-[30px] pt-[30px] pb-[28px]">
             <div className="flex justify-between">
