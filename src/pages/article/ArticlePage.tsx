@@ -8,7 +8,6 @@ import AccordionTestPage from '@/pages/test/AccordionTestPage';
 import ChainIcon from '@/shared/assets/icons/chain-icon.svg?react';
 import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
 import FieldChips from '@/shared/components/chip/FieldChips';
-import { DummyShareModal } from '@/shared/components/modal/ShareModal/ShareModal';
 
 const ArticlePage = () => {
     const { articleId } = useParams<{ articleId: string }>();
@@ -76,14 +75,18 @@ const ArticlePage = () => {
 
                 {article && (
                     <div className="flex justify-center pt-4">
-                        <SummarizedNewsContainer summary={article.summary} />
+                        <SummarizedNewsContainer
+                            summary={article.summary}
+                            articleId={article.articleId}
+                            title={article.title}
+                            image={article.imageUrl ?? ''}
+                        />
                     </div>
                 )}
                 <div className="flex justify-center pt-4">
                     <AccordionTestPage />
                 </div>
             </div>
-            <DummyShareModal />
         </div>
     );
 };
