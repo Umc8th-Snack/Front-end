@@ -9,3 +9,11 @@ export type Scrap = {
     title: string;
     summary: string;
 };
+
+export interface UserProfile {
+    userId: number;
+    email: string;
+    nickname: string;
+    profileUrl: string;
+    introduction: string;
+}
