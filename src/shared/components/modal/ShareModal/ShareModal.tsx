@@ -37,7 +37,7 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
 
     const handleCopyLink = async () => {
         await navigator.clipboard.writeText(sharedUrl);
-        alert('공유 링크가 복사되었습니다!');
+        setShowToast(true);
     };
 
     return (
@@ -90,9 +90,8 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
                 <div className="mb-[20px] flex w-full max-w-[456px] flex-col items-center gap-[20px]">
                     <CopyLinkBox onCopy={() => void handleCopyLink()} link={sharedUrl || '링크 생성 중...'} />
                 </div>
-
-                {showToast && <ShareToast message="링크가 복사되었습니다." onDone={() => setShowToast(false)} />}
             </div>
+            {showToast && <ShareToast message="링크가 복사되었습니다." onDone={() => setShowToast(false)} />}s
         </div>
     );
 };
