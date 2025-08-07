@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { createShareLink } from '@/shared/apis/shareApi';
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
@@ -26,24 +26,18 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
     const [sharedUrl, setSharedUrl] = useState<string>('');
     const [showToast, setShowToast] = useState(false);
 
-    const fetchShareUrl = async () => {
-        try {
+    useEffect(() => {
+        const fetchShareUrl = async () => {
             const url = await createShareLink(articleId);
             setSharedUrl(url);
-            return url;
-        } catch (error) {
-            console.error('공유 링크 생성 실패:', error);
-            alert('링크 생성에 실패했습니다.');
-            return '';
-        }
-    };
+        };
+
+        void fetchShareUrl();
+    }, [articleId]);
 
     const handleCopyLink = async () => {
-        const url = sharedUrl || (await fetchShareUrl());
-        if (url) {
-            await navigator.clipboard.writeText(url);
-            setShowToast(true);
-        }
+        await navigator.clipboard.writeText(sharedUrl);
+        alert('공유 링크가 복사되었습니다!');
     };
 
     return (
@@ -74,23 +68,13 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
                         label="카카오톡"
                         bgColor="bg-kakao-yellow"
                         textColor="text-black-70"
-                        onClick={() =>
-                            void (async () => {
-                                const url = sharedUrl || (await fetchShareUrl());
-                                if (url) void handleKakaoShare(url, title, description, image);
-                            })()
-                        }
+                        onClick={() => void handleKakaoShare(sharedUrl, title, description, image)}
                     />
                     <CircleShareButton
                         icon={<TwitterIcon width={40} height={41} />}
                         label="X"
                         bgColor="bg-black"
-                        onClick={() =>
-                            void (async () => {
-                                const url = sharedUrl || (await fetchShareUrl());
-                                if (url) void handleTwitterShare(url, title);
-                            })()
-                        }
+                        onClick={() => void handleTwitterShare(sharedUrl, title)}
                     />
                     <CircleShareButton
                         icon={<GmailIcon width={60} height={60} />}
@@ -98,12 +82,7 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
                         filled={false}
                         borderColor="border-black-50"
                         textColor="text-black-70"
-                        onClick={() =>
-                            void (async () => {
-                                const url = sharedUrl || (await fetchShareUrl());
-                                if (url) void handleGmailShare(url, title, description);
-                            })()
-                        }
+                        onClick={() => void handleGmailShare(sharedUrl, title, description)}
                     />
                 </div>
 
