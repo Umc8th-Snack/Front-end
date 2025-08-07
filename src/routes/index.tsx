@@ -32,7 +32,7 @@ const routes: RouteObject[] = [
             },
 
             {
-                path: 'article',
+                path: 'articles/:articleId',
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <ArticlePage />
