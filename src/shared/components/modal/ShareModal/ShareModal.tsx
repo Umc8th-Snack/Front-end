@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
 
+import { createShareLink } from '@/shared/apis/shareApi';
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
 import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
 import NaverMailIcon from '@/shared/assets/icons/logo-naver-mail.svg?react';
 import TwitterIcon from '@/shared/assets/icons/logo-x.svg?react';
-import { handleNaverMailShare } from '@/shared/utils/gmailShare';
+import { handleGmailShare } from '@/shared/utils/gmailShare';
 import { handleKakaoShare } from '@/shared/utils/kakaoShare';
 import { handleTwitterShare } from '@/shared/utils/twitterShare';
 
@@ -12,34 +13,44 @@ import CircleShareButton from './CircleShareButton';
 import CopyLinkBox from './CopyLinkBox';
 import ShareToast from './ShareToast';
 
-// TODO: 리펙토링 필요
-// 현재는 모달 내부에서 직접 닫기 버튼을 구현하고 있지만, 별도의 컴포넌트로 분리하는 것이 좋을 것 같습니다.
-function ShareModal({ onClose }: { onClose: () => void }) {
+interface ShareModalProps {
+    articleId: number;
+    title: string;
+    description: string;
+    image: string;
+    onClose: () => void;
+}
+
+const ShareModal = ({ articleId, title, description, image, onClose }: ShareModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
+    const [sharedUrl, setSharedUrl] = useState<string>('');
     const [showToast, setShowToast] = useState(false);
 
-    const shareUrl = 'https://snacknews.site/article/123'; // TODO: 임의로 설정, 백에서 받아 온 링크로 변경
-    const title = '스낵 공유 테스트 제목';
-    const description = '스낵 공유 테스트 description입니다.';
-    const image = 'https://picsum.photos/200'; // TODO: 스낵 로고로 변경
-
-    const handleCopy = async () => {
+    const fetchShareUrl = async () => {
         try {
-            await navigator.clipboard.writeText('https://snack.news/article/123');
+            const url = await createShareLink(articleId);
+            setSharedUrl(url);
+            return url;
+        } catch (error) {
+            console.error('공유 링크 생성 실패:', error);
+            alert('링크 생성에 실패했습니다.');
+            return '';
+        }
+    };
+
+    const handleCopyLink = async () => {
+        const url = sharedUrl || (await fetchShareUrl());
+        if (url) {
+            await navigator.clipboard.writeText(url);
             setShowToast(true);
-        } catch (err) {
-            console.error('복사 실패:', err);
         }
     };
 
     return (
         <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-10"
-            role="presentation"
             onClick={(e) => {
-                if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-                    onClose();
-                }
+                if (modalRef.current && !modalRef.current.contains(e.target as Node)) onClose();
             }}
         >
             <div
@@ -54,66 +65,57 @@ function ShareModal({ onClose }: { onClose: () => void }) {
                     <XIcon />
                 </button>
 
-                {/* 타이틀 */}
-                <div className="text-36px-semibold mt-[24px] mb-[36px] text-center leading-[54px] text-black">
-                    공유하기
-                </div>
+                <div className="text-36px-semibold mt-[24px] mb-[36px] text-center">공유하기</div>
 
-                {/* 공유 아이콘 그룹 */}
+                {/* 공유 아이콘 */}
                 <div className="mb-[20px] flex w-[401px] justify-between">
                     <CircleShareButton
                         icon={<KakaoIcon width={44} height={44} />}
                         label="카카오톡"
                         bgColor="bg-kakao-yellow"
                         textColor="text-black-70"
-                        onClick={() => {
-                            void handleKakaoShare(shareUrl, title, description, image);
-                        }}
+                        onClick={() =>
+                            void (async () => {
+                                const url = sharedUrl || (await fetchShareUrl());
+                                if (url) void handleKakaoShare(url, title, description, image);
+                            })()
+                        }
                     />
-
                     <CircleShareButton
                         icon={<TwitterIcon width={40} height={41} />}
                         label="X"
                         bgColor="bg-black"
-                        onClick={() => {
-                            void handleTwitterShare(shareUrl, `${title} - 스낵에서 읽어보세요!`);
-                        }}
+                        onClick={() =>
+                            void (async () => {
+                                const url = sharedUrl || (await fetchShareUrl());
+                                if (url) void handleTwitterShare(url, title);
+                            })()
+                        }
                     />
-
                     <CircleShareButton
                         icon={<NaverMailIcon width={60} height={60} />}
                         label="네이버 메일"
                         filled={false}
                         borderColor="border-naver-green"
                         textColor="text-black-70"
-                        onClick={() => {
-                            handleNaverMailShare(shareUrl, title, description);
-                        }}
+                        onClick={() =>
+                            void (async () => {
+                                const url = sharedUrl || (await fetchShareUrl());
+                                if (url) void handleGmailShare(url, title, description);
+                            })()
+                        }
                     />
                 </div>
 
-                {/* 링크 복사 박스 */}
+                {/* 링크 복사 */}
                 <div className="mb-[20px] flex w-full max-w-[456px] flex-col items-center gap-[20px]">
-                    {/* TODO: 실제 링크로 변경 */}
-                    <CopyLinkBox onCopy={() => void handleCopy()} link="https://snack.news/article/123" />
+                    <CopyLinkBox onCopy={() => void handleCopyLink()} link={sharedUrl || '링크 생성 중...'} />
                 </div>
 
-                {/* 토스트 */}
                 {showToast && <ShareToast message="링크가 복사되었습니다." onDone={() => setShowToast(false)} />}
             </div>
         </div>
     );
-}
+};
 
 export default ShareModal;
-
-// TODO: 테스트용 더미 컴포넌트, 실제 사용 시 삭제
-export const DummyShareModal = () => {
-    const [isOpen, setIsOpen] = useState(true);
-
-    const handleClose = () => setIsOpen(false);
-
-    if (!isOpen) return null;
-
-    return <ShareModal onClose={handleClose} />;
-};

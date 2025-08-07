@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axiosInstance from './axios';
 
 export const createShareLink = async (articleId: number) => {
-    const response = await axios.post(`/api/articles/${articleId}/share`);
+    const response = await axiosInstance.post(`/api/articles/${articleId}/share`);
     return response.data.result.sharedUrl;
 };
