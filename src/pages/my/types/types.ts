@@ -10,6 +10,7 @@ export type Scrap = {
     summary: string;
 };
 
+//마이페이지 정보 조회
 export interface UserProfile {
     userId: number;
     email: string;
