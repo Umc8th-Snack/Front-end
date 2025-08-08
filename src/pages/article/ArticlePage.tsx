@@ -39,7 +39,7 @@ const ArticlePage = () => {
     return (
         <div className="w-[714px] pl-6">
             <div className="mx-auto flex max-w-[714px] min-w-2xl flex-col gap-4 px-6 py-6">
-                {/* 첫 번째 줄: FieldChips + 원문 링크 */}
+                {/*FieldChips + 원문 링크 */}
                 <div className="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
                     <FieldChips label={article.category} />
                     <div className="flex items-center gap-1">
@@ -58,10 +58,10 @@ const ArticlePage = () => {
                     </div>
                 </div>
 
-                {/* 두 번째 줄: 기사 제목 + 메모장 토글 */}
+                {/* 기사 제목 + 메모장 토글 */}
                 {article && (
                     <div className="grid w-full grid-cols-[1fr_auto] items-end gap-4">
-                        {/* 제목 */}
+                        {/* 기사 제목 */}
                         <h1 className="text-36px-semibold leading-tight break-words">{article.title}</h1>
 
                         {/* 메모장 토글 */}
