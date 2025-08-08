@@ -5,6 +5,7 @@ import { getArticleDetail } from '@/pages/article/apis/articleApi';
 import SummarizedNewsContainer from '@/pages/article/components/SummarizedNewsContainer/SummarizedNewsContainer';
 import type { ArticleDetail } from '@/pages/article/types/article';
 import AccordionTestPage from '@/pages/test/AccordionTestPage';
+import LoadingFallback from '@/routes/LoadingFallback';
 import ChainIcon from '@/shared/assets/icons/chain-icon.svg?react';
 import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
 import FieldChips from '@/shared/components/chip/FieldChips';
@@ -32,7 +33,7 @@ const ArticlePage = () => {
     };
 
     if (!article) {
-        return <div>로딩 중...</div>; // 로딩 화면
+        return <LoadingFallback />;
     }
 
     return (
@@ -83,9 +84,7 @@ const ArticlePage = () => {
                         />
                     </div>
                 )}
-                <div className="flex justify-center pt-4">
-                    <AccordionTestPage />
-                </div>
+                <AccordionTestPage />
             </div>
         </div>
     );
