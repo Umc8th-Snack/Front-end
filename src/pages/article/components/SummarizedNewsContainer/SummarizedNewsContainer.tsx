@@ -1,11 +1,10 @@
 import { useState } from 'react';
 
-import BookMarkIcon from '@/shared/assets/Bookmark.svg?react';
 import RectangleIcon from '@/shared/assets/Rectangle105.svg?react';
 import ShareIcon from '@/shared/assets/Share.svg?react';
 import ShareModal from '@/shared/components/modal/ShareModal/ShareModal';
 
-import { addScrap } from '../../apis/scrapApi';
+import ScrapButton from '../ScrapButton/ScrapButton';
 
 interface SummarizedNewsContainerProps {
     summary: string;
@@ -15,15 +14,6 @@ interface SummarizedNewsContainerProps {
 }
 
 const SummarizedNewsContainer = ({ summary, articleId, title, image }: SummarizedNewsContainerProps) => {
-    const handleAddScrap = async () => {
-        try {
-            await addScrap(articleId);
-            alert('스크랩 완료!');
-        } catch (error) {
-            console.error('스크랩 실패:', error);
-            alert('스크랩에 실패했습니다.');
-        }
-    };
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
     const handleOpenShareModal = () => setIsShareModalOpen(true);
@@ -37,9 +27,7 @@ const SummarizedNewsContainer = ({ summary, articleId, title, image }: Summarize
                     <span className="text-28px-semibold relative top-[-10px] text-black">간추린 뉴스</span>
                 </div>
                 <div className="mt-[-25px] flex items-center gap-[21px]">
-                    <button onClick={() => void handleAddScrap()} className="cursor-pointer" aria-label="스크랩하기">
-                        <BookMarkIcon />
-                    </button>
+                    <ScrapButton articleId={articleId} />
                     <button onClick={handleOpenShareModal} className="cursor-pointer" aria-label="공유하기">
                         <ShareIcon />
                     </button>
