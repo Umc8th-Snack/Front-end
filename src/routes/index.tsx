@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import type { RouteObject } from 'react-router-dom';
 
 import MainLayout from '@/layout/MainLayout';
+import SharePage from '@/pages/article/SharePage';
 
 import LoadingFallback from './LoadingFallback';
 import ProtectedRoute from './ProtectedRoute';
@@ -112,6 +113,14 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <DeleteAccountPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/share/:uuid',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <SharePage />
                     </Suspense>
                 ),
             },
