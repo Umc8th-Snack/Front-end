@@ -1,4 +1,3 @@
-// src/pages/my/apis/user.ts
 import axiosInstance from '@/pages/my/apis/axios';
 import type { UserProfile } from '@/pages/my/types/types';
 

@@ -1,4 +1,3 @@
-// src/pages/my/EditProfilePage.tsx
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';

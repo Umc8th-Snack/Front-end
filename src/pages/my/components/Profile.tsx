@@ -1,24 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 
 import { fetchUserProfile } from '@/pages/my/apis/user';
 import DefaultImage from '@/pages/my/assets/default-image.svg?react';
-import type { UserProfile } from '@/pages/my/types/types';
+import { QUERY_KEYS } from '@/pages/my/constants/queryConstants';
 
 const Profile = () => {
-    const [profile, setProfile] = useState<UserProfile | null>(null);
+    const {
+        data: profile,
+        isLoading,
+        isError,
+    } = useQuery({
+        queryKey: QUERY_KEYS.USER_PROFILE,
+        queryFn: fetchUserProfile,
+    });
 
-    useEffect(() => {
-        const loadProfile = async () => {
-            try {
-                const data = await fetchUserProfile();
-                setProfile(data);
-            } catch (error) {
-                console.error('프로필 조회 실패', error);
-            }
-        };
-        void loadProfile();
-    }, []);
+    if (isLoading) return <div className="mb-8">프로필 불러오는 중...</div>;
+    if (isError) return <div className="mb-8 text-red-500">프로필 조회 실패</div>;
 
     return (
         <div className="mb-8 flex flex-col items-start text-center">
