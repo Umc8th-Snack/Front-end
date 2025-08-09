@@ -1,13 +1,15 @@
+import { authApi } from '../apis/auth';
 import { ERROR_MESSAGES, HTTP_STATUS } from '../constants/apiConstants';
 import type { CustomAxiosErrorTypes } from '../types/apiTypes';
+import { tokenUtils } from './auth';
 
 /**
  * API 에러 처리 함수
  */
-export const handleApiError = (error: CustomAxiosErrorTypes): void => {
+export const handleApiError = async (error: CustomAxiosErrorTypes): Promise<void> => {
     if (error.response) {
         // 서버 응답이 있는 경우
-        handleServerError(error);
+        await handleServerError(error);
     } else if (error.request) {
         // 요청은 보냈지만 응답을 받지 못한 경우
         console.error(ERROR_MESSAGES.NETWORK_ERROR);
@@ -20,13 +22,13 @@ export const handleApiError = (error: CustomAxiosErrorTypes): void => {
 /**
  * 서버 에러 처리 함수
  */
-const handleServerError = (error: CustomAxiosErrorTypes): void => {
+const handleServerError = async (error: CustomAxiosErrorTypes): Promise<void> => {
     const { status, data } = error.response!;
     const errorMessage = data?.message || ERROR_MESSAGES.UNKNOWN_ERROR;
 
     switch (status) {
         case HTTP_STATUS.UNAUTHORIZED:
-            handleUnauthorizedError();
+            await handleUnauthorizedError(error);
             break;
         case HTTP_STATUS.FORBIDDEN:
             console.error(ERROR_MESSAGES.FORBIDDEN);
@@ -44,14 +46,81 @@ const handleServerError = (error: CustomAxiosErrorTypes): void => {
 };
 
 /**
- * 401 에러 처리 함수
+ * 401 에러 처리 함수 - API 문서 기반 완전한 토큰 관리
  */
-const handleUnauthorizedError = (): void => {
-    console.error(ERROR_MESSAGES.UNAUTHORIZED);
-    // TODO: 토큰 갱신 로직 구현
-    // - refreshToken으로 accessToken 갱신 시도
-    // - 실패 시 로그인 페이지로 리다이렉트
-    // - 성공 시 실패한 요청 재시도
+const handleUnauthorizedError = async (error: CustomAxiosErrorTypes): Promise<void> => {
+    const errorCode = error.response?.data?.code;
+
+    // API 문서의 에러 코드별 처리
+    switch (errorCode) {
+        case 'AUTH_2166': // Access 토큰이 만료됨 - 재발급 시도
+        case 'AUTH_2161': // 유효하지 않은 Access 토큰 - 재발급 시도
+            console.log('Access 토큰 문제 감지, 재발급 시도...');
+            await attemptTokenReissue(error);
+            break;
+
+        case 'AUTH_2164': // Refresh 토큰이 만료됨 - 로그아웃
+        case 'AUTH_2165': // 서버에 Refresh 토큰이 존재하지 않음 - 로그아웃
+        case 'AUTH_2163': // Refresh 토큰이 존재하지 않음 - 로그아웃
+        case 'AUTH_2167': // 해당 계정은 토큰을 재발급 받을 수 없음 - 로그아웃
+            console.log('Refresh 토큰 문제 감지, 로그아웃 처리...');
+            handleForceLogout();
+            break;
+
+        default:
+            // 일반적인 401 에러 - 재발급 시도 후 실패시 로그아웃
+            console.log('일반 401 에러, 재발급 시도...');
+            await attemptTokenReissue(error);
+    }
+};
+
+/**
+ * 토큰 재발급 시도
+ */
+const attemptTokenReissue = async (_originalError: CustomAxiosErrorTypes): Promise<void> => {
+    try {
+        console.log('토큰 재발급 요청 중...');
+
+        // /api/auth/reissue 호출 (쿠키의 Refresh Token 자동 사용)
+        const reissueResponse = await authApi.reissueTokenWithToken();
+
+        // 새 Access Token 저장
+        if (reissueResponse.token) {
+            tokenUtils.setAccessToken(reissueResponse.token);
+
+            // 사용자 정보도 업데이트 (필요시)
+            localStorage.setItem('user', JSON.stringify(reissueResponse.data));
+
+            console.log('토큰 재발급 성공, 새 토큰 저장 완료');
+        } else {
+            throw new Error('재발급된 토큰을 찾을 수 없습니다.');
+        }
+
+        // 원본 요청 재시도는 response interceptor에서 처리하는 것이 더 적절
+        // 여기서는 토큰 저장까지만 수행
+    } catch (reissueError) {
+        console.error('토큰 재발급 실패:', reissueError);
+        handleForceLogout();
+    }
+};
+
+/**
+ * 강제 로그아웃 처리
+ */
+const handleForceLogout = (): void => {
+    console.log('강제 로그아웃 처리 중...');
+
+    // localStorage에서 토큰 제거
+    tokenUtils.removeAccessToken();
+
+    // 사용자 정보 제거
+    localStorage.removeItem('user');
+
+    // 홈페이지로 리다이렉트
+    window.location.href = '/';
+
+    // 사용자에게 알림 (선택사항)
+    alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
 };
 
 /**

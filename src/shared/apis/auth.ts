@@ -38,4 +38,16 @@ export const authApi = {
     reissueToken: async (): Promise<LoginResponseTypes> => {
         return api.postStandard<LoginResponseTypes>('/api/auth/reissue');
     },
+
+    /**
+     * 토큰 재발급 (토큰과 함께 반환)
+     */
+    reissueTokenWithToken: async (): Promise<{ data: LoginResponseTypes; token: string }> => {
+        const response = await axiosInstance.post('/api/auth/reissue');
+        const accessToken = response.headers.authorization?.replace('Bearer ', '') || '';
+        return {
+            data: response.data.result,
+            token: accessToken,
+        };
+    },
 };

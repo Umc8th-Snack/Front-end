@@ -22,13 +22,13 @@ export const handleResponseSuccess = (response: AxiosResponse): AxiosResponse =>
 /**
  * Response 인터셉터 - 에러 핸들러
  */
-export const handleResponseError = (error: AxiosError<ApiErrorTypes>): Promise<CustomAxiosErrorTypes> => {
+export const handleResponseError = async (error: AxiosError<ApiErrorTypes>): Promise<CustomAxiosErrorTypes> => {
     // 에러 타입 확장
     const customError = error as CustomAxiosErrorTypes;
     customError.isApiError = true;
 
-    // 에러 처리 로직 위임
-    handleApiError(customError);
+    // 에러 처리 로직 위임 (async 처리)
+    await handleApiError(customError);
 
     return Promise.reject(customError);
 };
