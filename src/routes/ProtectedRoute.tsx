@@ -1,13 +1,20 @@
 import type { ReactNode } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
+import { useAuth } from '@/shared/context/AuthContext';
+
 interface ProtectedRouteProps {
-    isAuthenticated?: boolean;
     redirectPath?: string;
     children?: ReactNode;
 }
 
-const ProtectedRoute = ({ isAuthenticated = false, redirectPath = '/', children }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ redirectPath = '/', children }: ProtectedRouteProps) => {
+    const { isAuthenticated, loading } = useAuth();
+
+    if (loading) {
+        return <div>로딩 중...</div>;
+    }
+
     if (!isAuthenticated) {
         return <Navigate to={redirectPath} replace />;
     }
