@@ -12,7 +12,7 @@ export const settingsData = [
         items: [
             { label: '정보 동의 설정' },
             { label: '회원 탈퇴', path: '/settings/delete' },
-            { label: '로그아웃', onClick: () => console.log('로그아웃') },
+            { label: '로그아웃', action: 'logout' },
         ],
     },
 ];

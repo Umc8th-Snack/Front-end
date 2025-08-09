@@ -2,6 +2,9 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useAuth } from '@/shared/context/AuthContext';
+import { useLogout } from '@/shared/hooks/useAuth';
+
 import { settingsData } from './settingsData';
 import { useOutsideClick } from './useOutsideClick';
 
@@ -14,8 +17,28 @@ interface SettingsDropdownProps {
 const SettingsDropdown = ({ open, setOpen, onShowConsentModal }: SettingsDropdownProps) => {
     const dropdownRef = useRef<HTMLDivElement>(null!);
     const navigate = useNavigate();
+    const { logout: authLogout } = useAuth();
+    const logoutMutation = useLogout();
 
     useOutsideClick(dropdownRef, () => setOpen(false));
+
+    const handleLogout = async () => {
+        try {
+            // 서버 로그아웃 API 호출 (refresh token 무효화)
+            await logoutMutation.mutateAsync();
+
+            // 로컬 상태 정리 (토큰 제거, 사용자 정보 삭제)
+            authLogout();
+
+            // 홈페이지로 리다이렉트
+            void navigate('/');
+        } catch (error) {
+            // 에러가 발생해도 로컬 상태는 정리
+            console.error('로그아웃 중 오류 발생:', error);
+            authLogout();
+            void navigate('/');
+        }
+    };
 
     if (!open) return null;
 
@@ -34,8 +57,13 @@ const SettingsDropdown = ({ open, setOpen, onShowConsentModal }: SettingsDropdow
                                             setOpen(false);
                                             if (item.label === '정보 동의 설정') {
                                                 onShowConsentModal?.();
-                                            } else if (item.path) void navigate(item.path);
-                                            else if (item.onClick) item.onClick();
+                                            } else if (item.path) {
+                                                void navigate(item.path);
+                                            } else if ((item as any).action === 'logout') {
+                                                void handleLogout();
+                                            } else if ((item as any).onClick) {
+                                                (item as any).onClick();
+                                            }
                                         }}
                                         className="text-18px-medium text-black-50 w-full cursor-pointer text-left transition-colors hover:text-black"
                                     >
