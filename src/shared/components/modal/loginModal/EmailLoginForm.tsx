@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useAuth } from '@/shared/context/AuthContext';
+import { useLogin } from '@/shared/hooks/useAuth';
+
 import InputBox from '../../box/InputBox/InputBox';
 
 interface EmailLoginFormProps {
@@ -9,6 +12,9 @@ interface EmailLoginFormProps {
 
 const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
     const navigate = useNavigate();
+    const { login } = useAuth();
+    const { mutate: loginMutate, isPending, error } = useLogin();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -20,9 +26,21 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
     };
 
     const handleLoginSubmit = () => {
-        console.log('로그인 데이터:', formData);
-        // TODO: 실제 로그인 API 호출
-        onClose();
+        if (!isFormValid || isPending) return;
+
+        loginMutate(formData, {
+            onSuccess: (response) => {
+                if (response.token) {
+                    login(response.token, response.data);
+                } else {
+                    console.error('Access Token을 찾을 수 없습니다.');
+                }
+                onClose();
+            },
+            onError: (error) => {
+                console.error('로그인 실패:', error);
+            },
+        });
     };
 
     const handleForgotPasswordClick = () => {
@@ -56,6 +74,11 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
                     onChange={handleChange}
                     value={formData.password}
                 />
+                {error && (
+                    <div className="mt-2 px-2 text-sm text-red-500">
+                        로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.
+                    </div>
+                )}
             </div>
 
             {/* 비밀번호 찾기 */}
@@ -69,12 +92,12 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
             <div className="mt-8 flex px-12">
                 <button
                     onClick={handleLoginSubmit}
-                    disabled={!isFormValid}
+                    disabled={!isFormValid || isPending}
                     className={`text-20px-medium h-[56px] w-full rounded-md py-3 text-white ${
-                        isFormValid ? 'bg-main cursor-pointer' : 'bg-black-30 cursor-not-allowed'
+                        isFormValid && !isPending ? 'bg-main cursor-pointer' : 'bg-black-30 cursor-not-allowed'
                     }`}
                 >
-                    로그인
+                    {isPending ? '로그인 중...' : '로그인'}
                 </button>
             </div>
         </>

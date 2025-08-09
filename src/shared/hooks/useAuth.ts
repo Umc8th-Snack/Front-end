@@ -7,8 +7,11 @@ import type { LoginRequestTypes, LoginResponseTypes } from '../types/apiTypes';
  * 로그인 mutation 훅
  */
 export const useLogin = () => {
-    return useMutation<LoginResponseTypes, Error, LoginRequestTypes>({
-        mutationFn: (loginData: LoginRequestTypes) => authApi.login(loginData),
+    return useMutation<{ data: LoginResponseTypes; token: string }, Error, LoginRequestTypes>({
+        mutationFn: async (loginData: LoginRequestTypes) => {
+            const response = await authApi.loginWithToken(loginData);
+            return response;
+        },
         onSuccess: (data) => {
             console.log('로그인 성공:', data);
         },
