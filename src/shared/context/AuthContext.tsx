@@ -3,9 +3,9 @@ import { createContext, type ReactNode, useCallback, useContext, useEffect, useM
 import { tokenUtils } from '@/shared/utils/auth';
 
 interface User {
-    id: string;
+    userId: number;
     nickname: string;
-    email?: string;
+    email: string;
 }
 
 interface AuthContextType {
@@ -32,9 +32,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         const initializeAuth = () => {
             const token = tokenUtils.getAccessToken();
             if (token) {
-                // TODO: 토큰으로 사용자 정보 조회 API 호출
-                // 임시로 더미 데이터 설정
-                setUser({ id: '1', nickname: '스내커' });
+                // TODO: 토큰으로 사용자 정보 조회 API 호출 또는 localStorage에서 사용자 정보 복원
+                const savedUser = localStorage.getItem('user');
+                if (savedUser) {
+                    setUser(JSON.parse(savedUser));
+                }
             }
             setLoading(false);
         };
@@ -44,11 +46,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const login = useCallback((token: string, userData: User) => {
         tokenUtils.setAccessToken(token);
+        localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
     }, []);
 
     const logout = useCallback(() => {
         tokenUtils.removeAccessToken();
+        localStorage.removeItem('user');
         setUser(null);
         // TODO: 로그아웃 API 호출 (refresh token 무효화)
     }, []);

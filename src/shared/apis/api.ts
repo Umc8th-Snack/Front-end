@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 
-import type { ApiRequestOptionsTypes, ApiResponseTypes } from '../types/apiTypes';
+import type { ApiRequestOptionsTypes, ApiResponseTypes, ApiStandardResponseTypes } from '../types/apiTypes';
 import axiosInstance from './axios';
 
 /**
@@ -34,6 +34,17 @@ const api = {
             timeout: options?.timeout,
         });
         return response.data.data;
+    },
+
+    /**
+     * POST 요청 (표준 API 응답 형식)
+     */
+    postStandard: async <T = unknown>(url: string, data?: unknown, options?: ApiRequestOptionsTypes): Promise<T> => {
+        const response: AxiosResponse<ApiStandardResponseTypes<T>> = await axiosInstance.post(url, data, {
+            headers: options?.headers,
+            timeout: options?.timeout,
+        });
+        return response.data.result;
     },
 
     /**
