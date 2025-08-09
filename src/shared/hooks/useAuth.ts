@@ -13,10 +13,10 @@ export const useLogin = () => {
             return response;
         },
         onSuccess: (data) => {
-            console.log('로그인 성공:', data);
+            console.log('✅ [USE LOGIN] 로그인 뮤테이션 성공:', data);
         },
         onError: (error) => {
-            console.error('로그인 실패:', error);
+            console.error('❌ [USE LOGIN] 로그인 뮤테이션 실패:', error);
         },
     });
 };
@@ -28,10 +28,10 @@ export const useLogout = () => {
     return useMutation<void, Error, void>({
         mutationFn: () => authApi.logout(),
         onSuccess: () => {
-            console.log('로그아웃 성공');
+            console.log('✅ [USE LOGOUT] 로그아웃 뮤테이션 성공');
         },
         onError: (error) => {
-            console.error('로그아웃 실패:', error);
+            console.error('❌ [USE LOGOUT] 로그아웃 뮤테이션 실패:', error);
         },
     });
 };

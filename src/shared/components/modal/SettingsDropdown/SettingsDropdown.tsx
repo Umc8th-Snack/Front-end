@@ -23,18 +23,25 @@ const SettingsDropdown = ({ open, setOpen, onShowConsentModal }: SettingsDropdow
     useOutsideClick(dropdownRef, () => setOpen(false));
 
     const handleLogout = async () => {
+        console.log('🚪 [SETTINGS] 로그아웃 버튼 클릭');
+
         try {
             // 서버 로그아웃 API 호출 (refresh token 무효화)
+            console.log('📡 [SETTINGS] 서버 로그아웃 API 호출 시작');
             await logoutMutation.mutateAsync();
+            console.log('✅ [SETTINGS] 서버 로그아웃 API 성공');
 
             // 로컬 상태 정리 (토큰 제거, 사용자 정보 삭제)
+            console.log('🧹 [SETTINGS] 로컬 상태 정리 시작');
             authLogout();
 
             // 홈페이지로 리다이렉트
+            console.log('🏠 [SETTINGS] 홈페이지로 리다이렉트');
             void navigate('/');
         } catch (error) {
             // 에러가 발생해도 로컬 상태는 정리
-            console.error('로그아웃 중 오류 발생:', error);
+            console.error('❌ [SETTINGS] 로그아웃 중 오류 발생:', error);
+            console.log('🧹 [SETTINGS] 오류 발생 시에도 로컬 상태 정리');
             authLogout();
             void navigate('/');
         }

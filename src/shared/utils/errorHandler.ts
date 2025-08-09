@@ -52,10 +52,12 @@ const handleUnauthorizedError = async (error: CustomAxiosErrorTypes): Promise<vo
     const errorCode = error.response?.data?.code;
 
     // API 문서의 에러 코드별 처리
+    console.log('🔍 [ERROR HANDLER] 401 에러 분석:', { errorCode, status: error.response?.status });
+
     switch (errorCode) {
         case 'AUTH_2166': // Access 토큰이 만료됨 - 재발급 시도
         case 'AUTH_2161': // 유효하지 않은 Access 토큰 - 재발급 시도
-            console.log('Access 토큰 문제 감지, 재발급 시도...');
+            console.log('🔄 [ERROR HANDLER] Access 토큰 문제 감지, 재발급 시도...');
             await attemptTokenReissue(error);
             break;
 
@@ -63,13 +65,13 @@ const handleUnauthorizedError = async (error: CustomAxiosErrorTypes): Promise<vo
         case 'AUTH_2165': // 서버에 Refresh 토큰이 존재하지 않음 - 로그아웃
         case 'AUTH_2163': // Refresh 토큰이 존재하지 않음 - 로그아웃
         case 'AUTH_2167': // 해당 계정은 토큰을 재발급 받을 수 없음 - 로그아웃
-            console.log('Refresh 토큰 문제 감지, 로그아웃 처리...');
+            console.log('🚪 [ERROR HANDLER] Refresh 토큰 문제 감지, 로그아웃 처리...');
             handleForceLogout();
             break;
 
         default:
             // 일반적인 401 에러 - 재발급 시도 후 실패시 로그아웃
-            console.log('일반 401 에러, 재발급 시도...');
+            console.log('⚠️ [ERROR HANDLER] 일반 401 에러, 재발급 시도...');
             await attemptTokenReissue(error);
     }
 };
@@ -79,7 +81,7 @@ const handleUnauthorizedError = async (error: CustomAxiosErrorTypes): Promise<vo
  */
 const attemptTokenReissue = async (_originalError: CustomAxiosErrorTypes): Promise<void> => {
     try {
-        console.log('토큰 재발급 요청 중...');
+        console.log('🔄 [ERROR HANDLER] 토큰 재발급 요청 중...');
 
         // /api/auth/reissue 호출 (쿠키의 Refresh Token 자동 사용)
         const reissueResponse = await authApi.reissueTokenWithToken();
@@ -91,7 +93,7 @@ const attemptTokenReissue = async (_originalError: CustomAxiosErrorTypes): Promi
             // 사용자 정보도 업데이트 (필요시)
             localStorage.setItem('user', JSON.stringify(reissueResponse.data));
 
-            console.log('토큰 재발급 성공, 새 토큰 저장 완료');
+            console.log('✅ [ERROR HANDLER] 토큰 재발급 성공, 새 토큰 저장 완료');
         } else {
             throw new Error('재발급된 토큰을 찾을 수 없습니다.');
         }
@@ -99,7 +101,7 @@ const attemptTokenReissue = async (_originalError: CustomAxiosErrorTypes): Promi
         // 원본 요청 재시도는 response interceptor에서 처리하는 것이 더 적절
         // 여기서는 토큰 저장까지만 수행
     } catch (reissueError) {
-        console.error('토큰 재발급 실패:', reissueError);
+        console.error('❌ [ERROR HANDLER] 토큰 재발급 실패:', reissueError);
         handleForceLogout();
     }
 };
@@ -108,15 +110,18 @@ const attemptTokenReissue = async (_originalError: CustomAxiosErrorTypes): Promi
  * 강제 로그아웃 처리
  */
 const handleForceLogout = (): void => {
-    console.log('강제 로그아웃 처리 중...');
+    console.log('🚪 [ERROR HANDLER] 강제 로그아웃 처리 중...');
 
     // localStorage에서 토큰 제거
     tokenUtils.removeAccessToken();
+    console.log('🧹 [ERROR HANDLER] Access Token 제거 완료');
 
     // 사용자 정보 제거
     localStorage.removeItem('user');
+    console.log('🧹 [ERROR HANDLER] 사용자 정보 제거 완료');
 
     // 홈페이지로 리다이렉트
+    console.log('🏠 [ERROR HANDLER] 홈페이지로 리다이렉트');
     window.location.href = '/';
 
     // 사용자에게 알림 (선택사항)

@@ -28,17 +28,24 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
     const handleLoginSubmit = () => {
         if (!isFormValid || isPending) return;
 
+        console.log('📝 [LOGIN FORM] 로그인 폼 제출 시작');
+
         loginMutate(formData, {
             onSuccess: (response) => {
+                console.log('✅ [LOGIN FORM] 로그인 API 성공:', response);
+
                 if (response.token) {
+                    console.log('🔐 [LOGIN FORM] AuthContext login 호출');
                     login(response.token, response.data);
                 } else {
-                    console.error('Access Token을 찾을 수 없습니다.');
+                    console.error('❌ [LOGIN FORM] Access Token을 찾을 수 없습니다.');
                 }
+
+                console.log('❌ [LOGIN FORM] 모달 닫기');
                 onClose();
             },
             onError: (error) => {
-                console.error('로그인 실패:', error);
+                console.error('❌ [LOGIN FORM] 로그인 실패:', error);
             },
         });
     };
