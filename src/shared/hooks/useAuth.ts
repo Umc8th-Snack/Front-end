@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { authApi } from '../apis/auth';
-import type { LoginRequestTypes, LoginResponseTypes } from '../types/apiTypes';
+import type { LoginRequestTypes, LoginResponseTypes, SignupRequestTypes, SignupResponseTypes } from '../types/apiTypes';
 
 /**
  * 로그인 mutation 훅
@@ -47,6 +47,24 @@ export const useReissueToken = () => {
         },
         onError: (error) => {
             console.error('토큰 재발급 실패:', error);
+        },
+    });
+};
+
+/**
+ * 회원가입 mutation 훅
+ */
+export const useSignup = () => {
+    return useMutation<SignupResponseTypes, Error, SignupRequestTypes>({
+        mutationFn: async (signupData: SignupRequestTypes) => {
+            const response = await authApi.signup(signupData);
+            return response;
+        },
+        onSuccess: (data) => {
+            console.log('✅ [USE SIGNUP] 회원가입 뮤테이션 성공:', data);
+        },
+        onError: (error) => {
+            console.error('❌ [USE SIGNUP] 회원가입 뮤테이션 실패:', error);
         },
     });
 };

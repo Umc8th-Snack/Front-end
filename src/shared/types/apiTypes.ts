@@ -59,6 +59,20 @@ export interface LoginResponseTypes {
     nickname: string;
 }
 
+// 회원가입 요청 타입
+export interface SignupRequestTypes {
+    email: string;
+    password: string;
+    nickname: string;
+}
+
+// 회원가입 응답 타입
+export interface SignupResponseTypes {
+    userId: number;
+    email: string;
+    nickname: string;
+}
+
 // API 표준 응답 타입 (API 명세 기준)
 export interface ApiStandardResponseTypes<T = unknown> {
     isSuccess: boolean;

@@ -1,4 +1,4 @@
-import type { LoginRequestTypes, LoginResponseTypes } from '../types/apiTypes';
+import type { LoginRequestTypes, LoginResponseTypes, SignupRequestTypes, SignupResponseTypes } from '../types/apiTypes';
 import api from './api';
 import axiosInstance from './axios';
 
@@ -71,5 +71,18 @@ export const authApi = {
             data: response.data.result,
             token: accessToken,
         };
+    },
+
+    /**
+     * 회원가입
+     */
+    signup: async (signupData: SignupRequestTypes): Promise<SignupResponseTypes> => {
+        console.log('🚀 [AUTH API] 회원가입 요청 시작:', { email: signupData.email, nickname: signupData.nickname });
+
+        const response = await api.postStandard<SignupResponseTypes>('/api/users/signup', signupData);
+
+        console.log('✅ [AUTH API] 회원가입 응답 수신:', response);
+
+        return response;
     },
 };

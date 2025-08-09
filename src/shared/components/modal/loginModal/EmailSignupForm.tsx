@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { useSignup } from '@/shared/hooks/useAuth';
 import { isPasswordValid, validateNickname } from '@/shared/utils/validation';
 
 import InputBox from '../../box/InputBox/InputBox';
@@ -11,6 +12,8 @@ interface EmailSignupFormProps {
 }
 
 const EmailSignupForm = ({ onSignupComplete }: EmailSignupFormProps) => {
+    const { mutate: signupMutate, isPending, error } = useSignup();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -38,17 +41,29 @@ const EmailSignupForm = ({ onSignupComplete }: EmailSignupFormProps) => {
     };
 
     const handleSignupSubmit = () => {
-        console.log('회원가입 데이터:', formData);
+        if (!isFormValid || isPending) return;
 
-        // 닉네임 중복 검사 (더미 데이터 - 실제로는 백엔드 API 호출)
-        if (formData.nickname.trim() === '스내커') {
-            setNicknameError('이미 사용중인 닉네임입니다.');
-            return;
-        }
+        console.log('📝 [SIGNUP FORM] 회원가입 폼 제출 시작');
 
-        // TODO: 실제 회원가입 API 호출
-        console.log('회원가입 성공!');
-        onSignupComplete();
+        // confirmPassword는 API 호출에서 제외
+        const { confirmPassword: _, ...signupData } = formData;
+
+        signupMutate(signupData, {
+            onSuccess: (response) => {
+                console.log('✅ [SIGNUP FORM] 회원가입 API 성공:', response);
+                console.log('🎉 [SIGNUP FORM] 회원가입 완료 화면으로 이동');
+                onSignupComplete();
+            },
+            onError: (error) => {
+                console.error('❌ [SIGNUP FORM] 회원가입 실패:', error);
+
+                // 에러 메시지에 따른 닉네임 에러 처리
+                const errorMessage = (error as any)?.response?.data?.message || '';
+                if (errorMessage.includes('닉네임') || errorMessage.includes('nickname')) {
+                    setNicknameError('이미 사용중인 닉네임입니다.');
+                }
+            },
+        });
     };
 
     const isFormValid =
@@ -127,18 +142,23 @@ const EmailSignupForm = ({ onSignupComplete }: EmailSignupFormProps) => {
                         className="text-18px-medium hover:border-main focus:ring-main mt-1 w-full rounded-md border border-[#B2B2B2] px-4 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
                     />
                 </div>
+                {error && (
+                    <div className="mt-2 px-2 text-sm text-red-500">
+                        회원가입에 실패했습니다. 입력 정보를 확인해주세요.
+                    </div>
+                )}
             </div>
 
             {/* 회원가입 버튼 */}
             <div className="mt-8 flex px-12">
                 <button
                     onClick={handleSignupSubmit}
-                    disabled={!isFormValid}
+                    disabled={!isFormValid || isPending}
                     className={`text-20px-medium h-[56px] w-full rounded-md py-3 text-white ${
-                        isFormValid ? 'bg-main cursor-pointer' : 'bg-black-30 cursor-not-allowed'
+                        isFormValid && !isPending ? 'bg-main cursor-pointer' : 'bg-black-30 cursor-not-allowed'
                     }`}
                 >
-                    회원가입
+                    {isPending ? '회원가입 중...' : '회원가입'}
                 </button>
             </div>
         </>
