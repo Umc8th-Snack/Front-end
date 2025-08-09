@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { QuizItem } from '../../types/accordionTypes';
+import type { QuizItem } from '@/shared/types/accordionTypes';
 
 interface QuizContentProps {
     data: QuizItem[];
@@ -64,7 +64,7 @@ const QuizContent = ({ data, onAnswersChange, onClose }: QuizContentProps) => {
 
             {/* 선택지 */}
             <div className="mb-8 flex flex-col gap-3">
-                {quiz.options.map((opt, idx) => (
+                {quiz.options.map((opt: string, idx: number) => (
                     <button
                         key={`${opt}-${idx}`}
                         className={`text-14px-medium w-full rounded-lg border-1 px-4 py-2 transition-colors ${

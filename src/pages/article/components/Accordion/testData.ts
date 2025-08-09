@@ -1,5 +1,5 @@
 //테스트를 위해 임시로 만든 데이터입니다!
-import type { GlossaryItem, QuizItem } from '../../types/accordionTypes';
+import type { GlossaryItem, QuizItem } from '@/shared/types/accordionTypes';
 
 // 용어집 테스트 데이터
 export const glossaryTestData: GlossaryItem[] = [

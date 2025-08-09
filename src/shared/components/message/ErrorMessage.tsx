@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ErrorAlertIcon from '@/assets/errorAlert.svg?react';
 
 interface ErrorMessageProps {

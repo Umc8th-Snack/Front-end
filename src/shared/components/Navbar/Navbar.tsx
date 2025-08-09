@@ -1,3 +1,4 @@
+// Navbar.tsx
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -6,10 +7,24 @@ import SnackLogo from '@/shared/assets/snack.svg?react';
 import LoginModal from '@/shared/components/modal/loginModal/LoginModal';
 import { useAuth } from '@/shared/context/AuthContext';
 
+import ConsentModal from '../modal/ConsentModal/ConsentModal';
+import SettingsDropdown from '../modal/SettingsDropdown/SettingsDropdown';
+
 const Navbar = () => {
     const { isAuthenticated, user } = useAuth();
     const location = useLocation();
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [settingsOpen, setSettingsOpen] = useState(false);
+    //정보동의설정 모달 상태
+    const [isConsentModalOpen, setIsConsentModalOpen] = useState(false);
+
+    const handleOpenConsentModal = () => {
+        setIsConsentModalOpen(true);
+    };
+
+    const handleCloseConsentModal = () => {
+        setIsConsentModalOpen(false);
+    };
 
     return (
         <header className="w-full">
@@ -20,7 +35,6 @@ const Navbar = () => {
                         <SnackLogo className="h-[55px] w-[120px] lg:h-[64px] lg:w-[140px]" />
                     </Link>
 
-                    {/* 검색창 */}
                     <div className="border-main mx-4 flex h-[40px] w-full max-w-[555px] min-w-[250px] flex-1 gap-4 rounded-full border px-4 py-2 outline-none focus:ring-1 focus:ring-blue-400 lg:h-[45px] lg:min-w-[410px]">
                         <input
                             type="text"
@@ -58,7 +72,20 @@ const Navbar = () => {
                             >
                                 맞춤피드
                             </Link>
-                            <button className="hover:text-main cursor-pointer transition-colors">설정</button>
+                            {/* 설정 버튼 */}
+                            <div className="relative">
+                                <button
+                                    onClick={() => setSettingsOpen((prev) => !prev)}
+                                    className="hover:text-main cursor-pointer transition-colors"
+                                >
+                                    설정
+                                </button>
+                                <SettingsDropdown
+                                    open={settingsOpen}
+                                    setOpen={setSettingsOpen}
+                                    onShowConsentModal={handleOpenConsentModal}
+                                />
+                            </div>
                         </>
                     ) : (
                         <>
@@ -71,10 +98,10 @@ const Navbar = () => {
                             <Link to="/" className="hover:text-main transition-colors">
                                 홈 화면
                             </Link>
-                            <button className="hover:text-main cursor-pointer transition-colors">설정</button>
                         </>
                     )}
                 </nav>
+                {isConsentModalOpen && <ConsentModal onClose={handleCloseConsentModal} />}
             </div>
 
             {/* 로그인 모달 */}

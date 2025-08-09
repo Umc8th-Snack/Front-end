@@ -1,5 +1,5 @@
 //용어집 Content
-import type { GlossaryItem } from '../../types/accordionTypes';
+import type { GlossaryItem } from '@/shared/types/accordionTypes';
 
 interface GlossaryContentProps {
     data: GlossaryItem[];

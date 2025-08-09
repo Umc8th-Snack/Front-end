@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
 
@@ -7,31 +7,6 @@ interface DeleteAccountModalProps {
     onConfirmDelete: () => void;
     onCancel: () => void;
 }
-
-// TODO: 아래 코드는 임시 기본 핸들러
-// 라우팅 설정 후 실제 로직으로 변경하기
-const DummyDeleteAccountModal = () => {
-    const [isOpen, setIsOpen] = useState(true);
-
-    const handleClose = () => {
-        console.log('모달 닫기');
-        setIsOpen(false);
-    };
-
-    const handleConfirmDelete = () => {
-        alert('회원 탈퇴 완료');
-        setIsOpen(false);
-    };
-
-    const handleCancel = () => {
-        alert('탈퇴 취소');
-        setIsOpen(false);
-    };
-
-    if (!isOpen) return null;
-
-    return <DeleteAccountModal onClose={handleClose} onConfirmDelete={handleConfirmDelete} onCancel={handleCancel} />;
-};
 
 const DeleteAccountModal = ({ onClose, onConfirmDelete, onCancel }: DeleteAccountModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
@@ -106,8 +81,4 @@ const DeleteAccountModal = ({ onClose, onConfirmDelete, onCancel }: DeleteAccoun
     );
 };
 
-// 임시 export:
-export default DummyDeleteAccountModal;
-
-// TODO: 실제 사용 시 밑의 코드로 변경하기
-// export default DeleteAccountModal;
+export default DeleteAccountModal;

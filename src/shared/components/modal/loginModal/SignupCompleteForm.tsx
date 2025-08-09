@@ -1,5 +1,3 @@
-import React from 'react';
-
 import SnackIcon from '@/shared/assets/snack.svg?react';
 
 interface SignupCompleteFormProps {
