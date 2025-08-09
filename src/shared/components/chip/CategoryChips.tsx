@@ -49,7 +49,7 @@ function CategoryChips({ categories, initialSelected = [], onChange, bgColor, is
     };
 
     return (
-        <div className="mt-4 flex gap-4">
+        <div className="mt-4 flex gap-6">
             {categories.map((label) => (
                 <Chip
                     key={label}

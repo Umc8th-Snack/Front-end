@@ -8,7 +8,7 @@ import worldIcon from '@/shared/assets/article/world.svg?react';
 
 interface ArticleCardProps {
     title?: string;
-    category?: string; // 기사 카테고리 (사회, 정치, 경제 등)
+    category?: '정치' | '금융' | '사회' | '세계' | '과학' | '문화' | '기타';
 }
 
 // 카테고리별 SVG 아이콘 컴포넌트
@@ -21,38 +21,44 @@ const CategoryIcon = ({ category }: { category?: string }) => {
     const WorldIcon = worldIcon;
     const EtcIcon = etcIcon;
 
-    // 카테고리별 아이콘 반환(임의로 한글로 설정했습니다! 추후 변동 필요)
+    // 카테고리별 아이콘 반환
     switch (category) {
         case '사회':
-            return <SocietyIcon className="h-12 w-12" />;
+            return <SocietyIcon className="h-[50px] w-[50px]" />;
         case '정치':
-            return <PoliticsIcon className="h-12 w-12" />;
+            return <PoliticsIcon className="h-[50px] w-[50px]" />;
         case '경제':
-            return <EconomyIcon className="h-12 w-12" />;
+        case '금융':
+            return <EconomyIcon className="h-[50px] w-[50px]" />;
         case '과학':
-            return <ScienceIcon className="h-12 w-12" />;
+            return <ScienceIcon className="h-[50px] w-[50px]" />;
         case '문화':
-            return <CultureIcon className="h-12 w-12" />;
+            return <CultureIcon className="h-[50px] w-[50px]" />;
         case '세계':
-            return <WorldIcon className="h-12 w-12" />;
+            return <WorldIcon className="h-[50px] w-[50px]" />;
         case '기타':
-            return <EtcIcon className="h-12 w-12" />;
+            return <EtcIcon className="h-[50px] w-[50px]" />;
         default:
-            return <SocietyIcon className="h-12 w-12" />;
+            return <EtcIcon className="h-[50px] w-[50px]" />;
     }
 };
 
-function ArticleCard({ title = 'article title', category = '사회' }: ArticleCardProps) {
+function ArticleCard({ title = 'article title', category = '기타' }: ArticleCardProps) {
+    const truncatedTitle = title.length > 28 ? title.slice(0, 28) + '...' : title;
+
     return (
-        <div className="bg-main-10 m-5 flex h-[220px] w-[210px] flex-col rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] p-6">
-            {/* 카테고리 아이콘 */}
-            <div className="mb-4 flex w-full justify-start">
+        <div
+            className="relative h-[210px] w-[255px]"
+            style={{ backgroundColor: '#0557E01A', borderRadius: '22px 8px 22px 8px' }}
+        >
+            {/* 카테고리 로고 */}
+            <div className="absolute top-[21px] left-[21px]">
                 <CategoryIcon category={category} />
             </div>
 
             {/* 기사 제목 */}
-            <div className="flex w-full flex-1 items-center">
-                <div className="text-20px-medium line-clamp-3 overflow-hidden text-ellipsis">{title}</div>
+            <div className="absolute right-0 bottom-0 left-0 px-[33px] pb-[28px]">
+                <div className="text-20px-medium text-black">{truncatedTitle}</div>
             </div>
         </div>
     );

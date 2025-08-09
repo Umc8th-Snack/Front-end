@@ -4,14 +4,16 @@ import { Link, useLocation } from 'react-router-dom';
 
 import SearchIcon from '@/shared/assets/search.svg?react';
 import SnackLogo from '@/shared/assets/snack.svg?react';
+import LoginModal from '@/shared/components/modal/loginModal/LoginModal';
+import { useAuth } from '@/shared/context/AuthContext';
 
 import ConsentModal from '../modal/ConsentModal/ConsentModal';
 import SettingsDropdown from '../modal/SettingsDropdown/SettingsDropdown';
 
 const Navbar = () => {
-    const [isLoggedIn] = useState(true);
-    const [nickname] = useState('스내커');
+    const { isAuthenticated, user } = useAuth();
     const location = useLocation();
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
     //정보동의설정 모달 상태
     const [isConsentModalOpen, setIsConsentModalOpen] = useState(false);
@@ -47,10 +49,10 @@ const Navbar = () => {
 
                 {/* 우측 메뉴 */}
                 <nav className="text-18px-medium lg:text-20px-medium flex shrink-0 items-center gap-6 text-black select-none lg:gap-8">
-                    {isLoggedIn ? (
+                    {isAuthenticated ? (
                         <>
                             <p>
-                                <span className="font-bold">{nickname}</span>님
+                                <span className="font-bold">{user?.nickname}</span>님
                             </p>
                             <Link
                                 to="/mypage"
@@ -87,9 +89,12 @@ const Navbar = () => {
                         </>
                     ) : (
                         <>
-                            <Link to="/" className="hover:text-main transition-colors">
+                            <button
+                                className="hover:text-main transition-colors"
+                                onClick={() => setIsLoginModalOpen(true)}
+                            >
                                 회원가입/로그인
-                            </Link>
+                            </button>
                             <Link to="/" className="hover:text-main transition-colors">
                                 홈 화면
                             </Link>
@@ -98,6 +103,9 @@ const Navbar = () => {
                 </nav>
                 {isConsentModalOpen && <ConsentModal onClose={handleCloseConsentModal} />}
             </div>
+
+            {/* 로그인 모달 */}
+            <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
         </header>
     );
 };

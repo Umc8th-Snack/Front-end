@@ -6,7 +6,7 @@ const MainLayout = () => {
     return (
         <div className="min-h-screen bg-white">
             {
-                <header className="bg-white shadow">
+                <header>
                     <Navbar />
                 </header>
             }
