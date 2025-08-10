@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import ArticleCard from '@/shared/components/card/ArticleCard';
 import FieldChips from '@/shared/components/chip/FieldChips';
+import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
 import ArticleHeader from '@/shared/components/quiz/ArticleHeader';
 import QuizCommentary from '@/shared/components/quiz/QuizCommentary';
 import { quizCommentaryDummyData } from '@/shared/components/quiz/quizCommentaryData';
@@ -10,6 +11,14 @@ import QuizTestButtons from '@/shared/components/quiz/QuizTestButtons';
 const QuizCommentaryPage = () => {
     // ===== 테스트 모드 (현재 활성화) =====
     const [testMode, setTestMode] = useState<'allCorrect' | 'partialCorrect' | 'allWrong'>('partialCorrect');
+
+    // ===== 메모장 상태 관리 =====
+    const [isMemoPadOpen, setIsMemoPadOpen] = useState(false);
+
+    // 메모장 토글 핸들러
+    const handleMemoPadToggle = (enabled: boolean) => {
+        setIsMemoPadOpen(enabled);
+    };
 
     // 테스트용 데이터 생성
     const getTestData = () => {
@@ -66,8 +75,8 @@ const QuizCommentaryPage = () => {
                         <ArticleHeader
                             title="기사 제목"
                             originalLink="https://www.snack.com"
-                            isNotepadEnabled={true}
-                            onNotepadToggle={() => {}}
+                            isNotepadEnabled={isMemoPadOpen}
+                            onNotepadToggle={handleMemoPadToggle}
                         />
 
                         {/* 현재 테스트 데이터 사용 */}
@@ -89,6 +98,15 @@ const QuizCommentaryPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* 메모장 오버레이 */}
+            {isMemoPadOpen && (
+                <div className="fixed top-0 right-0 z-50 px-18 py-8">
+                    <div className="mt-20">
+                        <MemoPad />
+                    </div>
+                </div>
+            )}
         </>
     );
 };

@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import LinkIcon from '@/shared/assets/icons/link.svg?react';
 
 import ToggleSwitch from '../button/ToggleSwitch';
@@ -17,12 +15,10 @@ function ArticleHeader({
     isNotepadEnabled = false,
     onNotepadToggle,
 }: ArticleHeaderProps) {
-    const [internalNotepadState, setInternalNotepadState] = useState(isNotepadEnabled);
-
     const handleNotepadToggle = (checked: boolean) => {
-        setInternalNotepadState(checked);
         onNotepadToggle?.(checked);
     };
+
     return (
         <div className="mb-8 w-full border-b border-gray-200 pb-4">
             <div className="flex items-center justify-between">
@@ -43,7 +39,7 @@ function ArticleHeader({
                 {/* 메모장 토글 */}
                 <div className="flex items-center gap-2">
                     <span className="text-20px-medium text-gray-500">메모장</span>
-                    <ToggleSwitch checked={internalNotepadState} onChange={handleNotepadToggle} />
+                    <ToggleSwitch checked={isNotepadEnabled} onChange={handleNotepadToggle} />
                 </div>
             </div>
         </div>
