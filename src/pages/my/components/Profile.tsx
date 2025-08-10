@@ -27,18 +27,22 @@ const Profile = () => {
                     <DefaultImage />
                 )}
             </div>
+
             <div className="text-36px-semibold mt-4 text-black">{profile?.nickname}</div>
             <div className="text-24px-medium text-black-70">{profile?.email}</div>
-            <div className="flex items-center justify-between gap-92">
-                <p className="text-20px-medium text-black-30 mt-6">
+
+            <div className="mt-6 flex w-full items-end justify-between gap-4 text-left">
+                <p className="text-20px-medium text-black-30 flex-1 break-words">
                     {profile?.introduction || '소개글을 작성해보세요!'}
                 </p>
+
                 <Link to="/mypage/edit-profile">
-                    <button className="bg-main text-18px-medium mt-4 cursor-pointer rounded-[8px] px-4 py-2 text-white hover:bg-blue-700">
+                    <button className="bg-main text-18px-medium cursor-pointer rounded-[8px] px-4 py-2 text-white hover:bg-blue-700">
                         프로필 편집
                     </button>
                 </Link>
             </div>
+
             <div className="bg-black-30 mt-2 h-[1px] w-full" />
         </div>
     );
