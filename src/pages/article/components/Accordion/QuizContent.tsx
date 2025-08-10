@@ -1,22 +1,36 @@
 import { useState } from 'react';
 
-import type { QuizItem } from '@/shared/types/accordionTypes';
+import { useQuiz } from '../../hooks/useQuiz';
+import type { QuizItem } from '../../types/quizTypes';
 
 interface QuizContentProps {
-    data: QuizItem[];
-
+    articleId: number;
     onAnswersChange?: (_: number[]) => void;
-    // onAnswersChange?: (answers: number[]) => void;
-    // 원래 이거였는데 계속 ESLint 에러 떠서 주석처리함
     onClose?: () => void;
 }
 
-const QuizContent = ({ data, onAnswersChange, onClose }: QuizContentProps) => {
+const QuizContent = ({ articleId, onAnswersChange, onClose }: QuizContentProps) => {
+    // useQuiz 훅으로 API 데이터 가져오기
+    const { data: apiQuizData, isLoading, error } = useQuiz(articleId);
+
     const [current, setCurrent] = useState(0);
     const [selected, setSelected] = useState<number | null>(null);
-    // answers 상태 제거
     const [finished, setFinished] = useState(false);
     const [userAnswers, setUserAnswers] = useState<number[]>([]);
+
+    // API 데이터를 컴포넌트 데이터로 변환
+    const convertApiDataToQuizItem = (apiData: any): QuizItem[] => {
+        if (!apiData?.quizContent) return [];
+
+        return apiData.quizContent.map((quiz: any) => ({
+            id: quiz.quizId,
+            question: quiz.question,
+            options: quiz.options,
+            answer: 0, // API에는 정답이 없으므로 기본값
+        }));
+    };
+
+    const quizData = convertApiDataToQuizItem(apiQuizData);
 
     const handleSelect = (idx: number) => {
         setSelected(idx);
@@ -27,7 +41,7 @@ const QuizContent = ({ data, onAnswersChange, onClose }: QuizContentProps) => {
         const newAnswers = [...userAnswers, selected];
         setUserAnswers(newAnswers);
         setSelected(null);
-        if (current < data.length - 1) {
+        if (current < quizData.length - 1) {
             setCurrent(current + 1);
         } else {
             setFinished(true);
@@ -49,11 +63,26 @@ const QuizContent = ({ data, onAnswersChange, onClose }: QuizContentProps) => {
         if (onClose) onClose();
     };
 
+    // 로딩 상태 처리
+    if (isLoading) {
+        return <div className="py-8 text-center text-lg font-semibold">퀴즈 로딩 중...</div>;
+    }
+
+    // 에러 상태 처리
+    if (error) {
+        return <div className="py-8 text-center text-lg font-semibold text-red-500">퀴즈 로딩 실패</div>;
+    }
+
+    // 퀴즈 데이터가 없을 때
+    if (!quizData || quizData.length === 0) {
+        return <div className="py-8 text-center text-lg font-semibold">퀴즈가 없습니다</div>;
+    }
+
     if (finished) {
         return <div className="py-8 text-center text-lg font-semibold">퀴즈 종료</div>;
     }
 
-    const quiz = data[current];
+    const quiz = quizData[current];
 
     return (
         <div className="mx-auto w-full max-w-md">

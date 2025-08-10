@@ -15,7 +15,6 @@ const SearchPage = lazy(() => import('@/pages/search/SearchPage'));
 const PasswordChangePage = lazy(() => import('@/pages/settings/PasswordChangePage'));
 const DeleteAccountPage = lazy(() => import('@/pages/settings/DeleteAccountPage'));
 const EditProfilePage = lazy(() => import('@/pages/my/EditProfilePage'));
-const AccordionTestPage = lazy(() => import('@/pages/test/AccordionTestPage'));
 const ForgotPasswordPage = lazy(() => import('@/pages/forgot-password/ForgotPasswordPage'));
 const QuizCommentary = lazy(() => import('@/pages/test/QuizCommentaryPage'));
 
@@ -35,6 +34,14 @@ const routes: RouteObject[] = [
 
             {
                 path: 'article',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <ArticlePage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'article/:id',
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <ArticlePage />
@@ -90,14 +97,6 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <EditProfilePage />
-                    </Suspense>
-                ),
-            },
-            {
-                path: 'accordion-test',
-                element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <AccordionTestPage />
                     </Suspense>
                 ),
             },

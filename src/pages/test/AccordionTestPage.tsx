@@ -3,7 +3,11 @@ import { useState } from 'react';
 import Accordion from '@/pages/article/components/Accordion/Accordion';
 import { glossaryTestData, quizData } from '@/pages/article/components/Accordion/testData';
 
-const AccordionTestPage = () => {
+interface AccordionTestPageProps {
+    articleId: number;
+}
+
+const AccordionTestPage = ({ articleId }: AccordionTestPageProps) => {
     const [glossaryExpanded, setGlossaryExpanded] = useState(false);
     const [quizExpanded, setQuizExpanded] = useState(false);
 
@@ -25,6 +29,7 @@ const AccordionTestPage = () => {
                             data={quizData}
                             isExpanded={quizExpanded}
                             onToggle={() => setQuizExpanded((prev) => !prev)}
+                            articleId={articleId}
                         />
                     </div>
                 </div>

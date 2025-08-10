@@ -1,3 +1,5 @@
+import { useParams } from 'react-router-dom';
+
 import SummarizedNewsContainer from '@/pages/article/components/SummarizedNewsContainer/SummarizedNewsContainer';
 import AccordionTestPage from '@/pages/test/AccordionTestPage';
 import ChainIcon from '@/shared/assets/icons/chain-icon.svg?react';
@@ -5,6 +7,9 @@ import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
 import CategoryChips from '@/shared/components/chip/CategoryChips';
 
 const ArticlePage = () => {
+    const { id } = useParams<{ id: string }>();
+    const articleId = id ? parseInt(id, 10) : 1; // 기본값 1
+
     const handleToggleChange = (_checked: boolean) => {
         handleToggle(_checked);
     };
@@ -28,7 +33,7 @@ const ArticlePage = () => {
                 <div className="flex justify-center">
                     <SummarizedNewsContainer />
                 </div>
-                <AccordionTestPage />
+                <AccordionTestPage articleId={articleId} />
             </div>
         </div>
     );

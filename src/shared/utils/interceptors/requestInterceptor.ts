@@ -1,12 +1,11 @@
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 /**
- * 토큰을 가져오는 함수 (나중에 구현)
+ * 토큰을 가져오는 함수
  */
 const getAccessToken = (): string | null => {
-    // TODO: 실제 토큰 관리 로직 구현
-    // localStorage, sessionStorage, 또는 상태 관리에서 토큰 가져오기
-    return null;
+    return localStorage.getItem('accessToken');
+    // 토큰을 가져오기 위해서 임의로 설정했습니다.
 };
 
 /**
@@ -15,17 +14,14 @@ const getAccessToken = (): string | null => {
 export const handleRequestSuccess = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     // 토큰 추가
     const token = getAccessToken();
+
     if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
     }
 
     // 개발 환경에서 요청 로깅
     if (import.meta.env.DEV) {
-        console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`, {
-            data: config.data,
-            params: config.params,
-            headers: config.headers,
-        });
+        console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`);
     }
 
     return config;

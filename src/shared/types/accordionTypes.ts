@@ -8,6 +8,7 @@ export interface AccordionProps {
     data: GlossaryItem[];
     isExpanded?: boolean;
     onToggle?: () => void;
+    articleId?: number;
 }
 
 export interface QuizItem {

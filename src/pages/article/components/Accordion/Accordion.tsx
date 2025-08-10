@@ -1,17 +1,25 @@
 //통합 아코디언 컴포넌트
 import ChevronIcon from '@/assets/chevronIcon.svg?react';
 import SnackIcon from '@/assets/snackIcon.svg?react';
-import type { AccordionProps, GlossaryItem, QuizItem } from '@/shared/types/accordionTypes';
+import type { GlossaryItem } from '@/shared/types/accordionTypes';
 
 import GlossaryContent from './GlossaryContent';
 import QuizContent from './QuizContent';
 
+// 통합 아코디언 컴포넌트 - 용어집과 퀴즈 모두 지원
 const Accordion = ({
     title,
     data,
     isExpanded = false,
     onToggle,
-}: AccordionProps | { title: string; data: QuizItem[]; isExpanded?: boolean; onToggle?: () => void }) => {
+    articleId,
+}: {
+    title: string;
+    data: any; // 타입 에러 해결을 위해 any 사용
+    isExpanded?: boolean;
+    onToggle?: () => void;
+    articleId?: number;
+}) => {
     const isQuiz = data.length > 0 && 'question' in data[0];
     return (
         <div className="border-main-30 max-w-md rounded-[16px] border-[3px] bg-white p-6">
@@ -32,7 +40,7 @@ const Accordion = ({
             {/* 컨텐츠(용어집/퀴즈) */}
             {isExpanded &&
                 (isQuiz ? (
-                    <QuizContent data={data as QuizItem[]} onClose={onToggle} />
+                    <QuizContent articleId={articleId || 1} onClose={onToggle} />
                 ) : (
                     <GlossaryContent data={data as GlossaryItem[]} />
                 ))}
