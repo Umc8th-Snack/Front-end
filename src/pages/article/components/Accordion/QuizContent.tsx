@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import QuizExitModal from '@/shared/components/modal/QuizExitModal/QuizExitModal';
+
 import { useQuiz } from '../../hooks/useQuiz';
 import type { QuizItem } from '../../types/quizTypes';
 
@@ -17,6 +19,7 @@ const QuizContent = ({ articleId, onAnswersChange, onClose }: QuizContentProps) 
     const [selected, setSelected] = useState<number | null>(null);
     const [finished, setFinished] = useState(false);
     const [userAnswers, setUserAnswers] = useState<number[]>([]);
+    const [showExitModal, setShowExitModal] = useState(false);
 
     // API 데이터를 컴포넌트 데이터로 변환
     const convertApiDataToQuizItem = (apiData: any): QuizItem[] => {
@@ -53,13 +56,24 @@ const QuizContent = ({ articleId, onAnswersChange, onClose }: QuizContentProps) 
         onAnswersChange?.(newAnswers);
     };
 
-    // 중단하기 버튼 클릭 시 답안 콘솔 출력
+    // 중단하기 버튼 클릭 시 모달 표시
     const handleClose = () => {
+        setShowExitModal(true);
+    };
+
+    // 모달에서 이어풀기 선택 시
+    const handleContinue = () => {
+        setShowExitModal(false);
+    };
+
+    // 모달에서 중단하기 선택 시
+    const handleExit = () => {
         console.log(
             '사용자 답안:',
             userAnswers.map((answer) => answer + 1)
         );
         console.log('퀴즈 종료');
+        setShowExitModal(false);
         if (onClose) onClose();
     };
 
@@ -85,44 +99,55 @@ const QuizContent = ({ articleId, onAnswersChange, onClose }: QuizContentProps) 
     const quiz = quizData[current];
 
     return (
-        <div className="mx-auto w-full max-w-md">
-            {/* 문제 */}
-            <div className="text-18px-medium mb-6 text-black">
-                Q{current + 1}. {quiz.question}
-            </div>
+        <>
+            <div className="mx-auto w-full max-w-md">
+                {/* 문제 */}
+                <div className="text-18px-medium mb-6 text-black">
+                    Q{current + 1}. {quiz.question}
+                </div>
 
-            {/* 선택지 */}
-            <div className="mb-8 flex flex-col gap-3">
-                {quiz.options.map((opt: string, idx: number) => (
+                {/* 선택지 */}
+                <div className="mb-8 flex flex-col gap-3">
+                    {quiz.options.map((opt: string, idx: number) => (
+                        <button
+                            key={`${opt}-${idx}`}
+                            className={`text-14px-medium w-full rounded-lg border-1 px-4 py-2 transition-colors ${
+                                selected === idx
+                                    ? 'bg-main border-main text-white'
+                                    : 'border-main text-main hover:bg-main bg-white hover:text-white'
+                            } `}
+                            onClick={() => handleSelect(idx)}
+                        >
+                            <span className="mr-2">{idx + 1}.</span>
+                            {opt}
+                        </button>
+                    ))}
+                </div>
+
+                {/* 하단 버튼 */}
+                <div className="flex flex-col items-center gap-2">
                     <button
-                        key={`${opt}-${idx}`}
-                        className={`text-14px-medium w-full rounded-lg border-1 px-4 py-2 transition-colors ${
-                            selected === idx
-                                ? 'bg-main border-main text-white'
-                                : 'border-main text-main hover:bg-main bg-white hover:text-white'
-                        } `}
-                        onClick={() => handleSelect(idx)}
+                        className={`text-14px-medium w-full rounded-lg px-4 py-2 text-base transition-colors ${selected !== null ? 'cursor-pointer bg-blue-200 text-blue-700' : 'cursor-not-allowed bg-blue-100 text-blue-300'} `}
+                        onClick={handleNext}
+                        disabled={selected === null}
                     >
-                        <span className="mr-2">{idx + 1}.</span>
-                        {opt}
+                        다음문제
                     </button>
-                ))}
+                    <button className="w-full cursor-pointer rounded-lg px-4 text-gray-500" onClick={handleClose}>
+                        <span className="text-14px-medium border-b border-gray-500">중단하기</span>
+                    </button>
+                </div>
             </div>
 
-            {/* 하단 버튼 */}
-            <div className="flex flex-col items-center gap-2">
-                <button
-                    className={`text-14px-medium w-full rounded-lg px-4 py-2 text-base transition-colors ${selected !== null ? 'cursor-pointer bg-blue-200 text-blue-700' : 'cursor-not-allowed bg-blue-100 text-blue-300'} `}
-                    onClick={handleNext}
-                    disabled={selected === null}
-                >
-                    다음문제
-                </button>
-                <button className="w-full cursor-pointer rounded-lg px-4 text-gray-500" onClick={handleClose}>
-                    <span className="text-14px-medium border-b border-gray-500">중단하기</span>
-                </button>
-            </div>
-        </div>
+            {/* 퀴즈 중단 모달 */}
+            {showExitModal && (
+                <QuizExitModal
+                    onClose={() => setShowExitModal(false)}
+                    onContinue={handleContinue}
+                    onExit={handleExit}
+                />
+            )}
+        </>
     );
 };
 
