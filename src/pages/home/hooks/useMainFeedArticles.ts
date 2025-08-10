@@ -16,6 +16,7 @@ export const useMainFeedArticles = ({ categories, enabled = true }: UseMainFeedA
     return useInfiniteQuery<MainFeedResponse, Error>({
         queryKey: ['mainFeed', categories],
         queryFn: ({ pageParam }) => {
+            console.log('useInfiniteQuery 실행 - categories:', categories, 'pageParam:', pageParam);
             return fetchMainFeedArticles({
                 category: categories,
                 lastArticleId: pageParam as number | undefined,
