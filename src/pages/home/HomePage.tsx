@@ -4,32 +4,18 @@ import TodayGreetingBanner from '@/shared/components/banner/TodayGreetingBanner/
 import ArticleCard from '@/shared/components/card/ArticleCard';
 import OnboardingCard from '@/shared/components/card/OnboardingCard';
 import CategoryChips from '@/shared/components/chip/CategoryChips';
+import {
+    API_CATEGORIES,
+    DEFAULT_SELECTED_CATEGORIES,
+    mapApiCategoryToCardCategory,
+} from '@/shared/constants/categoryConstants';
 
 import { useMainFeedArticles } from './hooks/useMainFeedArticles';
 
-// 카테고리 매핑 (API 카테고리를 ArticleCard 카테고리로 변환)
-const CATEGORY_MAP = {
-    정치: '정치',
-    경제: '금융',
-    사회: '사회',
-    국제: '세계',
-    'IT/과학': '과학',
-    스포츠: '문화',
-    연예: '문화',
-} as const;
-
-type ArticleCardCategory = '정치' | '금융' | '사회' | '세계' | '과학' | '문화' | '기타';
-
-const mapCategory = (apiCategory: string): ArticleCardCategory => {
-    return CATEGORY_MAP[apiCategory as keyof typeof CATEGORY_MAP] || '기타';
-};
-
 const HomePage = () => {
-    const [selectedCategories, setSelectedCategories] = useState<string[]>(['정치']);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([...DEFAULT_SELECTED_CATEGORIES]);
     const observerRef = useRef<IntersectionObserver | null>(null);
     const loadMoreRef = useRef<HTMLDivElement>(null);
-
-    const categories = ['정치', '경제', '사회', '국제', '스포츠', '연예', 'IT/과학'];
 
     // API 호출 훅 사용
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useMainFeedArticles({
@@ -82,7 +68,7 @@ const HomePage = () => {
             {/* 카테고리 선택 */}
             <div className="mx-auto mb-12 max-w-[1121px]">
                 <CategoryChips
-                    categories={categories}
+                    categories={[...API_CATEGORIES]}
                     initialSelected={selectedCategories}
                     onChange={handleCategoryChange}
                 />
@@ -109,7 +95,7 @@ const HomePage = () => {
                                 <ArticleCard
                                     key={article.articleId}
                                     title={article.title}
-                                    category={mapCategory(article.category)}
+                                    category={mapApiCategoryToCardCategory(article.category)}
                                 />
                             ))}
                         </div>
