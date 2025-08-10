@@ -1,26 +1,71 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import TodayGreetingBanner from '@/shared/components/banner/TodayGreetingBanner/TodayGreetingBanner/TodayGreetingBanner';
 import ArticleCard from '@/shared/components/card/ArticleCard';
 import OnboardingCard from '@/shared/components/card/OnboardingCard';
 import CategoryChips from '@/shared/components/chip/CategoryChips';
 
+import { useMainFeedArticles } from './hooks/useMainFeedArticles';
+
+// 카테고리 매핑 (API 카테고리를 ArticleCard 카테고리로 변환)
+const CATEGORY_MAP = {
+    정치: '정치',
+    경제: '금융',
+    사회: '사회',
+    국제: '세계',
+    'IT/과학': '과학',
+    스포츠: '문화',
+    연예: '문화',
+} as const;
+
+type ArticleCardCategory = '정치' | '금융' | '사회' | '세계' | '과학' | '문화' | '기타';
+
+const mapCategory = (apiCategory: string): ArticleCardCategory => {
+    return CATEGORY_MAP[apiCategory as keyof typeof CATEGORY_MAP] || '기타';
+};
+
 const HomePage = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>(['정치']);
+    const observerRef = useRef<IntersectionObserver | null>(null);
+    const loadMoreRef = useRef<HTMLDivElement>(null);
 
     const categories = ['정치', '경제', '사회', '국제', '스포츠', '연예', 'IT/과학'];
 
-    const articleData = [
-        { title: '국토부, 오산 옹벽붕괴 사고 조사위원회 구성 국토부 기사 제목', category: '금융' as const },
-        { title: '국토부, 오산 옹벽붕괴 사고 조사위원회 구성 국토부 기사 제목', category: '과학' as const },
-        { title: '국토부, 오산 옹벽붕괴 사고 조사위원회 구성 국토부 기사 제목', category: '문화' as const },
-        { title: '국토부, 오산 옹벽붕괴 사고 조사위원회 구성 국토부 기사 제목', category: '문화' as const },
-        { title: '국토부, 오산 옹벽붕괴 사고 조사위원회 구성 국토부 기사 제목', category: '세계' as const },
-    ];
+    // API 호출 훅 사용
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useMainFeedArticles({
+        categories: selectedCategories,
+    });
 
     const handleCategoryChange = (selected: string[]) => {
         setSelectedCategories(selected);
     };
+
+    // Intersection Observer 설정 (무한 스크롤)
+    useEffect(() => {
+        if (observerRef.current) observerRef.current.disconnect();
+
+        observerRef.current = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+                    void fetchNextPage();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (loadMoreRef.current) {
+            observerRef.current.observe(loadMoreRef.current);
+        }
+
+        return () => {
+            if (observerRef.current) {
+                observerRef.current.disconnect();
+            }
+        };
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+    // 모든 페이지의 기사를 평면화
+    const articles = data?.pages.flatMap((page) => page.articles) || [];
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
@@ -45,11 +90,40 @@ const HomePage = () => {
 
             {/* 기사 카드 그리드 */}
             <div className="mx-auto max-w-[1151px] px-4">
-                <div className="grid grid-cols-3 justify-items-center gap-[33px] min-[1151px]:grid-cols-4">
-                    {articleData.map((article, index) => (
-                        <ArticleCard key={index} title={article.title} category={article.category} />
-                    ))}
-                </div>
+                {isLoading ? (
+                    <div className="flex h-[400px] items-center justify-center">
+                        <div className="text-gray-500">기사를 불러오는 중...</div>
+                    </div>
+                ) : isError ? (
+                    <div className="flex h-[400px] items-center justify-center">
+                        <div className="text-red-500">{error?.message || '기사를 불러오는데 실패했습니다.'}</div>
+                    </div>
+                ) : articles.length === 0 ? (
+                    <div className="flex h-[400px] items-center justify-center">
+                        <div className="text-gray-500">표시할 기사가 없습니다.</div>
+                    </div>
+                ) : (
+                    <>
+                        <div className="grid grid-cols-3 justify-items-center gap-[33px] min-[1151px]:grid-cols-4">
+                            {articles.map((article) => (
+                                <ArticleCard
+                                    key={article.articleId}
+                                    title={article.title}
+                                    category={mapCategory(article.category)}
+                                />
+                            ))}
+                        </div>
+
+                        {/* 무한 스크롤 트리거 */}
+                        <div ref={loadMoreRef} className="mt-8 h-10">
+                            {isFetchingNextPage && (
+                                <div className="flex items-center justify-center">
+                                    <div className="text-gray-500">더 많은 기사를 불러오는 중...</div>
+                                </div>
+                            )}
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );
