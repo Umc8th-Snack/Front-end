@@ -5,8 +5,8 @@ import { Link, useLocation } from 'react-router-dom';
 import SearchIcon from '@/shared/assets/search.svg?react';
 import SnackLogo from '@/shared/assets/snack.svg?react';
 
+import SettingsDropdown from '../../../pages/settings/SettingsDropdown/SettingsDropdown';
 import ConsentModal from '../modal/ConsentModal/ConsentModal';
-import SettingsDropdown from '../modal/SettingsDropdown/SettingsDropdown';
 
 const Navbar = () => {
     const [isLoggedIn] = useState(true);

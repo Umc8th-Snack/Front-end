@@ -59,7 +59,14 @@ const MyPage = () => {
             <div className="mt-6 space-y-6">
                 {tab === 'memo'
                     ? memos.map((m) => <MemoCard key={m.memoId} date={formatDate(m.createdAt)} content={m.content} />)
-                    : scraps.map((s) => <ScrapCard key={s.scrapId} title={s.title} summary={s.summaryPreview} />)}
+                    : scraps.map((s) => (
+                          <ScrapCard
+                              key={s.scrapId}
+                              title={s.title}
+                              summary={s.summaryPreview}
+                              articleId={s.articleId}
+                          />
+                      ))}
             </div>
             <Pagination
                 currentPage={currentPage}
