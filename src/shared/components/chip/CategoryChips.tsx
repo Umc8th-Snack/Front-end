@@ -31,21 +31,35 @@ function Chip({ label, selected, onClick, bgColor, isClickable = true }: ChipPro
 interface CategoryChipProps {
     categories: string[];
     initialSelected?: string[];
+    selected?: string[]; // controlled mode를 위한 prop
     onChange?: (selected: string[]) => void;
     bgColor?: string;
     isClickable?: boolean;
 }
 
-function CategoryChips({ categories, initialSelected = [], onChange, bgColor, isClickable = true }: CategoryChipProps) {
-    const [selectedSet, setSelectedSet] = useState<Set<string>>(new Set(initialSelected));
+function CategoryChips({
+    categories,
+    initialSelected = [],
+    selected,
+    onChange,
+    bgColor,
+    isClickable = true,
+}: CategoryChipProps) {
+    // controlled mode (selected prop이 있을 때) vs uncontrolled mode
+    const [internalSelected, setInternalSelected] = useState<Set<string>>(new Set(initialSelected));
+    const selectedSet = selected ? new Set(selected) : internalSelected;
 
     const handleClick = (label: string) => {
-        setSelectedSet((prev) => {
-            const newSet = new Set(prev);
-            newSet.has(label) ? newSet.delete(label) : newSet.add(label);
-            onChange?.([...newSet]);
-            return newSet;
-        });
+        const newSet = new Set(selectedSet);
+        newSet.has(label) ? newSet.delete(label) : newSet.add(label);
+        const newArray = [...newSet];
+
+        // controlled mode가 아닐 때만 내부 상태 업데이트
+        if (!selected) {
+            setInternalSelected(newSet);
+        }
+
+        onChange?.(newArray);
     };
 
     return (
