@@ -23,8 +23,15 @@ const HomePage = () => {
     });
 
     const handleCategoryChange = (selected: string[]) => {
+        console.log('카테고리 변경:', selected);
         setSelectedCategories(selected);
     };
+
+    // 카테고리 변경 시 API 호출 확인
+    useEffect(() => {
+        console.log('현재 선택된 카테고리:', selectedCategories);
+        console.log('API 로딩 상태:', isLoading);
+    }, [selectedCategories, isLoading]);
 
     // Intersection Observer 설정 (무한 스크롤)
     useEffect(() => {
@@ -69,7 +76,7 @@ const HomePage = () => {
             <div className="mx-auto mb-12 max-w-[1121px]">
                 <CategoryChips
                     categories={[...API_CATEGORIES]}
-                    initialSelected={selectedCategories}
+                    selected={selectedCategories}
                     onChange={handleCategoryChange}
                 />
             </div>
