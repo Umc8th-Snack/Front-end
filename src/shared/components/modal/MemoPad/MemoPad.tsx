@@ -1,6 +1,6 @@
 const MemoPad = () => {
     return (
-        <div className="border-main flex h-[440px] w-[360px] flex-col items-center justify-center rounded-[48px] border-[2px] shadow-2xl">
+        <div className="border-main flex h-[440px] w-[360px] flex-col items-center justify-center rounded-[48px] border-[2px] bg-white shadow-2xl">
             <div className="text-36px-medium mb-4 justify-center">메모장</div>
             <div className="bg-main mb-6 h-[2px] w-[300px]"></div>
             <div className="border-black-30 h-[280px] w-[300px] rounded-[16px] border-[2px] px-2 py-3">
