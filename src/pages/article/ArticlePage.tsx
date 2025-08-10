@@ -21,7 +21,7 @@ const ArticlePage = () => {
                     </div>
                     <div className="flex flex-1 items-center justify-end gap-1">
                         <div className="text-20px-medium text-black-70">메모장</div>
-                        <ToggleSwitch onChange={handleToggleChange} checked={false} />;
+                        <ToggleSwitch onChange={handleToggleChange} checked={false} />
                     </div>
                 </div>
                 <hr className="border-black-30 w-full border-t" />
