@@ -3,11 +3,11 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { getQuizByArticleId, submitQuizAnswers } from '@/pages/article/apis/quizApi';
+import ArticleHeader from '@/pages/article/components/ArticleHeader';
+import QuizCommentary from '@/pages/article/components/Quiz/QuizCommentary';
 import LoadingFallback from '@/routes/LoadingFallback';
 import ArticleCard from '@/shared/components/card/ArticleCard';
 import FieldChips from '@/shared/components/chip/FieldChips';
-import ArticleHeader from '@/shared/components/quiz/ArticleHeader';
-import QuizCommentary from '@/shared/components/quiz/QuizCommentary';
 
 const QuizCommentaryPage = () => {
     const location = useLocation();
