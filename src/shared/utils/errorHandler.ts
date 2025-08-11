@@ -83,23 +83,26 @@ const attemptTokenReissue = async (_originalError: CustomAxiosErrorTypes): Promi
     try {
         console.log('🔄 [ERROR HANDLER] 토큰 재발급 요청 중...');
 
-        // /api/auth/reissue 호출 (쿠키의 Refresh Token 자동 사용)
+        // /api/auth/reissue 호출
+        // Refresh Token은 HttpOnly 쿠키로 자동 전송 (withCredentials: true)
         const reissueResponse = await authApi.reissueTokenWithToken();
 
         // 새 Access Token 저장
         if (reissueResponse.token) {
             tokenUtils.setAccessToken(reissueResponse.token);
 
-            // 사용자 정보도 업데이트 (필요시)
-            localStorage.setItem('user', JSON.stringify(reissueResponse.data));
+            // 사용자 정보 업데이트
+            if (reissueResponse.data) {
+                localStorage.setItem('user', JSON.stringify(reissueResponse.data));
+            }
 
             console.log('✅ [ERROR HANDLER] 토큰 재발급 성공, 새 토큰 저장 완료');
+            // NOTE: React Query 캐시 무효화는 useReissueToken hook에서 처리
         } else {
             throw new Error('재발급된 토큰을 찾을 수 없습니다.');
         }
 
-        // 원본 요청 재시도는 response interceptor에서 처리하는 것이 더 적절
-        // 여기서는 토큰 저장까지만 수행
+        // 원본 요청 재시도는 response interceptor에서 처리
     } catch (reissueError) {
         console.error('❌ [ERROR HANDLER] 토큰 재발급 실패:', reissueError);
         handleForceLogout();
@@ -112,7 +115,7 @@ const attemptTokenReissue = async (_originalError: CustomAxiosErrorTypes): Promi
 const handleForceLogout = (): void => {
     console.log('🚪 [ERROR HANDLER] 강제 로그아웃 처리 중...');
 
-    // localStorage에서 토큰 제거
+    // Access Token 제거 (Refresh Token은 서버에서 쿠키 무효화)
     tokenUtils.removeAccessToken();
     console.log('🧹 [ERROR HANDLER] Access Token 제거 완료');
 
@@ -120,11 +123,14 @@ const handleForceLogout = (): void => {
     localStorage.removeItem('user');
     console.log('🧹 [ERROR HANDLER] 사용자 정보 제거 완료');
 
+    // NOTE: React Query 캐시는 useLogout hook에서 처리
+    // 여기서는 queryClient.clear() 호출 불가 (순환 의존성)
+
     // 홈페이지로 리다이렉트
     console.log('🏠 [ERROR HANDLER] 홈페이지로 리다이렉트');
     window.location.href = '/';
 
-    // 사용자에게 알림 (선택사항)
+    // 사용자에게 알림
     alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
 };
 
