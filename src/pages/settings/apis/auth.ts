@@ -10,3 +10,13 @@ export const deleteAccount = async (password: string): Promise<void> => {
         throw new Error(res.data.message);
     }
 };
+export interface ChangePasswordPayload {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
+export const changeMyPassword = async (payload: ChangePasswordPayload) => {
+    const res = await axiosInstance.patch('/api/users/me/password', payload);
+    return res.data;
+};
