@@ -35,7 +35,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             const token = tokenUtils.getAccessToken();
             if (token) {
                 console.log('🎫 [AUTH CONTEXT] 저장된 토큰 발견');
-                // TODO: 토큰으로 사용자 정보 조회 API 호출 또는 localStorage에서 사용자 정보 복원
+                // TODO: /api/users/me API 호출하여 사용자 정보 조회 (현재는 localStorage 사용)
                 const savedUser = localStorage.getItem('user');
                 if (savedUser) {
                     const userData = JSON.parse(savedUser);
@@ -60,6 +60,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const login = useCallback((token: string, userData: User) => {
         console.log('🔐 [AUTH CONTEXT] 로그인 처리 시작:', { userId: userData.userId, email: userData.email });
 
+        // Access Token만 localStorage에 저장 (Refresh Token은 HttpOnly 쿠키로 자동 관리)
         tokenUtils.setAccessToken(token);
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
@@ -70,12 +71,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const logout = useCallback(() => {
         console.log('🚪 [AUTH CONTEXT] 로그아웃 처리 시작');
 
+        // Access Token만 삭제 (Refresh Token은 서버에서 쿠키 무효화)
         tokenUtils.removeAccessToken();
         localStorage.removeItem('user');
         setUser(null);
 
         console.log('✅ [AUTH CONTEXT] 로컬 상태 정리 완료');
-        // TODO: 로그아웃 API 호출 (refresh token 무효화)
+        // NOTE: logout API 호출은 useLogout hook에서 처리
     }, []);
 
     const value = useMemo<AuthContextType>(
