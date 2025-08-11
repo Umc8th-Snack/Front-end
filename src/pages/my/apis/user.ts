@@ -8,6 +8,7 @@ export const fetchUserProfile = async (): Promise<UserProfile> => {
 
 export type UpdateUserProfilePayload = {
     nickname?: string;
+    profileImage?: string;
     introduction?: string;
 };
 

@@ -34,6 +34,6 @@ export interface UserProfile {
     userId: number;
     email: string;
     nickname: string;
-    profileUrl: string;
+    profileImage: string;
     introduction: string;
 }
