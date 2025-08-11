@@ -16,28 +16,39 @@ export const useQuizCommentary = (userAnswers: number[], articleId: number) => {
         enabled: !!articleId,
     });
 
+    // 퀴즈 콘텐츠 추출
+    const quizContent = quizData?.quizContent;
+    const hasQuizContent = Array.isArray(quizContent) && quizContent.length > 0;
+
     // 퀴즈 답안 제출 및 채점
     const { data: gradingResult, isLoading: isGradingLoading } = useQuery({
-        queryKey: ['quiz-grading', articleId, userAnswers, quizData?.quizContent],
+        queryKey: ['quiz-grading', articleId, userAnswers, hasQuizContent],
         queryFn: () => {
-            if (!quizData?.quizContent) {
+            if (!hasQuizContent) {
                 throw new Error('퀴즈 데이터가 없습니다');
             }
+
             return submitQuizAnswers(
                 articleId,
                 userAnswers.map((answer: number, index: number) => {
-                    const quizContent = quizData.quizContent[index];
-                    if (!quizContent) {
-                        throw new Error(`퀴즈 콘텐츠를 찾을 수 없습니다: 인덱스 ${index}`);
+                    // 안전한 배열 접근
+                    if (index < 0 || index >= quizContent.length) {
+                        throw new Error(`퀴즈 콘텐츠 인덱스 범위 오류: ${index}`);
                     }
+
+                    const quizItem = quizContent[index];
+                    if (!quizItem?.quizId) {
+                        throw new Error(`퀴즈 아이템 데이터 오류: 인덱스 ${index}`);
+                    }
+
                     return {
-                        quizId: quizContent.quizId,
+                        quizId: quizItem.quizId,
                         submitted_answer_index: answer,
                     };
                 })
             );
         },
-        enabled: !!articleId && userAnswers.length > 0 && !!quizData?.quizContent,
+        enabled: !!articleId && userAnswers.length > 0 && hasQuizContent,
     });
 
     // 데이터 변환
