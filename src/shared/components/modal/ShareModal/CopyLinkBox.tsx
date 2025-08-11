@@ -7,14 +7,14 @@ function CopyLinkBox({ link, onCopy }: CopyLinkBoxProps) {
     return (
         <div className="flex h-[60px] w-full max-w-[456px] items-center rounded-[8px] border border-black/50 px-[10px]">
             <input
-                className="text-20px-medium text-black-70 ml-[4px] max-w-[calc(100%-2px)] truncate bg-transparent outline-none"
+                className="text-20px-medium text-black-70 ml-[4px] flex-grow overflow-x-auto bg-transparent whitespace-nowrap outline-none"
                 value={link}
                 readOnly
             />
 
             <button
                 onClick={() => void onCopy()}
-                className="bg-main text-18px-medium ml-auto h-[40px] w-[80px] shrink-0 cursor-pointer rounded-[8px] text-white"
+                className="bg-main text-18px-medium ml-2 h-[40px] w-[80px] shrink-0 cursor-pointer rounded-[8px] text-white"
             >
                 복사
             </button>
