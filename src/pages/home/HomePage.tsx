@@ -57,7 +57,8 @@ const HomePage = () => {
         };
     }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-    // 모든 페이지의 기사를 평면화
+    // 무한 스크롤로 로드된 여러 페이지의 기사들을 하나의 배열로 평면화
+    // 예: [{articles: [1,2]}, {articles: [3,4]}] → [1,2,3,4]
     const articles = data?.pages.flatMap((page) => page.articles) || [];
 
     return (
