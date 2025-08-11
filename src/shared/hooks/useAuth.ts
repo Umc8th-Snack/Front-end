@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { authApi } from '../apis/auth';
 import type { LoginRequestTypes, LoginResponseTypes, SignupRequestTypes, SignupResponseTypes } from '../types/apiTypes';
@@ -25,10 +25,15 @@ export const useLogin = () => {
  * 로그아웃 mutation 훅
  */
 export const useLogout = () => {
+    const queryClient = useQueryClient();
+
     return useMutation<void, Error, void>({
         mutationFn: () => authApi.logout(),
         onSuccess: () => {
             console.log('✅ [USE LOGOUT] 로그아웃 뮤테이션 성공');
+            // React Query 캐시 전체 초기화
+            queryClient.clear();
+            console.log('🧼 [USE LOGOUT] React Query 캐시 초기화 완료');
         },
         onError: (error) => {
             console.error('❌ [USE LOGOUT] 로그아웃 뮤테이션 실패:', error);
@@ -40,13 +45,18 @@ export const useLogout = () => {
  * 토큰 재발급 mutation 훅
  */
 export const useReissueToken = () => {
+    const queryClient = useQueryClient();
+
     return useMutation<LoginResponseTypes, Error, void>({
         mutationFn: () => authApi.reissueToken(),
         onSuccess: (data) => {
-            console.log('토큰 재발급 성공:', data);
+            console.log('✅ [USE REISSUE] 토큰 재발급 성공:', data);
+            // 사용자 관련 쿼리 무효화 (예: ['user'], ['userInfo'] 등)
+            void queryClient.invalidateQueries({ queryKey: ['user'] });
+            console.log('🔄 [USE REISSUE] 사용자 쿼리 무효화 완료');
         },
         onError: (error) => {
-            console.error('토큰 재발급 실패:', error);
+            console.error('❌ [USE REISSUE] 토큰 재발급 실패:', error);
         },
     });
 };
