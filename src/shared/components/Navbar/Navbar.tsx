@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import SettingsDropdown from '@/pages/settings/components/SettingsDropdown/SettingsDropdown';
 import SearchIcon from '@/shared/assets/search.svg?react';
 import SnackLogo from '@/shared/assets/snack.svg?react';
 
-import SettingsDropdown from '../../../pages/settings/SettingsDropdown/SettingsDropdown';
 import ConsentModal from '../modal/ConsentModal/ConsentModal';
 
 const Navbar = () => {

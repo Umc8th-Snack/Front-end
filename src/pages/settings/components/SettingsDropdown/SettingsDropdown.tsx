@@ -2,7 +2,7 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getSettingsData } from '@/pages/settings/SettingsDropdown/settingsData';
+import { getSettingsData } from '@/pages/settings/components/SettingsDropdown/settingsData';
 
 import { useOutsideClick } from './useOutsideClick';
 
