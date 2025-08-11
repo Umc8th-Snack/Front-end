@@ -1,7 +1,7 @@
 // pages/settings/DeleteAccountPage.tsx
 import React, { useState } from 'react';
 
-import DeleteAccountModal from '@/shared/components/modal/DeleteAccountModal/DeleteAccountModal';
+import DeleteAccountModal from '@/pages/settings/components/DeleteAccountModal/DeleteAccountModal';
 
 const DeleteAccountPage = () => {
     const [password, setPassword] = useState('');
