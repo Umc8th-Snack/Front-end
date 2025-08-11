@@ -1,0 +1,37 @@
+import { useEffect, useRef, useState } from 'react';
+
+import { SCROLL_CONFIG } from '../constants/quiz';
+
+/**
+ * 퀴즈 해설 페이지의 스크롤 이벤트를 관리하는 커스텀 훅
+ * 스크롤이 하단에 도달하면 결과 메시지를 표시
+ */
+
+export const useQuizScroll = (onScrollToBottom: () => void) => {
+    const [showResultMessage, setShowResultMessage] = useState(false);
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (scrollRef.current) {
+                const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+                const isAtBottom = scrollTop + clientHeight >= scrollHeight - SCROLL_CONFIG.THRESHOLD;
+
+                if (isAtBottom && !showResultMessage) {
+                    setShowResultMessage(true);
+                    onScrollToBottom();
+                }
+            }
+        };
+
+        const scrollElement = scrollRef.current;
+        if (scrollElement) {
+            scrollElement.addEventListener('scroll', handleScroll);
+            return () => scrollElement.removeEventListener('scroll', handleScroll);
+        }
+
+        return undefined;
+    }, [showResultMessage, onScrollToBottom]);
+
+    return { scrollRef, showResultMessage };
+};

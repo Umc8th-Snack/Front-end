@@ -1,0 +1,46 @@
+import { QUIZ_MESSAGES, QUIZ_UI } from '@/shared/constants/quiz';
+
+/**
+ * 개별 퀴즈 문제와 해설을 렌더링하는 컴포넌트
+ * 문제 제목, 정답 여부, 정답 내용, 해설을 표시
+ */
+
+interface Question {
+    id: number;
+    question: string;
+    answer: string;
+    isCorrect: boolean;
+    explanation: string;
+}
+
+interface QuizQuestionItemProps {
+    question: Question;
+}
+
+export const QuizQuestionItem = ({ question }: QuizQuestionItemProps) => {
+    return (
+        <div className={`${QUIZ_UI.QUESTION_MARGIN} ${QUIZ_UI.BORDER_BOTTOM} pb-6 last:mb-0`}>
+            <div className={`${QUIZ_UI.QUESTION_MARGIN} flex items-start ${QUIZ_UI.GAP}`}>
+                <h3 className="text-28px-semibold flex-1">
+                    Q{question.id}. {question.question}
+                </h3>
+                <span
+                    className={`text-20px-medium whitespace-nowrap ${
+                        question.isCorrect ? 'text-red-500' : 'text-red-500'
+                    }`}
+                >
+                    {question.isCorrect ? QUIZ_MESSAGES.CORRECT : QUIZ_MESSAGES.INCORRECT}
+                </span>
+            </div>
+
+            <div className={QUIZ_UI.ANSWER_MARGIN}>
+                <p className="text-24px-semibold text-main">답: {question.answer}</p>
+            </div>
+
+            <div className="text-20px-medium" style={{ color: 'var(--color-black-30)' }}>
+                <h4 className={QUIZ_UI.EXPLANATION_MARGIN}>해설</h4>
+                <p className="leading-relaxed">{question.explanation}</p>
+            </div>
+        </div>
+    );
+};
