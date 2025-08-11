@@ -1,7 +1,7 @@
 import { SCROLL_CONFIG } from '../../constants/quiz';
 import { useQuizScroll } from '../../hooks/useQuizScroll';
-import { QuizHeader } from './QuizHeader';
-import { QuizQuestionItem } from './QuizQuestionItem';
+import QuizHeader from './QuizHeader';
+import QuizQuestionItem from './QuizQuestionItem';
 import QuizResultMessage from './QuizResultMessage';
 
 interface Question {
@@ -14,15 +14,14 @@ interface Question {
 
 interface QuizCommentaryProps {
     questions: Question[];
+    totalQuestions: number;
+    correctAnswers: number;
 }
 
-function QuizCommentary({ questions }: QuizCommentaryProps) {
+function QuizCommentary({ questions, totalQuestions, correctAnswers }: QuizCommentaryProps) {
     const { scrollRef, showResultMessage } = useQuizScroll(() => {
         // 스크롤 시 실행할 로직 (필요시 추가)
     });
-
-    const totalQuestions = questions.length;
-    const correctAnswers = questions.filter((q) => q.isCorrect).length;
 
     return (
         <div className="border-main-30 w-full rounded-lg border-[3px] bg-white p-8 shadow-sm">

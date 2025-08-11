@@ -7,7 +7,7 @@ import ShareIcon from '@/shared/assets/Share.svg?react';
  * 제목, 북마크, 공유 버튼을 포함
  */
 
-export const QuizHeader = () => {
+const QuizHeader = () => {
     return (
         <>
             <div className="flex items-center justify-between pb-6">
@@ -28,3 +28,5 @@ export const QuizHeader = () => {
         </>
     );
 };
+
+export default QuizHeader;

@@ -1,10 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { getQuizByArticleId, submitQuizAnswers } from '@/pages/article/apis/quizApi';
 import ArticleHeader from '@/pages/article/components/ArticleHeader';
 import QuizCommentary from '@/pages/article/components/Quiz/QuizCommentary';
+import { useQuizCommentary } from '@/pages/article/hooks/useQuizCommentary';
 import LoadingFallback from '@/routes/LoadingFallback';
 import ArticleCard from '@/shared/components/card/ArticleCard';
 import FieldChips from '@/shared/components/chip/FieldChips';
@@ -21,65 +20,21 @@ const QuizCommentaryPage = () => {
         }
     }, [userAnswers, articleId, navigate]);
 
-    // 퀴즈 질문 데이터 가져오기 (항상 호출되도록)
-    const { data: quizData, isLoading: isQuizLoading } = useQuery({
-        queryKey: ['quiz', 'byArticleId', articleId],
-        queryFn: () => getQuizByArticleId(articleId),
-        enabled: !!articleId,
-    });
+    // 커스텀 훅으로 퀴즈 데이터 가져오기 (항상 호출되어야 함)
+    const { questions, isLoading, totalQuestions, correctAnswers } = useQuizCommentary(
+        userAnswers || [],
+        articleId || 0
+    );
 
-    // 퀴즈 답안 제출 및 채점 (항상 호출되도록)
-    const { data: gradingResult, isLoading: isGradingLoading } = useQuery({
-        queryKey: ['quiz-grading', articleId, userAnswers, quizData?.quizContent],
-        queryFn: () => {
-            if (!quizData?.quizContent) {
-                throw new Error('퀴즈 데이터가 없습니다');
-            }
-            return submitQuizAnswers(
-                articleId,
-                userAnswers.map((answer: number, index: number) => ({
-                    quizId: quizData.quizContent[index].quizId,
-                    submitted_answer_index: answer,
-                }))
-            );
-        },
-        enabled: !!articleId && userAnswers.length > 0 && !!quizData?.quizContent,
-    });
-
-    // state가 없으면 렌더링하지 않음 (훅 호출 후에 체크)
+    // state가 없으면 렌더링하지 않음
     if (!userAnswers || !articleId) {
         return null;
     }
 
     // 로딩 중일 때 LoadingFallback 사용
-    if (isQuizLoading || isGradingLoading) {
+    if (isLoading) {
         return <LoadingFallback />;
     }
-
-    // 질문과 채점 결과를 통합하여 Question[] 형태로 변환
-    const questions = (() => {
-        // 데이터가 없으면 빈 배열 반환
-        if (!quizData?.quizContent || !gradingResult?.details) {
-            return [];
-        }
-
-        // 데이터가 있으면 통합하여 반환
-        return quizData.quizContent
-            .map((quiz) => {
-                const gradingDetail = gradingResult.details.find((detail) => detail.quizId === quiz.quizId);
-
-                if (!gradingDetail) return null;
-
-                return {
-                    id: quiz.quizId,
-                    question: quiz.question,
-                    answer: `${gradingDetail.answer_index + 1}번`,
-                    isCorrect: gradingDetail.isCorrect,
-                    explanation: gradingDetail.description,
-                };
-            })
-            .filter((item): item is NonNullable<typeof item> => item !== null);
-    })();
 
     return (
         <>
@@ -94,7 +49,11 @@ const QuizCommentaryPage = () => {
                             onNotepadToggle={() => {}}
                         />
 
-                        <QuizCommentary questions={questions} />
+                        <QuizCommentary
+                            questions={questions}
+                            totalQuestions={totalQuestions}
+                            correctAnswers={correctAnswers}
+                        />
                     </div>
                 </div>
 

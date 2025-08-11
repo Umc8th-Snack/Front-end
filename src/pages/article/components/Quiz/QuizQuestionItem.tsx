@@ -17,7 +17,7 @@ interface QuizQuestionItemProps {
     question: Question;
 }
 
-export const QuizQuestionItem = ({ question }: QuizQuestionItemProps) => {
+const QuizQuestionItem = ({ question }: QuizQuestionItemProps) => {
     return (
         <div className="mb-10 border-b border-gray-300 pb-6 last:mb-0">
             <div className="mb-6 flex items-start gap-4">
@@ -44,3 +44,5 @@ export const QuizQuestionItem = ({ question }: QuizQuestionItemProps) => {
         </div>
     );
 };
+
+export default QuizQuestionItem;
