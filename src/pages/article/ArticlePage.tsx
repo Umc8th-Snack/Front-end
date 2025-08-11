@@ -54,7 +54,7 @@ const ArticlePage = () => {
                                         href={article.articleUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-20px-medium text-black-70 inline-block max-w-[450px] truncate align-bottom"
+                                        className="text-20px-medium text-black-70 inline-block max-w-[510px] truncate align-bottom"
                                         title={article.articleUrl}
                                     >
                                         원문링크: {article.articleUrl}
@@ -93,7 +93,7 @@ const ArticlePage = () => {
                 </div>
 
                 {/* Sidebar */}
-                <aside className="mt-45">
+                <aside className="mt-">
                     <div className="sticky top-20">
                         <RelatedArticleList onClose={() => {}} />
                     </div>
