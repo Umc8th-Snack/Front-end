@@ -73,7 +73,7 @@ const QuizCommentaryPage = () => {
                 return {
                     id: quiz.quizId,
                     question: quiz.question,
-                    answer: `정답: ${gradingDetail.answer_index + 1}번`,
+                    answer: `${gradingDetail.answer_index + 1}번`,
                     isCorrect: gradingDetail.isCorrect,
                     explanation: gradingDetail.description,
                 };

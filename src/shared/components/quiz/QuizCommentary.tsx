@@ -70,12 +70,12 @@ function QuizCommentary({ questions }: QuizCommentaryProps) {
                 {/* 문제별 해설 */}
                 {questions.map((question) => (
                     <div key={question.id} className="mb-10 border-b border-gray-300 pb-6 last:mb-0">
-                        <div className="mb-6 flex items-center justify-between gap-2">
-                            <h3 className="text-28px-semibold">
+                        <div className="mb-6 flex items-start gap-4">
+                            <h3 className="text-28px-semibold flex-1">
                                 Q{question.id}. {question.question}
                             </h3>
                             <span
-                                className={`text-20px-medium ${question.isCorrect ? 'text-red-500' : 'text-red-500'}`}
+                                className={`text-20px-medium whitespace-nowrap ${question.isCorrect ? 'text-red-500' : 'text-red-500'}`}
                             >
                                 {question.isCorrect ? '맞았습니다!' : '틀렸습니다!'}
                             </span>
