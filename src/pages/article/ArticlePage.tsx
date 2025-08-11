@@ -10,6 +10,8 @@ import ChainIcon from '@/shared/assets/icons/chain-icon.svg?react';
 import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
 import FieldChips from '@/shared/components/chip/FieldChips';
 
+import RelatedArticleList from './components/RelatedArticleList/RelatedArticleList';
+
 const ArticlePage = () => {
     const { articleId } = useParams<{ articleId: string }>();
     const [article, setArticle] = useState<ArticleDetail | null>(null);
@@ -37,55 +39,62 @@ const ArticlePage = () => {
     }
 
     return (
-        <div className="w-[714px] pl-6">
-            <div className="mx-auto flex max-w-[714px] min-w-2xl flex-col gap-4 px-6 py-6">
-                {/*FieldChips + 원문 링크 */}
-                <div className="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
-                    <FieldChips label={article.category} />
-                    <div className="flex items-center gap-1">
-                        <ChainIcon />
-                        {article && (
-                            <a
-                                href={article.articleUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-20px-medium text-black-70 inline-block max-w-[450px] truncate align-bottom"
-                                title={article.articleUrl}
-                            >
-                                원문링크: {article.articleUrl}
-                            </a>
-                        )}
-                    </div>
-                </div>
-
-                {/* 기사 제목 + 메모장 토글 */}
-                {article && (
-                    <div className="grid w-full grid-cols-[1fr_auto] items-end gap-4">
-                        {/* 기사 제목 */}
-                        <h1 className="text-36px-semibold leading-tight break-words">{article.title}</h1>
-
-                        {/* 메모장 토글 */}
-                        <div className="flex items-center gap-2">
-                            <div className="text-20px-medium text-black-70">메모장</div>
-                            <ToggleSwitch onChange={handleToggleChange} checked={false} />
+        <div className="mx-auto grid grid-cols-[minmax(0,714px)_264px] gap-6 px-6 py-6">
+            <div className="w-[714px] pl-15">
+                <div className="mx-auto flex max-w-[714px] min-w-2xl flex-col gap-4 px-6 py-6">
+                    {/*FieldChips + 원문 링크 */}
+                    <div className="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
+                        <FieldChips label={article.category} />
+                        <div className="flex items-center gap-1">
+                            <ChainIcon />
+                            {article && (
+                                <a
+                                    href={article.articleUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-20px-medium text-black-70 inline-block max-w-[450px] truncate align-bottom"
+                                    title={article.articleUrl}
+                                >
+                                    원문링크: {article.articleUrl}
+                                </a>
+                            )}
                         </div>
                     </div>
-                )}
 
-                <hr className="border-black-30 w-full border-t" />
+                    {/* 기사 제목 + 메모장 토글 */}
+                    {article && (
+                        <div className="grid w-full grid-cols-[1fr_auto] items-end gap-4">
+                            {/* 기사 제목 */}
+                            <h1 className="text-36px-semibold leading-tight break-words">{article.title}</h1>
 
-                {article && (
-                    <div className="flex justify-center pt-4">
-                        <SummarizedNewsContainer
-                            summary={article.summary}
-                            articleId={article.articleId}
-                            title={article.title}
-                            image={article.imageUrl ?? ''}
-                        />
-                    </div>
-                )}
-                <AccordionTestPage />
+                            {/* 메모장 토글 */}
+                            <div className="flex items-center gap-2">
+                                <div className="text-20px-medium text-black-70">메모장</div>
+                                <ToggleSwitch onChange={handleToggleChange} checked={false} />
+                            </div>
+                        </div>
+                    )}
+
+                    <hr className="border-black-30 w-full border-t" />
+
+                    {article && (
+                        <div className="flex justify-center pt-4">
+                            <SummarizedNewsContainer
+                                summary={article.summary}
+                                articleId={article.articleId}
+                                title={article.title}
+                                image={article.imageUrl ?? ''}
+                            />
+                        </div>
+                    )}
+                    <AccordionTestPage />
+                </div>
             </div>
+            <aside className="mt-45 ml-70">
+                <div className="sticky top-20">
+                    <RelatedArticleList onClose={() => {}} />
+                </div>
+            </aside>
         </div>
     );
 };
