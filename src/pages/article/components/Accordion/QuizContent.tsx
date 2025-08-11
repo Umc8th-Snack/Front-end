@@ -10,17 +10,12 @@ interface QuizContentProps {
     articleId: number;
     onAnswersChange?: (_: number[]) => void;
     onClose?: () => void;
+    onConfirm?: () => void;
 }
 
-const QuizContent = ({ articleId, onAnswersChange, onClose }: QuizContentProps) => {
+const QuizContent = ({ articleId, onAnswersChange, onClose, onConfirm }: QuizContentProps) => {
     // useQuiz 훅으로 API 데이터 가져오기
     const { data: apiQuizData, isLoading, error } = useQuiz(articleId);
-
-    // API 호출 상태 디버깅
-    console.log('QuizContent - articleId:', articleId);
-    console.log('QuizContent - apiQuizData:', apiQuizData);
-    console.log('QuizContent - isLoading:', isLoading);
-    console.log('QuizContent - error:', error);
 
     const [current, setCurrent] = useState(0);
     const [selected, setSelected] = useState<number | null>(null);
@@ -30,15 +25,33 @@ const QuizContent = ({ articleId, onAnswersChange, onClose }: QuizContentProps) 
     const [showCompleteModal, setShowCompleteModal] = useState(false);
 
     // API 데이터를 컴포넌트 데이터로 변환
-    const convertApiDataToQuizItem = (apiData: any): QuizItem[] => {
-        if (!apiData?.quizContent) return [];
+    const convertApiDataToQuizItem = (apiData: unknown): QuizItem[] => {
+        if (!apiData || typeof apiData !== 'object' || apiData === null) return [];
 
-        return apiData.quizContent.map((quiz: any) => ({
-            id: quiz.quizId,
-            question: quiz.question,
-            options: quiz.options,
-            answer: 0, // API에는 정답이 없으므로 기본값
-        }));
+        const data = apiData as { quizContent?: unknown[] };
+        if (!data.quizContent || !Array.isArray(data.quizContent)) return [];
+
+        return data.quizContent
+            .map((quiz: unknown) => {
+                if (typeof quiz !== 'object' || quiz === null) return null;
+
+                const quizData = quiz as { quizId?: unknown; question?: unknown; options?: unknown[] };
+                if (
+                    typeof quizData.quizId !== 'number' ||
+                    typeof quizData.question !== 'string' ||
+                    !Array.isArray(quizData.options)
+                ) {
+                    return null;
+                }
+
+                return {
+                    id: quizData.quizId,
+                    question: quizData.question,
+                    options: quizData.options,
+                    answer: 0, // API에는 정답이 없으므로 기본값
+                };
+            })
+            .filter((item): item is QuizItem => item !== null);
     };
 
     const quizData = convertApiDataToQuizItem(apiQuizData);
@@ -96,8 +109,7 @@ const QuizContent = ({ articleId, onAnswersChange, onClose }: QuizContentProps) 
     const handleCompleteConfirm = () => {
         console.log('정답 확인 페이지로 이동');
         setShowCompleteModal(false);
-        // TODO: 정답 확인 페이지로 라우팅
-        if (onClose) onClose();
+        onConfirm?.(); // 부모에게 라우팅 위임
     };
 
     // 로딩 상태 처리
@@ -140,20 +152,21 @@ const QuizContent = ({ articleId, onAnswersChange, onClose }: QuizContentProps) 
 
                 {/* 선택지 */}
                 <div className="mb-8 flex flex-col gap-3">
-                    {quiz.options.map((opt: string, idx: number) => (
-                        <button
-                            key={`${opt}-${idx}`}
-                            className={`text-14px-medium w-full rounded-lg border-1 px-4 py-2 transition-colors ${
-                                selected === idx
-                                    ? 'bg-main border-main text-white'
-                                    : 'border-main text-main hover:bg-main bg-white hover:text-white'
-                            } `}
-                            onClick={() => handleSelect(idx)}
-                        >
-                            <span className="mr-2">{idx + 1}.</span>
-                            {opt}
-                        </button>
-                    ))}
+                    {Array.isArray(quiz.options) &&
+                        quiz.options.map((opt: string, idx: number) => (
+                            <button
+                                key={`quiz-${quiz.id}-option-${opt}-${idx}`}
+                                className={`text-14px-medium w-full rounded-lg border-1 px-4 py-2 transition-colors ${
+                                    selected === idx
+                                        ? 'bg-main border-main text-white'
+                                        : 'border-main text-main hover:bg-main bg-white hover:text-white'
+                                } `}
+                                onClick={() => handleSelect(idx)}
+                            >
+                                <span className="mr-2">{idx + 1}.</span>
+                                {opt}
+                            </button>
+                        ))}
                 </div>
 
                 {/* 하단 버튼 */}

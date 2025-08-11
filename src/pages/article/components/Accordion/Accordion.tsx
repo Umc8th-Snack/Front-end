@@ -1,4 +1,6 @@
 //통합 아코디언 컴포넌트
+import { useNavigate } from 'react-router-dom';
+
 import ChevronIcon from '@/assets/chevronIcon.svg?react';
 import SnackIcon from '@/assets/snackIcon.svg?react';
 import type { GlossaryItem } from '@/shared/types/accordionTypes';
@@ -15,12 +17,19 @@ const Accordion = ({
     articleId,
 }: {
     title: string;
-    data: any; // 타입 에러 해결을 위해 any 사용
+    data: unknown[]; // any 대신 unknown[] 사용
     isExpanded?: boolean;
     onToggle?: () => void;
     articleId?: number;
 }) => {
-    const isQuiz = data.length > 0 && 'question' in data[0];
+    const navigate = useNavigate();
+    const isQuiz =
+        data.length > 0 &&
+        Array.isArray(data) &&
+        data.length > 0 &&
+        typeof data[0] === 'object' &&
+        data[0] !== null &&
+        'question' in data[0];
     return (
         <div className="border-main-30 max-w-md rounded-[16px] border-[3px] bg-white p-6">
             {/* 헤더 */}
@@ -40,7 +49,13 @@ const Accordion = ({
             {/* 컨텐츠(용어집/퀴즈) */}
             {isExpanded &&
                 (isQuiz ? (
-                    <QuizContent articleId={articleId || 1} onClose={onToggle} />
+                    <QuizContent
+                        articleId={articleId || 1}
+                        onClose={onToggle}
+                        onConfirm={() => {
+                            void navigate('/article/quiz-commentary');
+                        }}
+                    />
                 ) : (
                     <GlossaryContent data={data as GlossaryItem[]} />
                 ))}
