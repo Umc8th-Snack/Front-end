@@ -23,7 +23,7 @@ const RelatedArticleList = ({ onClose }: RelatedArticleListProps) => {
             aria-labelledby="related-articles-title"
             className="relative flex w-[240px] flex-col items-center rounded-[15px] bg-white p-8 shadow-[0_0_10px_rgba(0,0,0,0.15)]"
         >
-            <h2 id="related-articles-title" className="mb-4 text-lg font-semibold">
+            <h2 id="related-articles-title" className="mt-4 mb-4 text-lg font-semibold">
                 관련 기사 보러가기
             </h2>
 
