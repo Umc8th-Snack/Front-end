@@ -1,5 +1,6 @@
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
+import { userApi } from '@/shared/apis/user';
 import { tokenUtils } from '@/shared/utils/auth';
 
 interface User {
@@ -29,23 +30,45 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const isAuthenticated = !!user && tokenUtils.hasAccessToken();
 
     useEffect(() => {
-        const initializeAuth = () => {
+        const initializeAuth = async () => {
             console.log('🔄 [AUTH CONTEXT] 인증 상태 초기화 시작');
 
             const token = tokenUtils.getAccessToken();
             if (token) {
                 console.log('🎫 [AUTH CONTEXT] 저장된 토큰 발견');
-                // TODO: /api/users/me API 호출하여 사용자 정보 조회 (현재는 localStorage 사용)
-                const savedUser = localStorage.getItem('user');
-                if (savedUser) {
-                    const userData = JSON.parse(savedUser);
+
+                try {
+                    // /api/users/me API 호출하여 사용자 정보 조회
+                    const userInfo = await userApi.getMyInfo();
+
+                    // API에서 받은 정보를 User 타입에 맞게 변환
+                    const userData: User = {
+                        userId: userInfo.userId,
+                        nickname: userInfo.nickname,
+                        email: userInfo.email,
+                    };
+
                     setUser(userData);
-                    console.log('✅ [AUTH CONTEXT] 사용자 정보 복원 완료:', {
+                    localStorage.setItem('user', JSON.stringify(userData));
+
+                    console.log('✅ [AUTH CONTEXT] API로 사용자 정보 조회 성공:', {
                         userId: userData.userId,
                         email: userData.email,
                     });
-                } else {
-                    console.log('⚠️ [AUTH CONTEXT] 토큰은 있지만 사용자 정보가 없음');
+                } catch (error) {
+                    console.error('❌ [AUTH CONTEXT] 사용자 정보 조회 실패:', error);
+
+                    // API 실패 시 localStorage에서 복원 시도 (fallback)
+                    const savedUser = localStorage.getItem('user');
+                    if (savedUser) {
+                        const userData = JSON.parse(savedUser);
+                        setUser(userData);
+                        console.log('⚠️ [AUTH CONTEXT] localStorage에서 사용자 정보 복원');
+                    } else {
+                        // 토큰은 있지만 사용자 정보를 가져올 수 없는 경우
+                        console.log('⚠️ [AUTH CONTEXT] 토큰은 있지만 사용자 정보 없음');
+                        tokenUtils.removeAccessToken(); // 유효하지 않은 토큰 제거
+                    }
                 }
             } else {
                 console.log('❌ [AUTH CONTEXT] 저장된 토큰 없음');
@@ -54,7 +77,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             console.log('✅ [AUTH CONTEXT] 인증 상태 초기화 완료');
         };
 
-        initializeAuth();
+        void initializeAuth();
     }, []);
 
     const login = useCallback((token: string, userData: User) => {
