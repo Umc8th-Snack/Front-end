@@ -4,9 +4,8 @@ const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
     withCredentials: true,
     headers: {
-        'Content-Type': 'application/json',
         //임시로 직접 넣음
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJJZCI6MTIsImVtYWlsIjoibXlwYWdldGVzdEBuYXZlci5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzU0NTk0OTgyLCJleHAiOjE3NTQ1OTY3ODJ9.GAP6b3e1A1r_xMTjGPikwN1jJuLy5olyiSLFlvXIaEA`,
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJJZCI6MiwiZW1haWwiOiJteXBhZ2VAbmF2ZXIuY29tIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTc1NDkxODczNSwiZXhwIjoxNzU0OTIwNTM1fQ.paPhryzLK-3jfz0Z08O1kCYutOqQlfYdim7wD1m0Hng `,
     },
 });
 
