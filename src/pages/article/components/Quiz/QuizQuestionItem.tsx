@@ -1,4 +1,4 @@
-import { QUIZ_MESSAGES, QUIZ_UI } from '@/shared/constants/quiz';
+import { QUIZ_MESSAGES } from '../../constants/quiz';
 
 /**
  * 개별 퀴즈 문제와 해설을 렌더링하는 컴포넌트
@@ -19,8 +19,8 @@ interface QuizQuestionItemProps {
 
 export const QuizQuestionItem = ({ question }: QuizQuestionItemProps) => {
     return (
-        <div className={`${QUIZ_UI.QUESTION_MARGIN} ${QUIZ_UI.BORDER_BOTTOM} pb-6 last:mb-0`}>
-            <div className={`${QUIZ_UI.QUESTION_MARGIN} flex items-start ${QUIZ_UI.GAP}`}>
+        <div className="mb-10 border-b border-gray-300 pb-6 last:mb-0">
+            <div className="mb-6 flex items-start gap-4">
                 <h3 className="text-28px-semibold flex-1">
                     Q{question.id}. {question.question}
                 </h3>
@@ -33,12 +33,12 @@ export const QuizQuestionItem = ({ question }: QuizQuestionItemProps) => {
                 </span>
             </div>
 
-            <div className={QUIZ_UI.ANSWER_MARGIN}>
+            <div className="mb-4">
                 <p className="text-24px-semibold text-main">답: {question.answer}</p>
             </div>
 
             <div className="text-20px-medium" style={{ color: 'var(--color-black-30)' }}>
-                <h4 className={QUIZ_UI.EXPLANATION_MARGIN}>해설</h4>
+                <h4 className="mb-1">해설</h4>
                 <p className="leading-relaxed">{question.explanation}</p>
             </div>
         </div>

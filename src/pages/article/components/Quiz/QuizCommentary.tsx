@@ -1,6 +1,5 @@
-import { SCROLL_CONFIG } from '@/shared/constants/quiz';
-import { useQuizScroll } from '@/shared/hooks/useQuizScroll';
-
+import { SCROLL_CONFIG } from '../../constants/quiz';
+import { useQuizScroll } from '../../hooks/useQuizScroll';
 import { QuizHeader } from './QuizHeader';
 import { QuizQuestionItem } from './QuizQuestionItem';
 import QuizResultMessage from './QuizResultMessage';

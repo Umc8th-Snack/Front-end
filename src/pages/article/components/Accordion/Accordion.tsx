@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import ChevronIcon from '@/assets/chevronIcon.svg?react';
 import SnackIcon from '@/assets/snackIcon.svg?react';
-import type { GlossaryItem } from '@/shared/types/accordionTypes';
 
+import type { GlossaryItem } from '../../types/accordionTypes';
 import GlossaryContent from './GlossaryContent';
 import QuizContent from './QuizContent';
 

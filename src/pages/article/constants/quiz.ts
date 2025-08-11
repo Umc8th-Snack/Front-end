@@ -9,12 +9,3 @@ export const SCROLL_CONFIG = {
     THRESHOLD: 50,
     MAX_HEIGHT: 'max-h-140',
 } as const;
-
-// 퀴즈 UI 스타일링 상수
-export const QUIZ_UI = {
-    GAP: 'gap-4',
-    BORDER_BOTTOM: 'border-b border-gray-300',
-    QUESTION_MARGIN: 'mb-10',
-    ANSWER_MARGIN: 'mb-4',
-    EXPLANATION_MARGIN: 'mb-1',
-} as const;
