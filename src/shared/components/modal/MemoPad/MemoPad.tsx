@@ -140,11 +140,6 @@ const MemoPad = ({ articleId }: MemoPadProps) => {
                     {isDeleting && <div className="text-orange-600">삭제 중...</div>}
                 </div>
             </div>
-
-            {/* 디버그 정보 */}
-            <div className="mt-2 text-center text-xs text-gray-500">
-                Article ID: {articleId} | Memos: {memos.length} | Current Memo ID: {currentEditingMemoId}
-            </div>
         </div>
     );
 };

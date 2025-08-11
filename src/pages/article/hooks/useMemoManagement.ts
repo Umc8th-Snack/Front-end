@@ -34,10 +34,10 @@ export const useMemoManagement = ({ articleId }: UseMemoManagementProps) => {
         setMemoState((prev) => ({ ...prev, isLoading: true, error: null }));
 
         try {
-            const response = await getMemosByArticle(typeof articleId === 'string' ? Number(articleId) : articleId);
+            const memos = await getMemosByArticle(typeof articleId === 'string' ? Number(articleId) : articleId);
             setMemoState((prev) => ({
                 ...prev,
-                memos: response.memos,
+                memos: memos,
                 isLoading: false,
             }));
         } catch (error) {
