@@ -22,7 +22,7 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data.data;
+        return response.data as T;
     },
 
     /**
@@ -33,7 +33,7 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data.data;
+        return response.data as T;
     },
 
     /**
@@ -44,7 +44,7 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data.data;
+        return response.data as T;
     },
 
     /**
@@ -55,7 +55,7 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data.data;
+        return response.data as T;
     },
 
     /**
@@ -66,7 +66,7 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data.data;
+        return response.data as T;
     },
 };
 

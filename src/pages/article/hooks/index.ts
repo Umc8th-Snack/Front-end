@@ -1,0 +1,1 @@
+export { useMemoManagement } from './useMemoManagement';
