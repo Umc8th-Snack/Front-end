@@ -7,10 +7,10 @@ import type { ArticleDetail } from '@/pages/article/types/article';
 import AccordionTestPage from '@/pages/test/AccordionTestPage';
 import LoadingFallback from '@/routes/LoadingFallback';
 import ChainIcon from '@/shared/assets/icons/chain-icon.svg?react';
-import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
 import FieldChips from '@/shared/components/chip/FieldChips';
 
 import RelatedArticleList from './components/RelatedArticleList/RelatedArticleList';
+import TitleWithToggle from './components/TitleWithToggle/TitleWithToggle';
 
 const ArticlePage = () => {
     const { articleId } = useParams<{ articleId: string }>();
@@ -30,18 +30,13 @@ const ArticlePage = () => {
         void fetchData();
     }, [articleId]);
 
-    const handleToggleChange = (_checked: boolean) => {
-        handleToggle(_checked);
-    };
-
     if (!article) {
         return <LoadingFallback />;
     }
 
     return (
         <div className="px-6 py-6">
-            <div className="mx-auto grid max-w-[1100px] grid-cols-[714px_264px] gap-30">
-                {/* Main content */}
+            <div className="mx-auto grid max-w-[1100px] grid-cols-[720px_264px] gap-30">
                 <div>
                     <div className="flex flex-col gap-4 px-6 py-6">
                         {/* FieldChips + 원문 링크 */}
@@ -54,7 +49,7 @@ const ArticlePage = () => {
                                         href={article.articleUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-20px-medium text-black-70 inline-block max-w-[510px] truncate align-bottom"
+                                        className="text-20px-medium text-black-70 inline-block max-w-[525px] truncate align-bottom"
                                         title={article.articleUrl}
                                     >
                                         원문링크: {article.articleUrl}
@@ -63,16 +58,7 @@ const ArticlePage = () => {
                             </div>
                         </div>
 
-                        {/* 기사 제목 + 메모장 토글 */}
-                        {article && (
-                            <div className="grid w-full grid-cols-[1fr_auto] items-end gap-4">
-                                <h1 className="text-36px-semibold leading-tight break-words">{article.title}</h1>
-                                <div className="flex items-center gap-2">
-                                    <div className="text-20px-medium text-black-70">메모장</div>
-                                    <ToggleSwitch onChange={handleToggleChange} checked={false} />
-                                </div>
-                            </div>
-                        )}
+                        <TitleWithToggle title={article.title} onToggleChange={handleToggle} />
 
                         <hr className="border-black-30 w-full border-t" />
 
@@ -93,7 +79,7 @@ const ArticlePage = () => {
                 </div>
 
                 {/* Sidebar */}
-                <aside className="mt-">
+                <aside className="mt-45">
                     <div className="sticky top-20">
                         <RelatedArticleList onClose={() => {}} />
                     </div>
