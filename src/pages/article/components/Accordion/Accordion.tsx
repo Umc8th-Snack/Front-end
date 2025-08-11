@@ -1,4 +1,5 @@
 //통합 아코디언 컴포넌트
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ChevronIcon from '@/assets/chevronIcon.svg?react';
@@ -23,6 +24,7 @@ const Accordion = ({
     articleId?: number;
 }) => {
     const navigate = useNavigate();
+    const [userAnswers, setUserAnswers] = useState<number[]>([]);
     const isQuiz =
         data.length > 0 &&
         Array.isArray(data) &&
@@ -52,8 +54,15 @@ const Accordion = ({
                     <QuizContent
                         articleId={articleId || 1}
                         onClose={onToggle}
+                        onAnswersChange={setUserAnswers}
                         onConfirm={() => {
-                            void navigate('/article/quiz-commentary');
+                            // 사용자 답안을 state로 전달
+                            void navigate('/article/quiz-commentary', {
+                                state: {
+                                    userAnswers,
+                                    articleId: articleId || 1,
+                                },
+                            });
                         }}
                     />
                 ) : (

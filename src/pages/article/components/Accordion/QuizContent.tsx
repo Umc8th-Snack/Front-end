@@ -109,6 +109,7 @@ const QuizContent = ({ articleId, onAnswersChange, onClose, onConfirm }: QuizCon
     const handleCompleteConfirm = () => {
         console.log('정답 확인 페이지로 이동');
         setShowCompleteModal(false);
+        // 사용자 답안과 함께 정답 확인 페이지로 이동
         onConfirm?.(); // 부모에게 라우팅 위임
     };
 
@@ -153,20 +154,23 @@ const QuizContent = ({ articleId, onAnswersChange, onClose, onConfirm }: QuizCon
                 {/* 선택지 */}
                 <div className="mb-8 flex flex-col gap-3">
                     {Array.isArray(quiz.options) &&
-                        quiz.options.map((opt: string, idx: number) => (
-                            <button
-                                key={`quiz-${quiz.id}-option-${opt}-${idx}`}
-                                className={`text-14px-medium w-full rounded-lg border-1 px-4 py-2 transition-colors ${
-                                    selected === idx
-                                        ? 'bg-main border-main text-white'
-                                        : 'border-main text-main hover:bg-main bg-white hover:text-white'
-                                } `}
-                                onClick={() => handleSelect(idx)}
-                            >
-                                <span className="mr-2">{idx + 1}.</span>
-                                {opt}
-                            </button>
-                        ))}
+                        quiz.options.map((opt: string, idx: number) => {
+                            const optionKey = `quiz-${quiz.id}-option-${String(opt).replace(/[^a-zA-Z0-9]/g, '')}-${idx}`;
+                            return (
+                                <button
+                                    key={optionKey}
+                                    className={`text-14px-medium w-full rounded-lg border-1 px-4 py-2 transition-colors ${
+                                        selected === idx
+                                            ? 'bg-main border-main text-white'
+                                            : 'border-main text-main hover:bg-main bg-white hover:text-white'
+                                    } `}
+                                    onClick={() => handleSelect(idx)}
+                                >
+                                    <span className="mr-2">{idx + 1}.</span>
+                                    {opt}
+                                </button>
+                            );
+                        })}
                 </div>
 
                 {/* 하단 버튼 */}
