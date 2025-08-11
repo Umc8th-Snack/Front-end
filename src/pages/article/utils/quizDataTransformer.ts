@@ -1,7 +1,5 @@
-/**
- * 퀴즈 데이터와 채점 결과를 Question[] 형태로 변환하는 유틸리티
- * API 응답 데이터를 컴포넌트에서 사용할 수 있는 형태로 가공
- */
+/** 퀴즈 데이터와 채점 결과를 Question[] 형태로 변환
+ * API 응답 데이터를 컴포넌트에서 사용할 수 있게 가공합니당 */
 
 import type { QuizGradingResult, QuizResult } from '../types/quizTypes';
 
@@ -24,13 +22,13 @@ export const transformQuizData = (
 
     // 데이터가 있으면 통합하여 반환
     return quizData.quizContent
-        .map((quiz) => {
+        .map((quiz, index) => {
             const gradingDetail = gradingResult.details.find((detail) => detail.quizId === quiz.quizId);
 
             if (!gradingDetail) return null;
 
             return {
-                id: quiz.quizId,
+                id: index + 1, // 1, 2, 3... 순차 번호로 변경
                 question: quiz.question,
                 answer: `${gradingDetail.answer_index + 1}번`,
                 isCorrect: gradingDetail.isCorrect,

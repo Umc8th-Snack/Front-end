@@ -1,9 +1,6 @@
 import { QUIZ_MESSAGES } from '../../constants/quiz';
 
-/**
- * 개별 퀴즈 문제와 해설을 렌더링하는 컴포넌트
- * 문제 제목, 정답 여부, 정답 내용, 해설을 표시
- */
+/* 개별 퀴즈 문제와 해설을 렌더링 */
 
 interface Question {
     id: number;

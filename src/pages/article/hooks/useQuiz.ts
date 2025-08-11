@@ -8,6 +8,7 @@ import type { QuizResult } from '../types/quizTypes';
  * @param articleId 기사 ID
  * @returns 퀴즈 데이터와 상태 정보
  */
+
 export const useQuiz = (articleId: number) => {
     return useQuery<QuizResult>({
         queryKey: ['quiz', 'byArticleId', articleId],

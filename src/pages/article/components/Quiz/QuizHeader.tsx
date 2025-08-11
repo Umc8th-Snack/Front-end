@@ -2,10 +2,7 @@ import BookmarkIcon from '@/shared/assets/Bookmark.svg?react';
 import RectangleIcon from '@/shared/assets/Rectangle105.svg?react';
 import ShareIcon from '@/shared/assets/Share.svg?react';
 
-/**
- * 퀴즈 해설 페이지의 헤더 컴포넌트
- * 제목, 북마크, 공유 버튼을 포함
- */
+/* 퀴즈 해설 페이지의 헤더 컴포넌트 */
 
 const QuizHeader = () => {
     return (

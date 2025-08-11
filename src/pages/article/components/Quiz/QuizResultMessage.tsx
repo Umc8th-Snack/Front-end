@@ -1,7 +1,4 @@
-/**
- * 퀴즈 결과를 표시하는 메시지 컴포넌트
- * 정답률에 따라 다른 메시지를 보여줌
- */
+/*퀴즈 결과를 표시하는 메시지 컴포넌트*/
 
 interface QuizResultMessageProps {
     totalQuestions: number;

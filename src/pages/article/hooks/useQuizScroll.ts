@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { SCROLL_CONFIG } from '../constants/quiz';
 
 /**
- * 퀴즈 해설 페이지의 스크롤 이벤트를 관리하는 커스텀 훅
- * 스크롤이 하단에 도달하면 결과 메시지를 표시
+ * 퀴즈 해설 페이지의 스크롤 관리
+ * 스크롤이 하단에 도달하면 결과 표시해 줌!
  */
 
 export const useQuizScroll = (onScrollToBottom: () => void) => {

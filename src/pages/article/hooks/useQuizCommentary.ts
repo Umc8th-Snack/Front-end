@@ -4,9 +4,10 @@ import { getQuizByArticleId, submitQuizAnswers } from '../apis/quizApi';
 import { transformQuizData } from '../utils/quizDataTransformer';
 
 /**
- * 퀴즈 해설 페이지의 데이터 로직을 관리하는 커스텀 훅
- * 퀴즈 질문과 채점 결과를 가져와서 통합된 데이터로 변환
+ * 퀴즈 해설 페이지의 데이터 로직을 관리!!
+ * 퀴즈 질문과 채점 결과를 가져와서 통합된 데이터로 변환합니당
  */
+
 export const useQuizCommentary = (userAnswers: number[], articleId: number) => {
     // 퀴즈 질문 데이터 가져오기
     const { data: quizData, isLoading: isQuizLoading } = useQuery({
