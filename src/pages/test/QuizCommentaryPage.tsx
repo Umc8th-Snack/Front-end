@@ -103,7 +103,7 @@ const QuizCommentaryPage = () => {
             {isMemoPadOpen && (
                 <div className="fixed top-0 right-0 z-50 px-18 py-8">
                     <div className="mt-20">
-                        <MemoPad />
+                        <MemoPad articleId="test-article-123" />
                     </div>
                 </div>
             )}
