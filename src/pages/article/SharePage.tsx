@@ -30,7 +30,6 @@ const SharePage = () => {
         <div className="">
             <div className="mx-auto flex max-w-[714px] min-w-2xl flex-col gap-4 px-6 py-6">
                 {/* FieldChips + 원문 링크 */}
-                {/* FieldChips + 원문 링크 */}
                 <div className="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
                     <FieldChips label={data.category} />
                     <div className="flex items-center gap-1">
