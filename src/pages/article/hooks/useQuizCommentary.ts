@@ -52,7 +52,7 @@ export const useQuizCommentary = (userAnswers: number[], articleId: number) => {
     });
 
     // 데이터 변환
-    const questions = transformQuizData(quizData, gradingResult);
+    const questions = transformQuizData(quizData, gradingResult, userAnswers);
 
     return {
         questions,
