@@ -1,7 +1,5 @@
-import { useState } from 'react';
-
+import TitleWithToggle from '@/pages/article/components/TitleWithToggle/TitleWithToggle';
 import ChainIcon from '@/shared/assets/icons/chain-icon.svg?react';
-import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
 import FieldChips from '@/shared/components/chip/FieldChips';
 
 interface ArticleHeaderProps {
@@ -19,13 +17,6 @@ function ArticleHeader({
     isNotepadEnabled = false,
     onNotepadToggle,
 }: ArticleHeaderProps) {
-    const [internalNotepadState, setInternalNotepadState] = useState(isNotepadEnabled);
-
-    const handleNotepadToggle = (checked: boolean) => {
-        setInternalNotepadState(checked);
-        onNotepadToggle?.(checked);
-    };
-
     return (
         <div className="flex flex-col gap-4">
             {/* FieldChips + 원문 링크 */}
@@ -47,14 +38,8 @@ function ArticleHeader({
                 )}
             </div>
 
-            {/* 제목 + 메모장 토글 */}
-            <div className="flex items-center justify-between">
-                <h1 className="text-28px-semibold flex-1 text-black">{title}</h1>
-                <div className="flex items-center gap-2">
-                    <span className="text-18px-medium text-black-70">메모장</span>
-                    <ToggleSwitch checked={internalNotepadState} onChange={handleNotepadToggle} />
-                </div>
-            </div>
+            {/* 제목 + 메모장 토글 (TitleWithToggle 사용) */}
+            <TitleWithToggle title={title} onToggleChange={onNotepadToggle || (() => {})} checked={isNotepadEnabled} />
         </div>
     );
 }
