@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getArticleDetail } from '@/pages/article/apis/articleApi';
 import SummarizedNewsContainer from '@/pages/article/components/SummarizedNewsContainer/SummarizedNewsContainer';
 import type { ArticleDetail } from '@/pages/article/types/article';
-import AccordionTestPage from '@/pages/test/AccordionTestPage';
+import AccordionTestPage from '@/pages/test/GlossaryQuiz';
 import LoadingFallback from '@/routes/LoadingFallback';
 import ChainIcon from '@/shared/assets/icons/chain-icon.svg?react';
 import FieldChips from '@/shared/components/chip/FieldChips';
@@ -73,10 +73,10 @@ const ArticlePage = () => {
                                         href={article.articleUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-20px-medium text-black-70 inline-block max-w-[525px] truncate align-bottom"
+                                        className="text-20px-medium text-black-70 decoration-black-70 inline-block max-w-[525px] truncate align-bottom underline decoration-[0.5px] underline-offset-5"
                                         title={article.articleUrl}
                                     >
-                                        원문링크: {article.articleUrl}
+                                        원문링크
                                     </a>
                                 )}
                             </div>

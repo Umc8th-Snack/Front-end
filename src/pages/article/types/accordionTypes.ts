@@ -5,7 +5,8 @@
 
 export interface GlossaryItem {
     word: string;
-    definition: string;
+    definitions: string[]; // definition → definitions로 수정
+    createdAt: string; // createdAt 필드 추가
 }
 
 export interface AccordionProps {

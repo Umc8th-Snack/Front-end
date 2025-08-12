@@ -21,7 +21,7 @@ const QuizHeader = () => {
                     </button>
                 </div>
             </div>
-            <div className="mb-4 border-t border-gray-300" />
+            <div className="border-black-30 mb-4 border-t" />
         </>
     );
 };

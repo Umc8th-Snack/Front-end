@@ -86,7 +86,7 @@ export default function OnboardingCard() {
                         key={dot}
                         onClick={() => scrollTo(i)}
                         className={`h-2 w-2 rounded-full transition-colors duration-300 ${
-                            i === selectedIndex ? 'w-4 bg-black' : 'bg-gray-300'
+                            i === selectedIndex ? 'w-4 bg-black' : 'bg-black-30'
                         }`}
                     />
                 ))}

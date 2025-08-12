@@ -21,7 +21,7 @@ const GlossaryContent = ({ data }: GlossaryContentProps) => {
                         ))}
                     </div>
 
-                    {index < data.length - 1 && <div className="border-b border-gray-300" />}
+                    {index < data.length - 1 && <div className="border-black-30 border-b" />}
                 </div>
             ))}
         </div>

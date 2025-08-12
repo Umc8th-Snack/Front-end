@@ -11,7 +11,7 @@ interface AccordionTestPageProps {
     articleId: string | undefined;
 }
 
-const AccordionTestPage = ({ articleId }: AccordionTestPageProps) => {
+const GlossaryQuiz = ({ articleId }: AccordionTestPageProps) => {
     const navigate = useNavigate();
     const [glossaryExpanded, setGlossaryExpanded] = useState(false);
     const [quizExpanded, setQuizExpanded] = useState(false);
@@ -116,4 +116,4 @@ const AccordionTestPage = ({ articleId }: AccordionTestPageProps) => {
     );
 };
 
-export default AccordionTestPage;
+export default GlossaryQuiz;

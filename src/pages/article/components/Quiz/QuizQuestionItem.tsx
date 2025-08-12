@@ -16,7 +16,7 @@ interface QuizQuestionItemProps {
 
 const QuizQuestionItem = ({ question }: QuizQuestionItemProps) => {
     return (
-        <div className="mb-10 border-b border-gray-300 pb-6 last:mb-0">
+        <div className="border-black-30 mb-10 border-b pb-6 last:mb-0">
             <div className="mb-6 flex items-start gap-4">
                 <h3 className="text-28px-semibold flex-1">
                     Q{question.id}. {question.question}

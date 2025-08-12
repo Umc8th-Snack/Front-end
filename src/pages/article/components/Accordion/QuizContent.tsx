@@ -125,7 +125,7 @@ const QuizContent = ({ data: quizData, onAnswersChange, onClose, onConfirm }: Qu
                             return (
                                 <button
                                     key={optionKey}
-                                    className={`text-14px-medium w-full rounded-lg border-1 px-4 py-2 transition-colors ${
+                                    className={`text-14px-medium w-full cursor-pointer rounded-lg border-1 px-4 py-2 text-left transition-colors ${
                                         selected === idx
                                             ? 'bg-main border-main text-white'
                                             : 'border-main text-main hover:bg-main bg-white hover:text-white'

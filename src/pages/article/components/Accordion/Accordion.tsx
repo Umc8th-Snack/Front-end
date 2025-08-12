@@ -38,7 +38,7 @@ const Accordion = ({
             </div>
 
             {/* 구분선 */}
-            <div className="mb-4 border-t border-gray-300"></div>
+            <div className="border-black-30 mb-4 border-t"></div>
 
             {/* 컨텐츠(용어집/퀴즈) */}
             {isExpanded &&
