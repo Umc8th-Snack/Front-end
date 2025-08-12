@@ -1,6 +1,4 @@
-import BookmarkIcon from '@/shared/assets/Bookmark.svg?react';
 import RectangleIcon from '@/shared/assets/Rectangle105.svg?react';
-import ShareIcon from '@/shared/assets/Share.svg?react';
 
 /* 퀴즈 해설 페이지의 헤더 컴포넌트 */
 
@@ -11,14 +9,6 @@ const QuizHeader = () => {
                 <div className="flex items-center gap-2">
                     <RectangleIcon />
                     <h1 className="text-28px-semibold">해설</h1>
-                </div>
-                <div className="flex items-center gap-3">
-                    <button className="p-2 text-gray-400 hover:text-gray-600">
-                        <BookmarkIcon className="h-[24px] w-[24px]" />
-                    </button>
-                    <button className="p-2 text-gray-400 hover:text-gray-600">
-                        <ShareIcon className="h-[24px] w-[24px]" />
-                    </button>
                 </div>
             </div>
             <div className="border-black-30 mb-4 border-t" />

@@ -1,17 +1,20 @@
 import { useState } from 'react';
 
-import LinkIcon from '@/shared/assets/icons/link.svg?react';
+import ChainIcon from '@/shared/assets/icons/chain-icon.svg?react';
 import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
+import FieldChips from '@/shared/components/chip/FieldChips';
 
 interface ArticleHeaderProps {
     title: string;
+    category: string;
     originalLink?: string;
     isNotepadEnabled?: boolean;
     onNotepadToggle?: (enabled: boolean) => void;
 }
 
 function ArticleHeader({
-    title = '기사 제목',
+    title,
+    category,
     originalLink,
     isNotepadEnabled = false,
     onNotepadToggle,
@@ -22,26 +25,33 @@ function ArticleHeader({
         setInternalNotepadState(checked);
         onNotepadToggle?.(checked);
     };
-    return (
-        <div className="mb-8 w-full border-b border-gray-200 pb-4">
-            <div className="flex items-center justify-between">
-                {/* 기사 제목 */}
-                <div className="flex-1">
-                    <h1 className="text-36px-semibold">{title}</h1>
-                </div>
 
-                {/* 원문 링크 */}
+    return (
+        <div className="flex flex-col gap-4">
+            {/* FieldChips + 원문 링크 */}
+            <div className="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
+                <FieldChips label={category} />
                 {originalLink && (
-                    <div className="mr-8 flex items-center gap-1 select-none">
-                        <LinkIcon className="w-4" />
-                        <span className="text-20px-medium text-gray-500">원문링크: </span>
-                        <span className="text-20px-medium cursor-pointer text-gray-500">{originalLink}</span>
+                    <div className="flex items-center gap-1">
+                        <ChainIcon />
+                        <a
+                            href={originalLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-20px-medium text-black-70 decoration-black-70 inline-block max-w-[525px] truncate align-bottom underline decoration-[0.5px] underline-offset-5"
+                            title={originalLink}
+                        >
+                            원문링크
+                        </a>
                     </div>
                 )}
+            </div>
 
-                {/* 메모장 토글 */}
+            {/* 제목 + 메모장 토글 */}
+            <div className="flex items-center justify-between">
+                <h1 className="text-28px-semibold flex-1 text-black">{title}</h1>
                 <div className="flex items-center gap-2">
-                    <span className="text-20px-medium text-gray-500">메모장</span>
+                    <span className="text-18px-medium text-black-70">메모장</span>
                     <ToggleSwitch checked={internalNotepadState} onChange={handleNotepadToggle} />
                 </div>
             </div>

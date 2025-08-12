@@ -1,30 +1,44 @@
-import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import ArticleLayout from '@/layout/ArticleLayout';
+import { getArticleDetail } from '@/pages/article/apis/articleApi';
 import ArticleHeader from '@/pages/article/components/ArticleHeader';
 import QuizCommentary from '@/pages/article/components/Quiz/QuizCommentary';
 import { useQuizCommentary } from '@/pages/article/hooks/useQuizCommentary';
 import LoadingFallback from '@/routes/LoadingFallback';
-import ArticleCard from '@/shared/components/card/ArticleCard';
-import FieldChips from '@/shared/components/chip/FieldChips';
+import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
 
 const QuizCommentaryPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { userAnswers, articleId } = location.state || {};
 
+    // 메모장 상태 관리
+    const [isMemoPadOpen, setIsMemoPadOpen] = useState(false);
+
     // state가 없으면 기사 페이지로 리다이렉트 (에러 처리)
     useEffect(() => {
         if (!userAnswers || !articleId) {
-            void navigate('/articles'); // /article → /articles로 수정
+            void navigate('/articles');
         }
     }, [userAnswers, articleId, navigate]);
 
+    // 기사 상세 정보 가져오기
+    const { data: article, isLoading: isArticleLoading } = useQuery({
+        queryKey: ['article', 'detail', articleId],
+        queryFn: () => getArticleDetail(Number(articleId)),
+        enabled: !!articleId,
+    });
+
     // 커스텀 훅으로 퀴즈 데이터 가져오기 (항상 호출되어야 함)
-    const { questions, isLoading, totalQuestions, correctAnswers } = useQuizCommentary(
-        userAnswers || [],
-        articleId || 0
-    );
+    const {
+        questions,
+        isLoading: isQuizLoading,
+        totalQuestions,
+        correctAnswers,
+    } = useQuizCommentary(userAnswers || [], articleId || 0);
 
     // state가 없으면 렌더링하지 않음
     if (!userAnswers || !articleId) {
@@ -32,40 +46,45 @@ const QuizCommentaryPage = () => {
     }
 
     // 로딩 중일 때 LoadingFallback 사용
-    if (isLoading) {
+    if (isArticleLoading || isQuizLoading) {
         return <LoadingFallback />;
+    }
+
+    // 기사 정보가 없으면 에러 처리
+    if (!article) {
+        return <div className="p-8 text-center text-lg font-semibold text-red-600">기사 정보를 찾을 수 없습니다.</div>;
     }
 
     return (
         <>
-            <div className="mx-auto flex w-full max-w-[1200px] items-start gap-30 px-4 py-8 lg:px-0">
-                <div className="flex w-[70%] flex-col items-start justify-center">
-                    <FieldChips label="사회" />
-                    <div className="mt-10 w-full">
-                        <ArticleHeader
-                            title="기사 제목"
-                            originalLink="https://www.snack.com"
-                            isNotepadEnabled={true}
-                            onNotepadToggle={() => {}}
-                        />
+            <ArticleLayout>
+                <ArticleHeader
+                    title={article.title}
+                    category={article.category}
+                    originalLink={article.articleUrl}
+                    isNotepadEnabled={isMemoPadOpen}
+                    onNotepadToggle={setIsMemoPadOpen}
+                />
 
-                        <QuizCommentary
-                            questions={questions}
-                            totalQuestions={totalQuestions}
-                            correctAnswers={correctAnswers}
-                        />
+                <hr className="border-black-30 w-full border-t" />
+
+                <div className="pt-4">
+                    <QuizCommentary
+                        questions={questions}
+                        totalQuestions={totalQuestions}
+                        correctAnswers={correctAnswers}
+                    />
+                </div>
+            </ArticleLayout>
+
+            {/* 메모장 오버레이 */}
+            {isMemoPadOpen && articleId && (
+                <div className="fixed top-0 right-0 z-50 px-18 py-8">
+                    <div className="mt-20">
+                        <MemoPad articleId={articleId} />
                     </div>
                 </div>
-
-                {/* 관련 기사 보러가기 임의로 넣어둠 */}
-                <div className="flex w-[30%] justify-end">
-                    <div className="mt-30 flex h-[800px] w-[240px] flex-col items-center gap-3 rounded-2xl bg-gray-200">
-                        <ArticleCard />
-                        <ArticleCard />
-                        <ArticleCard />
-                    </div>
-                </div>
-            </div>
+            )}
         </>
     );
 };
