@@ -3,6 +3,7 @@ import type { RouteObject } from 'react-router-dom';
 
 import MainLayout from '@/layout/MainLayout';
 import SharePage from '@/pages/article/SharePage';
+import QuizCommentary from '@/pages/test/QuizCommentaryPage';
 
 import LoadingFallback from './LoadingFallback';
 import ProtectedRoute from './ProtectedRoute';
@@ -16,7 +17,6 @@ const SearchPage = lazy(() => import('@/pages/search/SearchPage'));
 const PasswordChangePage = lazy(() => import('@/pages/settings/PasswordChangePage'));
 const DeleteAccountPage = lazy(() => import('@/pages/settings/DeleteAccountPage'));
 const EditProfilePage = lazy(() => import('@/pages/my/EditProfilePage'));
-const AccordionTestPage = lazy(() => import('@/pages/test/AccordionTestPage'));
 
 const routes: RouteObject[] = [
     {
@@ -37,6 +37,14 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <ArticlePage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'articles/quiz-commentary',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <QuizCommentary />
                     </Suspense>
                 ),
             },
@@ -81,14 +89,6 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <EditProfilePage />
-                    </Suspense>
-                ),
-            },
-            {
-                path: 'accordion-test',
-                element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <AccordionTestPage />
                     </Suspense>
                 ),
             },

@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
 import LinkIcon from '@/shared/assets/icons/link.svg?react';
-
-import ToggleSwitch from '../button/ToggleSwitch';
+import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
 
 interface ArticleHeaderProps {
     title: string;

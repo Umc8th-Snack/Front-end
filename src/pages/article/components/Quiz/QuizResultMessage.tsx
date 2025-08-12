@@ -1,3 +1,5 @@
+/*퀴즈 결과를 표시하는 메시지 컴포넌트*/
+
 interface QuizResultMessageProps {
     totalQuestions: number;
     correctAnswers: number;

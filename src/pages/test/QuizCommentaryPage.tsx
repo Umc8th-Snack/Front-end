@@ -1,73 +1,43 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
+import ArticleHeader from '@/pages/article/components/ArticleHeader';
+import QuizCommentary from '@/pages/article/components/Quiz/QuizCommentary';
+import { useQuizCommentary } from '@/pages/article/hooks/useQuizCommentary';
+import LoadingFallback from '@/routes/LoadingFallback';
 import ArticleCard from '@/shared/components/card/ArticleCard';
 import FieldChips from '@/shared/components/chip/FieldChips';
-import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
-import ArticleHeader from '@/shared/components/quiz/ArticleHeader';
-import QuizCommentary from '@/shared/components/quiz/QuizCommentary';
-import { quizCommentaryDummyData } from '@/shared/components/quiz/quizCommentaryData';
-import QuizTestButtons from '@/shared/components/quiz/QuizTestButtons';
 
 const QuizCommentaryPage = () => {
-    // ===== 테스트 모드 (현재 활성화) =====
-    const [testMode, setTestMode] = useState<'allCorrect' | 'partialCorrect' | 'allWrong'>('partialCorrect');
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { userAnswers, articleId } = location.state || {};
 
-    // ===== 메모장 상태 관리 =====
-    const [isMemoPadOpen, setIsMemoPadOpen] = useState(false);
-
-    // 메모장 토글 핸들러
-    const handleMemoPadToggle = (enabled: boolean) => {
-        setIsMemoPadOpen(enabled);
-    };
-
-    // 테스트용 데이터 생성
-    const getTestData = () => {
-        const baseQuestions = quizCommentaryDummyData.questions;
-
-        switch (testMode) {
-            case 'allCorrect':
-                return {
-                    questions: baseQuestions.map((q) => ({ ...q, isCorrect: true })),
-                };
-            case 'allWrong':
-                return {
-                    questions: baseQuestions.map((q) => ({ ...q, isCorrect: false })),
-                };
-            case 'partialCorrect':
-            default:
-                return {
-                    questions: baseQuestions,
-                };
+    // state가 없으면 기사 페이지로 리다이렉트 (에러 처리)
+    useEffect(() => {
+        if (!userAnswers || !articleId) {
+            void navigate('/article');
         }
-    };
+    }, [userAnswers, articleId, navigate]);
 
-    const testData = getTestData();
+    // 커스텀 훅으로 퀴즈 데이터 가져오기 (항상 호출되어야 함)
+    const { questions, isLoading, totalQuestions, correctAnswers } = useQuizCommentary(
+        userAnswers || [],
+        articleId || 0
+    );
 
-    // ===== 원래 더미데이터 사용 (테스트 완료 후 삭제 시 참고) =====
-    /*
-    // 테스트 관련 import 제거
-    // import QuizTestButtons from '@/shared/components/quiz/QuizTestButtons';
-    // import { useState } from 'react';
+    // state가 없으면 렌더링하지 않음
+    if (!userAnswers || !articleId) {
+        return null;
+    }
 
-    // 테스트 상태 제거
-    // const [testMode, setTestMode] = useState<'allCorrect' | 'partialCorrect' | 'allWrong'>('partialCorrect');
-
-    // 테스트 데이터 생성 함수 제거
-    // const getTestData = () => { ... };
-    // const testData = getTestData();
-
-    // 원래 더미데이터 직접 사용
-    const questions = quizCommentaryDummyData.questions;
-    */
+    // 로딩 중일 때 LoadingFallback 사용
+    if (isLoading) {
+        return <LoadingFallback />;
+    }
 
     return (
         <>
-            {/* 테스트 버튼 (현재 활성화) */}
-            <QuizTestButtons testMode={testMode} onTestModeChange={setTestMode} />
-
-            {/* 테스트 버튼 제거 시 사용할 코드 (주석처리) */}
-            {/* <QuizTestButtons /> 제거 */}
-
             <div className="mx-auto flex w-full max-w-[1200px] items-start gap-30 px-4 py-8 lg:px-0">
                 <div className="flex w-[70%] flex-col items-start justify-center">
                     <FieldChips label="사회" />
@@ -75,17 +45,15 @@ const QuizCommentaryPage = () => {
                         <ArticleHeader
                             title="기사 제목"
                             originalLink="https://www.snack.com"
-                            isNotepadEnabled={isMemoPadOpen}
-                            onNotepadToggle={handleMemoPadToggle}
+                            isNotepadEnabled={true}
+                            onNotepadToggle={() => {}}
                         />
 
-                        {/* 현재 테스트 데이터 사용 */}
-                        <QuizCommentary questions={testData.questions} />
-
-                        {/* 원래 더미데이터 사용 시 (주석처리) */}
-                        {/* <QuizCommentary 
+                        <QuizCommentary
                             questions={questions}
-                        /> */}
+                            totalQuestions={totalQuestions}
+                            correctAnswers={correctAnswers}
+                        />
                     </div>
                 </div>
 
@@ -98,15 +66,6 @@ const QuizCommentaryPage = () => {
                     </div>
                 </div>
             </div>
-
-            {/* 메모장 오버레이 */}
-            {isMemoPadOpen && (
-                <div className="fixed top-0 right-0 z-50 px-18 py-8">
-                    <div className="mt-20">
-                        <MemoPad articleId="test-article-123" />
-                    </div>
-                </div>
-            )}
         </>
     );
 };
