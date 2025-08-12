@@ -10,9 +10,16 @@ interface SummarizedNewsContainerProps {
     articleId: number;
     title: string;
     image: string;
+    showActions?: boolean;
 }
 
-const SummarizedNewsContainer = ({ summary, articleId, title, image }: SummarizedNewsContainerProps) => {
+const SummarizedNewsContainer = ({
+    summary,
+    articleId,
+    title,
+    image,
+    showActions = true,
+}: SummarizedNewsContainerProps) => {
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
     const handleOpenShareModal = () => setIsShareModalOpen(true);
@@ -25,12 +32,14 @@ const SummarizedNewsContainer = ({ summary, articleId, title, image }: Summarize
                     <RectangleIcon />
                     <span className="text-28px-semibold relative top-[-10px] text-black">간추린 뉴스</span>
                 </div>
-                <div className="mt-[-25px] flex items-center gap-[21px]">
-                    <ScrapButton articleId={articleId} />
-                    <button onClick={handleOpenShareModal} className="cursor-pointer" aria-label="공유하기">
-                        <ShareIcon className="text-gray-400" />
-                    </button>
-                </div>
+                {showActions && (
+                    <div className="mt-[-25px] flex items-center gap-[21px]">
+                        <ScrapButton articleId={articleId} />
+                        <button onClick={handleOpenShareModal} className="cursor-pointer" aria-label="공유하기">
+                            <ShareIcon className="text-gray-400" />
+                        </button>
+                    </div>
+                )}
             </div>
             <div className="text-18px-medium text-black-70 mt-[5px] leading-8 break-words">{summary}</div>
 

@@ -65,6 +65,7 @@ const SharePage = () => {
                         articleId={data.articleId}
                         title={data.title}
                         image={''}
+                        showActions={false}
                     />
                 </div>
 
