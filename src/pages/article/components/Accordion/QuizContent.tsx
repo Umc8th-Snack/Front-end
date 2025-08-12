@@ -28,6 +28,10 @@ const QuizContent = ({ data: quizData, onAnswersChange, onClose, onConfirm }: Qu
         const newAnswers = [...userAnswers, selected];
         setUserAnswers(newAnswers);
         setSelected(null);
+
+        // 부모 컴포넌트에 답안 업데이트 알림
+        onAnswersChange?.(newAnswers);
+
         if (current < quizData.length - 1) {
             setCurrent(current + 1);
         } else {
@@ -58,6 +62,10 @@ const QuizContent = ({ data: quizData, onAnswersChange, onClose, onConfirm }: Qu
             userAnswers.map((answer) => answer + 1)
         );
         console.log('퀴즈 종료');
+
+        // 부모 컴포넌트에 최종 답안 전달
+        onAnswersChange?.(userAnswers);
+
         setShowExitModal(false);
         if (onClose) onClose();
     };
@@ -95,6 +103,11 @@ const QuizContent = ({ data: quizData, onAnswersChange, onClose, onConfirm }: Qu
     }
 
     const quiz = quizData[current];
+
+    // 안전한 배열 접근 확인
+    if (!quiz) {
+        return <div className="py-8 text-center text-lg font-semibold">퀴즈 데이터를 찾을 수 없습니다</div>;
+    }
 
     return (
         <>

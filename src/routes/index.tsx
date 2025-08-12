@@ -33,18 +33,18 @@ const routes: RouteObject[] = [
             },
 
             {
-                path: 'articles/:articleId',
-                element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <ArticlePage />
-                    </Suspense>
-                ),
-            },
-            {
                 path: 'articles/quiz-commentary',
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <QuizCommentary />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'articles/:articleId',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <ArticlePage />
                     </Suspense>
                 ),
             },

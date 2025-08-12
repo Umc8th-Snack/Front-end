@@ -11,7 +11,18 @@ const Accordion = ({
     data,
     isExpanded = false,
     onToggle,
-}: AccordionProps | { title: string; data: QuizItem[]; isExpanded?: boolean; onToggle?: () => void }) => {
+    onConfirm,
+    onAnswersChange,
+}:
+    | AccordionProps
+    | {
+          title: string;
+          data: QuizItem[];
+          isExpanded?: boolean;
+          onToggle?: () => void;
+          onConfirm?: () => void;
+          onAnswersChange?: (answers: number[]) => void;
+      }) => {
     const isQuiz = data.length > 0 && 'question' in data[0];
     return (
         <div className="border-main-30 max-w-md rounded-[16px] border-[3px] bg-white p-6">
@@ -32,7 +43,12 @@ const Accordion = ({
             {/* 컨텐츠(용어집/퀴즈) */}
             {isExpanded &&
                 (isQuiz ? (
-                    <QuizContent data={data as QuizItem[]} onClose={onToggle} />
+                    <QuizContent
+                        data={data as QuizItem[]}
+                        onClose={onToggle}
+                        onConfirm={onConfirm}
+                        onAnswersChange={onAnswersChange}
+                    />
                 ) : (
                     <GlossaryContent data={data as GlossaryItem[]} />
                 ))}

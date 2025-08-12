@@ -13,10 +13,13 @@ export interface AccordionProps {
     data: GlossaryItem[];
     isExpanded?: boolean;
     onToggle?: () => void;
+    onConfirm?: () => void;
+    onAnswersChange?: (answers: number[]) => void;
     articleId?: number;
 }
 
 export interface QuizItem {
+    id: number;
     question: string;
     options: string[];
     answer: number; // 정답 인덱스

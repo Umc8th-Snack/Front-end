@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Accordion from '@/pages/article/components/Accordion/Accordion';
 import { useArticleTerms } from '@/pages/article/hooks/useArticleTerms';
@@ -11,8 +12,10 @@ interface AccordionTestPageProps {
 }
 
 const AccordionTestPage = ({ articleId }: AccordionTestPageProps) => {
+    const navigate = useNavigate();
     const [glossaryExpanded, setGlossaryExpanded] = useState(false);
     const [quizExpanded, setQuizExpanded] = useState(false);
+    const [userAnswers, setUserAnswers] = useState<number[]>([]);
 
     // props로 받은 articleId 사용
     const articleIdNumber = Number(articleId ?? 11);
@@ -29,6 +32,11 @@ const AccordionTestPage = ({ articleId }: AccordionTestPageProps) => {
         error: quizErrorData,
     } = useQuiz(articleIdNumber);
 
+    // 사용자 답안 업데이트 핸들러
+    const handleAnswersChange = (answers: number[]) => {
+        setUserAnswers(answers);
+    };
+
     // 디버깅용 로그
     console.log('=== 퀴즈 데이터 디버깅 ===');
     console.log('articleIdNumber:', articleIdNumber);
@@ -36,6 +44,7 @@ const AccordionTestPage = ({ articleId }: AccordionTestPageProps) => {
     console.log('quizData?.quizContent:', quizData?.quizContent);
     console.log('quizLoading:', quizLoading);
     console.log('quizError:', quizError);
+    console.log('userAnswers:', userAnswers);
     console.log('========================');
 
     return (
@@ -76,6 +85,27 @@ const AccordionTestPage = ({ articleId }: AccordionTestPageProps) => {
                                 }))}
                                 isExpanded={quizExpanded}
                                 onToggle={() => setQuizExpanded((prev) => !prev)}
+                                onConfirm={() => {
+                                    console.log('=== 퀴즈 해설 페이지 이동 시도 ===');
+                                    console.log('현재 URL:', window.location.href);
+                                    console.log(
+                                        '이동하려는 경로:',
+                                        `/articles/quiz-commentary?articleId=${articleIdNumber}`
+                                    );
+                                    console.log('articleIdNumber:', articleIdNumber);
+
+                                    // navigate로 이동하면서 state 전달
+                                    void navigate('/articles/quiz-commentary', {
+                                        state: {
+                                            articleId: articleIdNumber,
+                                            userAnswers: userAnswers, // 사용자 답안 전달
+                                        },
+                                    });
+
+                                    console.log('navigate 호출 완료');
+                                    console.log('================================');
+                                }}
+                                onAnswersChange={handleAnswersChange}
                                 articleId={articleIdNumber}
                             />
                         )}

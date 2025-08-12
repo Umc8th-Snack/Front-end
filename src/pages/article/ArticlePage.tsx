@@ -34,6 +34,21 @@ const ArticlePage = () => {
                 setArticle(data);
             } catch (e) {
                 console.error('기사 상세 로딩 실패:', e);
+
+                // API 호출 실패 시 더미 데이터 사용
+                const dummyArticle = {
+                    articleId: Number(articleId),
+                    title: 'LG전자, AI 체험 공간 오픈...역사와 최신 기술 동시 체험',
+                    summary:
+                        'LG전자가 AI 체험 공간을 오픈했다. 이 공간에서는 LG의 역사를 체험하면서 동시에 최신 AI 기술을 체험할 수 있다. 이는 LG가 AI 기술 발전에 얼마나 집중하고 있는지를 보여주는 좋은 예시다.',
+                    publishedAt: '2025-01-27T00:00:00.000Z',
+                    category: '사회',
+                    articleUrl: 'https://example.com/article',
+                    imageUrl: 'https://via.placeholder.com/400x300',
+                    snackUrl: 'https://snack.com/article',
+                    viewCount: 1234,
+                };
+                setArticle(dummyArticle);
             }
         };
         void fetchData();

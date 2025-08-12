@@ -68,7 +68,7 @@ const Navbar = () => {
                             </Link>
                             <Link
                                 to="/articles/:articleId"
-                                className={`hover:text-main transition-colors ${location.pathname === '/article' ? 'text-main' : ''}`}
+                                className={`hover:text-main transition-colors ${location.pathname.startsWith('/articles') ? 'text-main' : ''}`}
                             >
                                 맞춤피드
                             </Link>

@@ -16,7 +16,7 @@ const QuizCommentaryPage = () => {
     // state가 없으면 기사 페이지로 리다이렉트 (에러 처리)
     useEffect(() => {
         if (!userAnswers || !articleId) {
-            void navigate('/article');
+            void navigate('/articles'); // /article → /articles로 수정
         }
     }, [userAnswers, articleId, navigate]);
 
