@@ -32,7 +32,7 @@ const SummarizedNewsContainer = ({ summary, articleId, title, image }: Summarize
                     </button>
                 </div>
             </div>
-            <div className="text-18px-medium text-black-70 mt-[5px] break-words">{summary}</div>
+            <div className="text-18px-medium text-black-70 mt-[5px] leading-8 break-words">{summary}</div>
 
             {isShareModalOpen && (
                 <ShareModal
