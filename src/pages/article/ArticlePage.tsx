@@ -116,8 +116,8 @@ const ArticlePage = () => {
                 )}
 
                 {/* Sidebar */}
-                <aside className="mt-45">
-                    <div className="sticky top-20">
+                <aside className="mt-8">
+                    <div className="sticky top-15">
                         <RelatedArticleList onClose={() => {}} />
                     </div>
                 </aside>

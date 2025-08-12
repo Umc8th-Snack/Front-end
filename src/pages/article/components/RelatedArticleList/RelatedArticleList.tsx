@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import XIcon from '@/shared/assets/icons/close-x.svg?react';
 import ArticleCard from '@/shared/components/card/ArticleCard';
 
 interface RelatedArticleListProps {
@@ -23,18 +22,13 @@ const RelatedArticleList = ({ onClose }: RelatedArticleListProps) => {
             aria-labelledby="related-articles-title"
             className="relative flex w-[240px] flex-col items-center rounded-[15px] bg-white p-8 shadow-[0_0_10px_rgba(0,0,0,0.15)]"
         >
-            <h2 id="related-articles-title" className="mt-4 mb-4 text-lg font-semibold">
+            <h2 id="related-articles-title" className="mt-4 mb-4 text-xl font-semibold">
                 관련 기사 보러가기
             </h2>
 
             <ArticleCard />
             <ArticleCard />
             <ArticleCard />
-            <ArticleCard />
-
-            <button onClick={onClose} aria-label="닫기" className="absolute top-[12px] right-[8px] cursor-pointer">
-                <XIcon />
-            </button>
         </div>
     );
 };
