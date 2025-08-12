@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 
-interface SearchDropdownProps {
+type SearchHistoryDropdownProps = {
     open: boolean;
-    suggestions: string[];
+    searchHistory: string[];
     onSelect: (value: string) => void;
     setOpen: (open: boolean) => void;
-}
+};
 
-const SearchDropdown = ({ open, suggestions, onSelect, setOpen }: SearchDropdownProps) => {
+const SearchHistoryDropdown = ({ open, searchHistory, onSelect, setOpen }: SearchHistoryDropdownProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -20,7 +20,7 @@ const SearchDropdown = ({ open, suggestions, onSelect, setOpen }: SearchDropdown
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [setOpen]);
 
-    if (!open || suggestions.length === 0) return null;
+    if (!open || searchHistory.length === 0) return null;
 
     return (
         <div
@@ -28,7 +28,7 @@ const SearchDropdown = ({ open, suggestions, onSelect, setOpen }: SearchDropdown
             className="border-main pointer-events-none absolute inset-x-0 top-full z-50 -mt-px origin-top scale-y-95 overflow-hidden rounded-b-[24px] border border-t-0 bg-white opacity-0 shadow-lg transition-opacity transition-transform duration-4000 ease-in-out data-[open=true]:pointer-events-auto data-[open=true]:scale-y-100 data-[open=true]:opacity-100"
             data-open={open}
         >
-            {suggestions.map((item, idx) => (
+            {searchHistory.map((item, idx) => (
                 <button
                     key={idx}
                     onClick={() => {
@@ -44,4 +44,4 @@ const SearchDropdown = ({ open, suggestions, onSelect, setOpen }: SearchDropdown
     );
 };
 
-export default SearchDropdown;
+export default SearchHistoryDropdown;

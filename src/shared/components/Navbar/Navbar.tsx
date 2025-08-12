@@ -4,11 +4,11 @@ import { Link, useLocation } from 'react-router-dom';
 import SearchIcon from '@/shared/assets/search.svg?react';
 import SnackLogo from '@/shared/assets/snack.svg?react';
 import LoginModal from '@/shared/components/modal/loginModal/LoginModal';
+import SearchHistoryDropdown from '@/shared/components/Navbar/SearchHistoryDropdown';
 import { useAuth } from '@/shared/context/AuthContext';
 
 import ConsentModal from '../modal/ConsentModal/ConsentModal';
 import SettingsDropdown from '../modal/SettingsDropdown/SettingsDropdown';
-import SearchDropdown from './SearchDropdown';
 
 const Navbar = () => {
     const { isAuthenticated, user } = useAuth();
@@ -28,9 +28,9 @@ const Navbar = () => {
 
     const [searchOpen, setSearchOpen] = useState(false);
     const [searchValue, setSearchValue] = useState('');
-    const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [searchHistory] = useState<string[]>(['히스토리1', '히스토리2', '히스토리3']);
 
-    const dropdownActive = searchOpen && suggestions.length > 0;
+    const dropdownActive = searchOpen && searchHistory.length > 0;
 
     return (
         <header className="w-full">
@@ -54,29 +54,22 @@ const Navbar = () => {
                                 onChange={(e) => {
                                     const v = e.target.value;
                                     setSearchValue(v);
-
-                                    if (!v.trim()) {
-                                        setSuggestions([]);
-                                        setSearchOpen(false); // 비면 dropdown 닫힘 + radius 원복(Tailwind가 처리)
-                                    } else {
-                                        // TODO: 실제 API 연동 시 결과 없으면 []
-                                        setSuggestions(['예시1', '예시2', '예시3']);
-                                        setSearchOpen(true);
-                                    }
+                                    if (!v.trim()) setSearchOpen(false);
                                 }}
-                                onFocus={() => {
-                                    if (searchValue.trim() && suggestions.length > 0) setSearchOpen(true);
-                                }}
+                                onFocus={() => setSearchOpen(true)}
                             />
                             <button className="hover:cursor-pointer">
                                 <SearchIcon className="h-6 w-6 lg:h-7 lg:w-7" />
                             </button>
                         </div>
 
-                        <SearchDropdown
+                        <SearchHistoryDropdown
                             open={dropdownActive}
-                            suggestions={suggestions}
-                            onSelect={(val) => setSearchValue(val)}
+                            searchHistory={searchHistory}
+                            onSelect={(val) => {
+                                setSearchValue(val);
+                                setSearchOpen(false);
+                            }}
                             setOpen={setSearchOpen}
                         />
                     </div>
