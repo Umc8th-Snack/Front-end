@@ -25,7 +25,7 @@ const QuizContent = ({ data: quizData, onAnswersChange, onClose, onConfirm }: Qu
 
     const handleNext = () => {
         if (selected === null) return;
-        const newAnswers = [...userAnswers, selected];
+        const newAnswers = [...userAnswers, selected + 1]; // 1부터 시작하는 번호로 변환
         setUserAnswers(newAnswers);
         setSelected(null);
 
@@ -37,10 +37,7 @@ const QuizContent = ({ data: quizData, onAnswersChange, onClose, onConfirm }: Qu
         } else {
             setFinished(true);
             setShowCompleteModal(true);
-            console.log(
-                '사용자 답안:',
-                newAnswers.map((answer) => answer + 1)
-            );
+            console.log('사용자 답안:', newAnswers);
         }
         onAnswersChange?.(newAnswers);
     };
@@ -57,10 +54,7 @@ const QuizContent = ({ data: quizData, onAnswersChange, onClose, onConfirm }: Qu
 
     // 모달에서 중단하기 선택 시
     const handleExit = () => {
-        console.log(
-            '사용자 답안:',
-            userAnswers.map((answer) => answer + 1)
-        );
+        console.log('사용자 답안:', userAnswers);
         console.log('퀴즈 종료');
 
         // 부모 컴포넌트에 최종 답안 전달
