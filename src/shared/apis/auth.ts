@@ -1,4 +1,10 @@
-import type { LoginRequestTypes, LoginResponseTypes, SignupRequestTypes, SignupResponseTypes } from '../types/apiTypes';
+import type {
+    LoginRequestTypes,
+    LoginResponseTypes,
+    SignupRequestTypes,
+    SignupResponseTypes,
+    SocialLoginResponseTypes,
+} from '../types/apiTypes';
 import api from './api';
 import axiosInstance from './axios';
 
@@ -94,5 +100,30 @@ export const authApi = {
         console.log('✅ [AUTH API] 회원가입 응답 수신:', response);
 
         return response;
+    },
+
+    /**
+     * Google 소셜 로그인 콜백
+     * - Google OAuth 인가 코드를 백엔드로 전송
+     * - Access Token: Authorization 헤더로 전달
+     * - Refresh Token: HttpOnly 쿠키로 자동 저장
+     */
+    googleCallback: async (code: string): Promise<{ data: SocialLoginResponseTypes; token: string }> => {
+        console.log('🔵 [AUTH API] Google 소셜 로그인 요청 시작');
+
+        const response = await axiosInstance.get(`/api/auth/google/callback?code=${code}`);
+        const accessToken = response.headers.authorization?.replace('Bearer ', '') || '';
+
+        console.log('✅ [AUTH API] Google 로그인 응답 수신:', {
+            status: response.status,
+            hasToken: !!accessToken,
+            userData: response.data.result,
+            isNewUser: response.data.result?.isNewUser,
+        });
+
+        return {
+            data: response.data.result,
+            token: accessToken,
+        };
     },
 };

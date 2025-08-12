@@ -17,6 +17,7 @@ const DeleteAccountPage = lazy(() => import('@/pages/settings/DeleteAccountPage'
 const EditProfilePage = lazy(() => import('@/pages/my/EditProfilePage'));
 const AccordionTestPage = lazy(() => import('@/pages/test/AccordionTestPage'));
 const ForgotPasswordPage = lazy(() => import('@/pages/forgot-password/ForgotPasswordPage'));
+const GoogleCallbackPage = lazy(() => import('@/pages/auth/GoogleCallbackPage'));
 
 const routes: RouteObject[] = [
     {
@@ -132,6 +133,14 @@ const routes: RouteObject[] = [
                             <DeleteAccountPage />
                         </Suspense>
                     </ProtectedRoute>
+                ),
+            },
+            {
+                path: '/auth/google/callback',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <GoogleCallbackPage />
+                    </Suspense>
                 ),
             },
         ],
