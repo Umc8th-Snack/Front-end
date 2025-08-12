@@ -43,28 +43,30 @@ const Navbar = () => {
 
                     <div className="relative mx-4 w-full max-w-[555px] min-w-[250px] flex-1">
                         <div
-                            className={`border-main flex h-[40px] items-center gap-4 rounded-[24px] border px-4 py-2 transition-all lg:h-[45px] lg:min-w-[410px] ${searchOpen ? 'rounded-b-none border-b-0 bg-white' : ''}`}
+                            data-open={dropdownActive}
+                            className="border-main flex h-[40px] items-center gap-4 rounded-[24px] border px-4 py-2 transition-all data-[open=true]:rounded-t-[24px] data-[open=true]:rounded-b-none data-[open=true]:border-b-0 data-[open=true]:bg-white lg:h-[45px] lg:min-w-[410px]"
                         >
                             <input
                                 type="text"
                                 placeholder="찾고싶은 기사가 있나요?"
                                 value={searchValue}
-                                className="placeholder: text-18px-medium lg:text-20px-medium text-main-70 w-full pl-1 outline-none focus:outline-none"
+                                className="text-main-70 text-18px-medium lg:text-20px-medium w-full pl-1 outline-none"
                                 onChange={(e) => {
                                     const v = e.target.value;
                                     setSearchValue(v);
 
-                                    // 예시: 값이 없거나 매칭이 없으면 suggestions 비우기
                                     if (!v.trim()) {
                                         setSuggestions([]);
+                                        setSearchOpen(false); // 비면 dropdown 닫힘 + radius 원복(Tailwind가 처리)
                                     } else {
-                                        // TODO: 실제 API 연동 시 결과 없으면 [] 세팅
-                                        setSuggestions(['예시1', '예시2', '예시3']); // 또는 []
+                                        // TODO: 실제 API 연동 시 결과 없으면 []
+                                        setSuggestions(['예시1', '예시2', '예시3']);
+                                        setSearchOpen(true);
                                     }
-
-                                    setSearchOpen(true);
                                 }}
-                                onFocus={() => setSearchOpen(true)}
+                                onFocus={() => {
+                                    if (searchValue.trim() && suggestions.length > 0) setSearchOpen(true);
+                                }}
                             />
                             <button className="hover:cursor-pointer">
                                 <SearchIcon className="h-6 w-6 lg:h-7 lg:w-7" />
