@@ -17,6 +17,8 @@ export interface AccordionProps {
     onConfirm?: () => void;
     onAnswersChange?: (answers: number[]) => void;
     articleId?: number;
+
+    onReport?: () => void;
 }
 
 export interface QuizItem {

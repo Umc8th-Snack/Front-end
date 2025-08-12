@@ -2,6 +2,7 @@
 import ChevronIcon from '@/assets/chevronIcon.svg?react';
 import SnackIcon from '@/assets/snackIcon.svg?react';
 import type { AccordionProps, GlossaryItem, QuizItem } from '@/pages/article/types/accordionTypes';
+import ReportIcon from '@/shared/assets/article/siren.svg?react';
 
 import GlossaryContent from './GlossaryContent';
 import QuizContent from './QuizContent';
@@ -13,6 +14,8 @@ const Accordion = ({
     onToggle,
     onConfirm,
     onAnswersChange,
+
+    onReport,
 }:
     | AccordionProps
     | {
@@ -22,15 +25,24 @@ const Accordion = ({
           onToggle?: () => void;
           onConfirm?: () => void;
           onAnswersChange?: (answers: number[]) => void;
+
+          onReport?: () => void;
       }) => {
     const isQuiz = data.length > 0 && 'question' in data[0];
     return (
         <div className="border-main-30 max-w-md rounded-[16px] border-[3px] bg-white p-6">
             {/* 헤더 */}
-            <div className="mb-4 flex flex-col items-start space-x-3">
-                <div className="mb-2 flex items-center space-x-2">
-                    <SnackIcon />
-                    <h3 className="text-24px-semibold">{title}</h3>
+            <div className="mb-4">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                        <SnackIcon />
+                        <h3 className="text-24px-semibold">{title}</h3>
+                    </div>
+                    {onReport && (
+                        <button type="button" onClick={onReport} className="rounded-[8px] p-1 hover:bg-black/5">
+                            <ReportIcon className="text-black-70 h-[24px] w-[24px] cursor-pointer" />
+                        </button>
+                    )}
                 </div>
                 <p className="text-14px-medium text-black-50 mt-1">
                     {isQuiz ? '기사를 다 읽으셨군요! 퀴즈를 풀러 가볼까요?' : '이 기사의 핵심 어휘들을 살펴보아요.'}
