@@ -1,7 +1,7 @@
 // 퀴즈 결과 메시지 상수
 export const QUIZ_MESSAGES = {
-    CORRECT: '맞았습니다!',
-    INCORRECT: '틀렸습니다!',
+    CORRECT: 'O',
+    INCORRECT: 'X',
 } as const;
 
 // 스크롤 관련 설정 상수
