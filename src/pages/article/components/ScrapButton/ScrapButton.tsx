@@ -8,7 +8,7 @@ interface ScrapButtonProps {
 }
 
 const ScrapButton = ({ articleId }: ScrapButtonProps) => {
-    const [isScrapped, setIsScrapped] = useState(false);
+    const [isScrapped, setIsScrapped] = useState(false); // To do : 스크랩 상태 관리
 
     const handleScrapToggle = async () => {
         try {
