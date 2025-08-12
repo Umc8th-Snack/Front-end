@@ -39,9 +39,11 @@ function useSplitFirstLine(text: string, font: string, maxWidth: number) {
 export default function TitleWithToggle({
     title,
     onToggleChange,
+    checked = false,
 }: {
     title: string;
     onToggleChange: (v: boolean) => void;
+    checked?: boolean;
 }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [width, setWidth] = useState(0);
@@ -68,7 +70,7 @@ export default function TitleWithToggle({
                 <span className="text-36px-semibold self-center leading-none break-words">{rest}</span>
                 <div className="mt-[-40px] flex items-center gap-2 self-center">
                     <span className="text-20px-medium text-black-70 leading-none">메모장</span>
-                    <ToggleSwitch onChange={onToggleChange} checked={false} />
+                    <ToggleSwitch onChange={onToggleChange} checked={checked} />
                 </div>
             </div>
         </div>

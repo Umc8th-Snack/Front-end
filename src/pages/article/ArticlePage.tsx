@@ -8,6 +8,7 @@ import AccordionTestPage from '@/pages/test/AccordionTestPage';
 import LoadingFallback from '@/routes/LoadingFallback';
 import ChainIcon from '@/shared/assets/icons/chain-icon.svg?react';
 import FieldChips from '@/shared/components/chip/FieldChips';
+import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
 
 import RelatedArticleList from './components/RelatedArticleList/RelatedArticleList';
 import TitleWithToggle from './components/TitleWithToggle/TitleWithToggle';
@@ -15,6 +16,14 @@ import TitleWithToggle from './components/TitleWithToggle/TitleWithToggle';
 const ArticlePage = () => {
     const { articleId } = useParams<{ articleId: string }>();
     const [article, setArticle] = useState<ArticleDetail | null>(null);
+
+    // 메모장 상태 관리
+    const [isMemoPadOpen, setIsMemoPadOpen] = useState(false);
+
+    // 메모장 토글 핸들러
+    const handleToggleChange = (checked: boolean) => {
+        setIsMemoPadOpen(checked);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -58,7 +67,11 @@ const ArticlePage = () => {
                             </div>
                         </div>
 
-                        <TitleWithToggle title={article.title} onToggleChange={handleToggle} />
+                        <TitleWithToggle
+                            title={article.title}
+                            onToggleChange={handleToggleChange}
+                            checked={isMemoPadOpen}
+                        />
 
                         <hr className="border-black-30 w-full border-t" />
 
@@ -78,6 +91,15 @@ const ArticlePage = () => {
                     </div>
                 </div>
 
+                {/* 메모장 오버레이 */}
+                {isMemoPadOpen && articleId && (
+                    <div className="fixed top-0 right-0 z-50 px-18 py-8">
+                        <div className="mt-20">
+                            <MemoPad articleId={articleId} />
+                        </div>
+                    </div>
+                )}
+
                 {/* Sidebar */}
                 <aside className="mt-45">
                     <div className="sticky top-20">
@@ -90,7 +112,3 @@ const ArticlePage = () => {
 };
 
 export default ArticlePage;
-
-function handleToggle(_checked: boolean) {
-    throw new Error('Function not implemented.');
-}
