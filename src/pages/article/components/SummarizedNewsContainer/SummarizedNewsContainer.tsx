@@ -28,7 +28,7 @@ const SummarizedNewsContainer = ({ summary, articleId, title, image }: Summarize
                 <div className="mt-[-25px] flex items-center gap-[21px]">
                     <ScrapButton articleId={articleId} />
                     <button onClick={handleOpenShareModal} className="cursor-pointer" aria-label="공유하기">
-                        <ShareIcon />
+                        <ShareIcon className="text-gray-400" />
                     </button>
                 </div>
             </div>
