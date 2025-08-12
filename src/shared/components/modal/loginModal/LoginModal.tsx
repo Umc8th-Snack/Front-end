@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import GoogleIcon from '@/assets/GoogleIcon.svg?react';
 import XIcon from '@/assets/XIcon.svg?react';
 import SnackIcon from '@/shared/assets/snack.svg?react';
+import { getGoogleAuthUrl } from '@/shared/utils/googleAuth';
 
 import EmailLoginForm from './EmailLoginForm';
 import EmailSignupForm from './EmailSignupForm';
@@ -30,6 +31,12 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
 
     const handleSignupComplete = () => {
         setModalMode('signupComplete');
+    };
+
+    const handleGoogleLogin = () => {
+        console.log('🔵 [LOGIN MODAL] Google 로그인 버튼 클릭');
+        // Google OAuth 페이지로 리다이렉트
+        window.location.href = getGoogleAuthUrl();
     };
 
     const handleClose = () => {
@@ -92,6 +99,7 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                                 textColor="text-black"
                                 width="320px"
                                 height="56px"
+                                onClick={handleGoogleLogin}
                             />
 
                             <SocialLoginButton

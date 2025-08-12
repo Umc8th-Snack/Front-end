@@ -81,3 +81,12 @@ export interface ApiStandardResponseTypes<T = unknown> {
     result: T;
     error?: unknown;
 }
+
+// 소셜 로그인 응답 타입
+export interface SocialLoginResponseTypes {
+    userId: number;
+    email: string;
+    nickname: string;
+    profileImage?: string;
+    isNewUser?: boolean;
+}
