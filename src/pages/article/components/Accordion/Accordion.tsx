@@ -1,7 +1,7 @@
 //통합 아코디언 컴포넌트
 import ChevronIcon from '@/assets/chevronIcon.svg?react';
 import SnackIcon from '@/assets/snackIcon.svg?react';
-import type { AccordionProps, GlossaryItem, QuizItem } from '@/shared/types/accordionTypes';
+import type { AccordionProps, GlossaryItem, QuizItem } from '@/pages/article/types/accordionTypes';
 
 import GlossaryContent from './GlossaryContent';
 import QuizContent from './QuizContent';

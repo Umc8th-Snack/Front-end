@@ -1,6 +1,7 @@
 export interface GlossaryItem {
     word: string;
-    definition: string;
+    definitions: string[];
+    createdAt: string;
 }
 
 export interface AccordionProps {
