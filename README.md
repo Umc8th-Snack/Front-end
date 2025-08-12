@@ -1,69 +1,21 @@
-# React + TypeScript + Vite
+# 🍪 뉴스를 간식처럼, Snack 🍪
+<img width="14173" height="9449" alt="Frame 592" src="https://github.com/user-attachments/assets/3d7c462f-63ba-4685-bb13-d9d6c354aa13" />
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🔥 Git Commit Convention 
+| 커밋 타입 | 설명 |
+|-----------|------------------------------------------------|
+| 🎉 `feat` | 새로운 기능 추가 |
+| 🐛 `fix` | 버그 및 오류 수정 |
+| 📝 `docs` | 문서 수정 (README 등) |
+| 📝 `style` | 문서 수정 (README 등) |
+| 🔄 `REFACTOR` | 코드 리팩토링 (기능 변경 없음) |
+| 🔄 `test` | 코드 리팩토링 (기능 변경 없음) |
+| 🛠 `chore` | 코드 수정, 내부 파일 수정 |
+| 📝 `comment` | 문서 수정 (README 등) |
+| 📝 `rename` | 문서 수정 (README 등) |
+| 📝 `remove` | 문서 수정 (README 등) |
+| 📝 `init` | 문서 수정 (README 등) |
+| 🧪 `TEST` | 테스트 코드 추가 및 수정 |
