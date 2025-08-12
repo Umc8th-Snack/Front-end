@@ -7,17 +7,16 @@ import { useQuiz } from '@/pages/article/hooks/useQuiz';
 import type { GlossaryItem } from '@/pages/article/types/accordionTypes';
 import LoadingFallback from '@/routes/LoadingFallback';
 
-interface AccordionTestPageProps {
+interface GlossaryQuizProps {
     articleId: string | undefined;
 }
 
-const GlossaryQuiz = ({ articleId }: AccordionTestPageProps) => {
+const GlossaryQuiz = ({ articleId }: GlossaryQuizProps) => {
     const navigate = useNavigate();
     const [glossaryExpanded, setGlossaryExpanded] = useState(false);
     const [quizExpanded, setQuizExpanded] = useState(false);
     const [userAnswers, setUserAnswers] = useState<number[]>([]);
 
-    // props로 받은 articleId 사용
     const articleIdNumber = Number(articleId ?? 11);
     const {
         data: termsData = [],

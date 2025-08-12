@@ -2,8 +2,8 @@ import { lazy, Suspense } from 'react';
 import type { RouteObject } from 'react-router-dom';
 
 import MainLayout from '@/layout/MainLayout';
+import QuizCommentary from '@/pages/article/QuizCommentaryPage';
 import SharePage from '@/pages/article/SharePage';
-import QuizCommentary from '@/pages/test/QuizCommentaryPage';
 
 import LoadingFallback from './LoadingFallback';
 import ProtectedRoute from './ProtectedRoute';

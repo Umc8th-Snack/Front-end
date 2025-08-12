@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getArticleDetail } from '@/pages/article/apis/articleApi';
+import AccordionTestPage from '@/pages/article/components/GlossaryQuiz';
 import SummarizedNewsContainer from '@/pages/article/components/SummarizedNewsContainer/SummarizedNewsContainer';
 import type { ArticleDetail } from '@/pages/article/types/article';
-import AccordionTestPage from '@/pages/test/GlossaryQuiz';
 import LoadingFallback from '@/routes/LoadingFallback';
 import ChainIcon from '@/shared/assets/icons/chain-icon.svg?react';
 import FieldChips from '@/shared/components/chip/FieldChips';
