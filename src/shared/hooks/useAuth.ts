@@ -1,7 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { authApi } from '../apis/auth';
-import type { LoginRequestTypes, LoginResponseTypes, SignupRequestTypes, SignupResponseTypes } from '../types/apiTypes';
+import type {
+    LoginRequestTypes,
+    LoginResponseTypes,
+    SignupRequestTypes,
+    SignupResponseTypes,
+    SocialLoginResponseTypes,
+} from '../types/apiTypes';
 
 /**
  * 로그인 mutation 훅
@@ -75,6 +81,28 @@ export const useSignup = () => {
         },
         onError: (error) => {
             console.error('❌ [USE SIGNUP] 회원가입 뮤테이션 실패:', error);
+        },
+    });
+};
+
+/**
+ * Google 소셜 로그인 mutation 훅
+ */
+export const useGoogleLogin = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation<{ data: SocialLoginResponseTypes; token: string }, Error, string>({
+        mutationFn: async (code: string) => {
+            const response = await authApi.googleCallback(code);
+            return response;
+        },
+        onSuccess: (data) => {
+            console.log('✅ [USE GOOGLE LOGIN] Google 로그인 성공:', data.data);
+            // 사용자 관련 쿼리 무효화
+            void queryClient.invalidateQueries({ queryKey: ['user'] });
+        },
+        onError: (error) => {
+            console.error('❌ [USE GOOGLE LOGIN] Google 로그인 실패:', error);
         },
     });
 };
