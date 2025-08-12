@@ -1,4 +1,3 @@
-// pages/settings/DeleteAccountPage.tsx
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,13 +14,13 @@ const DeleteAccountPage = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    // 🔹 비밀번호 틀리면 서버에서 온 메시지를 alert로 보여줌
+    //  비밀번호 틀리면 서버에서 온 메시지를 alert로 보여줌
     const { mutate, isPending } = useMutation({
         mutationFn: (pw: string) => deleteAccount(pw),
         onSuccess: () => {
             // 토큰/캐시 정리
             localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
+
             queryClient.clear();
 
             setIsModalOpen(false);
