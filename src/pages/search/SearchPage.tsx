@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import type { SemanticArticle } from '@/pages/search/types/searchTypes';
+import LoadingFallback from '@/routes/LoadingFallback';
 
 import { semanticSearch } from './apis/searchApi';
 
@@ -44,7 +45,7 @@ const SearchPage = () => {
     return (
         <div className="mx-auto mt-10 max-w-[880px]">
             <div className="border-main-30 relative rounded-[20px] border-[3px] bg-white p-12">
-                {loading && <div className="py-10 text-center">불러오는 중…</div>}
+                {loading && <LoadingFallback />}
                 {error && <div className="py-10 text-center text-red-500">{error}</div>}
                 {!loading && !error && articles.length === 0 && (
                     <div className="py-10 text-center text-black/60">검색 결과가 없습니다.</div>
