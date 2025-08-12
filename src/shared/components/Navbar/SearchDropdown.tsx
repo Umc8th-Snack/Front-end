@@ -25,7 +25,7 @@ const SearchDropdown = ({ open, suggestions, onSelect, setOpen }: SearchDropdown
     return (
         <div
             ref={containerRef}
-            className="border-main pointer-events-none absolute inset-x-0 top-full z-50 -mt-px origin-top scale-y-95 overflow-hidden rounded-b-[24px] border border-t-0 bg-white opacity-0 shadow-lg transition-opacity transition-transform duration-1200 ease-out data-[open=true]:pointer-events-auto data-[open=true]:scale-y-100 data-[open=true]:opacity-100"
+            className="border-main pointer-events-none absolute inset-x-0 top-full z-50 -mt-px origin-top scale-y-95 overflow-hidden rounded-b-[24px] border border-t-0 bg-white opacity-0 shadow-lg transition-opacity transition-transform duration-4000 ease-in-out data-[open=true]:pointer-events-auto data-[open=true]:scale-y-100 data-[open=true]:opacity-100"
             data-open={open}
         >
             {suggestions.map((item, idx) => (
