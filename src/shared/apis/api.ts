@@ -22,8 +22,7 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data as T;
-        /* 메모장 api 이슈 때문에 강제 타입 변환해놨는데 이따가 변경해야 함*/
+        return response.data.data;
     },
 
     /**
@@ -34,7 +33,7 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data as T;
+        return response.data.data;
     },
 
     /**
@@ -45,7 +44,7 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data as T;
+        return response.data.data;
     },
 
     /**
@@ -56,7 +55,7 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data as T;
+        return response.data.data;
     },
 
     /**
@@ -67,7 +66,7 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data as T;
+        return response.data.data;
     },
 };
 
