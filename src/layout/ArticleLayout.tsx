@@ -17,7 +17,9 @@ const ArticleLayout = ({ children, sidebarContent }: ArticleLayoutProps) => {
 
                 {/* Sidebar */}
                 <aside className="mt-8">
-                    <div className="sticky top-15">{sidebarContent || <RelatedArticleList onClose={() => {}} />}</div>
+                    <div className="sticky top-15">
+                        {sidebarContent || <RelatedArticleList onClose={() => {}} articleId={0} />}
+                    </div>
                 </aside>
             </div>
         </div>
