@@ -11,14 +11,16 @@ export interface GlossaryItem {
 
 export interface AccordionProps {
     title: string;
-    data: GlossaryItem[];
+    data: GlossaryItem[] | QuizItem[];
     isExpanded?: boolean;
     onToggle?: () => void;
     onConfirm?: () => void;
     onAnswersChange?: (answers: number[]) => void;
     articleId?: number;
-
     onReport?: () => void;
+    // 에러 상태 추가
+    error?: string | null;
+    isLoading?: boolean;
 }
 
 export interface QuizItem {

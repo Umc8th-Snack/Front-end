@@ -14,21 +14,12 @@ const Accordion = ({
     onToggle,
     onConfirm,
     onAnswersChange,
-
     onReport,
-}:
-    | AccordionProps
-    | {
-          title: string;
-          data: QuizItem[];
-          isExpanded?: boolean;
-          onToggle?: () => void;
-          onConfirm?: () => void;
-          onAnswersChange?: (answers: number[]) => void;
-
-          onReport?: () => void;
-      }) => {
-    const isQuiz = data.length > 0 && 'question' in data[0];
+    error,
+    isLoading,
+}: AccordionProps) => {
+    // title을 기준으로 퀴즈인지 판단 (더 안전함)
+    const isQuiz = title === '퀴즈';
     return (
         <div className="border-main-30 max-w-md rounded-[16px] border-[3px] bg-white p-6">
             {/* 헤더 */}
@@ -53,17 +44,30 @@ const Accordion = ({
             <div className="border-black-30 mb-4 border-t"></div>
 
             {/* 컨텐츠(용어집/퀴즈) */}
-            {isExpanded &&
-                (isQuiz ? (
-                    <QuizContent
-                        data={data as QuizItem[]}
-                        onClose={onToggle}
-                        onConfirm={onConfirm}
-                        onAnswersChange={onAnswersChange}
-                    />
-                ) : (
-                    <GlossaryContent data={data as GlossaryItem[]} />
-                ))}
+            {isExpanded && (
+                <>
+                    {isLoading ? (
+                        <div className="flex items-center justify-center py-8">
+                            <div className="text-gray-500">로딩 중...</div>
+                        </div>
+                    ) : error ? (
+                        <div className="flex flex-col items-center justify-center py-8 text-center">
+                            <div className="mb-2 text-sm text-red-500">⚠️</div>
+                            <div className="text-sm text-red-500">{error}</div>
+                        </div>
+                    ) : // 기존 컨텐츠 렌더링
+                    isQuiz ? (
+                        <QuizContent
+                            data={data as QuizItem[]}
+                            onClose={onToggle}
+                            onConfirm={onConfirm}
+                            onAnswersChange={onAnswersChange}
+                        />
+                    ) : (
+                        <GlossaryContent data={data as GlossaryItem[]} />
+                    )}
+                </>
+            )}
 
             {/* 토글 버튼 */}
             <div className="flex w-full justify-center">
