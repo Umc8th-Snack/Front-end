@@ -1,23 +1,54 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { reportQuiz, reportTerm } from '@/pages/article/apis/reportApi';
 import Accordion from '@/pages/article/components/Accordion/Accordion';
 import { useArticleTerms } from '@/pages/article/hooks/useArticleTerms';
 import { useQuiz } from '@/pages/article/hooks/useQuiz';
 import type { GlossaryItem } from '@/pages/article/types/accordionTypes';
 import LoadingFallback from '@/routes/LoadingFallback';
+import ReportConfirmModal from '@/shared/components/modal/ReportConfirmModal/ReportConfirmModal';
+import ShareToast from '@/shared/components/modal/ShareModal/ShareToast';
 
-interface AccordionTestPageProps {
+interface GlossaryQuizProps {
     articleId: string | undefined;
 }
 
-const GlossaryQuiz = ({ articleId }: AccordionTestPageProps) => {
+const GlossaryQuiz = ({ articleId }: GlossaryQuizProps) => {
     const navigate = useNavigate();
     const [glossaryExpanded, setGlossaryExpanded] = useState(false);
     const [quizExpanded, setQuizExpanded] = useState(false);
     const [userAnswers, setUserAnswers] = useState<number[]>([]);
 
-    // props로 받은 articleId 사용
+    const [reportType, setReportType] = useState<null | 'term' | 'quiz'>(null);
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+    const handleOpenReportModal = (type: 'term' | 'quiz') => {
+        setReportType(type);
+    };
+
+    const handleConfirmReport = async () => {
+        if (!reportType) return;
+        try {
+            if (reportType === 'term') {
+                await reportTerm(articleIdNumber);
+                setToastMessage('용어 신고가 접수되었습니다.');
+            } else {
+                await reportQuiz(articleIdNumber);
+                setToastMessage('퀴즈 해설 신고가 접수되었습니다.');
+            }
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err) && err.response?.status === 409) {
+                setToastMessage('이미 신고한 항목입니다.');
+            } else {
+                setToastMessage('신고 처리 중 오류가 발생했습니다.');
+            }
+        } finally {
+            setReportType(null);
+        }
+    };
+
     const articleIdNumber = Number(articleId ?? 11);
     const {
         data: termsData = [],
@@ -64,6 +95,7 @@ const GlossaryQuiz = ({ articleId }: AccordionTestPageProps) => {
                                 data={termsData as GlossaryItem[]}
                                 isExpanded={glossaryExpanded}
                                 onToggle={() => setGlossaryExpanded((prev) => !prev)}
+                                onReport={() => handleOpenReportModal('term')}
                             />
                         )}
                     </div>
@@ -85,6 +117,7 @@ const GlossaryQuiz = ({ articleId }: AccordionTestPageProps) => {
                                 }))}
                                 isExpanded={quizExpanded}
                                 onToggle={() => setQuizExpanded((prev) => !prev)}
+                                onReport={() => handleOpenReportModal('quiz')}
                                 onConfirm={() => {
                                     console.log('=== 퀴즈 해설 페이지 이동 시도 ===');
                                     console.log('현재 URL:', window.location.href);
@@ -109,6 +142,18 @@ const GlossaryQuiz = ({ articleId }: AccordionTestPageProps) => {
                                 articleId={articleIdNumber}
                             />
                         )}
+
+                        {/* 신고 확인 모달 */}
+                        {reportType && (
+                            <ReportConfirmModal
+                                onClose={() => setReportType(null)}
+                                onConfirm={() => {
+                                    void handleConfirmReport();
+                                }}
+                            />
+                        )}
+
+                        {toastMessage && <ShareToast message={toastMessage} onDone={() => setToastMessage(null)} />}
                     </div>
                 </div>
             </div>

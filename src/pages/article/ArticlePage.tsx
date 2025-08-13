@@ -4,9 +4,9 @@ import { useParams } from 'react-router-dom';
 import ArticleLayout from '@/layout/ArticleLayout';
 import { getArticleDetail } from '@/pages/article/apis/articleApi';
 import ArticleHeader from '@/pages/article/components/ArticleHeader';
+import AccordionTestPage from '@/pages/article/components/GlossaryQuiz';
 import SummarizedNewsContainer from '@/pages/article/components/SummarizedNewsContainer/SummarizedNewsContainer';
 import type { ArticleDetail } from '@/pages/article/types/article';
-import AccordionTestPage from '@/pages/test/GlossaryQuiz';
 import LoadingFallback from '@/routes/LoadingFallback';
 import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
 
