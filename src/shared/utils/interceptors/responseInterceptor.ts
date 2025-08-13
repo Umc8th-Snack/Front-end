@@ -28,7 +28,7 @@ export const handleResponseError = (error: AxiosError<ApiErrorTypes>): Promise<C
     customError.isApiError = true;
 
     // 에러 처리 로직 위임
-    handleApiError(customError);
+    void handleApiError(customError);
 
     return Promise.reject(customError);
 };
