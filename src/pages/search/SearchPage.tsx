@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import type { SemanticArticle } from '@/pages/search/types/searchTypes';
 import LoadingFallback from '@/routes/LoadingFallback';
@@ -54,8 +54,14 @@ const SearchPage = () => {
                     !error &&
                     articles.map((a, idx) => (
                         <div key={a.article_id}>
-                            <h2 className="text-36px-semibold mb-2 text-black">{a.title}</h2>
-                            <p className="text-black-70 text-20px-medium mb-6 w-[760px] leading-8">{a.summary}</p>
+                            <Link
+                                to={`/articles/${a.article_id}`}
+                                className="focus:ring-main block rounded-xl p-3 transition hover:bg-black/5 focus:ring-2 focus:outline-none"
+                                aria-label={`${a.title}로 이동`}
+                            >
+                                <h2 className="text-36px-semibold mb-2 text-black">{a.title}</h2>
+                                <p className="text-black-70 text-20px-medium mb-6 w-[760px] leading-8">{a.summary}</p>
+                            </Link>
 
                             {idx < articles.length - 1 && (
                                 <>
