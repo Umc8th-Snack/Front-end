@@ -4,33 +4,33 @@
 <br><br><br>
 
 
-# 🧑🏻‍💻 Member 👩🏻‍💻
+## 🧑🏻‍💻 Member 👩🏻‍💻
 <img width="5768" height="2246" alt="냠" src="https://github.com/user-attachments/assets/006b0876-732a-4d52-95fc-a5179e1c271a" />
 
 <br><br><br>
 
 
-# ✨ 주요 기능
+## ✨ 주요 기능
 
-## 📰 뉴스 요약 및 읽기
+### 📰 뉴스 요약 및 읽기
 - AI 기반 뉴스 요약 제공  
 - 카테고리별 뉴스 분류 (정치, 경제, 사회, 국제, 스포츠, 연예, IT/과학)  
 - 원본 기사 링크 제공  
 <br>
 
-## 📚 학습 도구
+### 📚 학습 도구
 - **용어집**: 기사 내 전문 용어 설명  
 - **퀴즈**: 기사 내용 기반 학습 퀴즈  
 - **메모장**: 개인 학습 노트 작성 및 저장  
 <br>
 
-## 🔍 검색 및 개인화
+### 🔍 검색 및 개인화
 - 의미론적 검색 (Semantic Search)  
 - 개인 맞춤 피드 (Custom Feed)  
 - 스크랩 기능으로 관심 기사 저장  
 <br>
 
-## 👤 사용자 관리
+### 👤 사용자 관리
 - 소셜 로그인 (Google)  
 - 이메일 회원가입/로그인  
 - 프로필 관리 및 설정  
@@ -38,26 +38,26 @@
 <br><br><br>
 
 
-# 🛠 기술 스택
+## 🛠 기술 스택
 
-## 🎨 Frontend
+### 🎨 Frontend
 - **React 19 + TypeScript** – 최신 React와 타입 안전성  
 - **Vite** – 빠른 개발 환경과 빌드  
 - **Tailwind CSS** – 유틸리티 기반 스타일링  
 - **React Router DOM** – SPA 라우팅  
 <br>
 
-## 📦 State Management & Data Fetching
+### 📦 State Management & Data Fetching
 - **TanStack React Query** – 서버 상태 관리  
 - **Context API** – 전역 상태 관리 (인증)  
 <br>
 
-## 💎 UI/UX
+### 💎 UI/UX
 - **Embla Carousel** – 온보딩 카드 캐러셀  
 - **SVG Icons** – 벡터 기반 아이콘 시스템   
 <br>
 
-## 🔧 Development Tools
+### 🔧 Development Tools
 - **ESLint + Prettier** – 코드 품질 및 포맷팅  
 - **Husky + lint-staged** – Git 훅을 통한 코드 품질 관리  
 - **TypeScript** – 정적 타입 검사  
