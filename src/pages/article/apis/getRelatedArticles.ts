@@ -1,15 +1,7 @@
-import type { SharedArticle } from '@/pages/article/types/share';
-import axiosInstance from '@/shared/apis/axios';
+import type { RelatedArticle, RelatedArticlesResponse } from '@/pages/article/types/share';
+import api from '@/shared/apis/api';
 
-type RelatedArticlesEnvelope = {
-    isSuccess: boolean;
-    code: string;
-    message: string;
-    result: SharedArticle[];
-    error: unknown;
-};
-
-export const getRelatedArticles = async (articleId: number): Promise<SharedArticle[]> => {
-    const res = await axiosInstance.get<RelatedArticlesEnvelope>(`/api/articles/${articleId}/related-articles`);
-    return res.data.result;
+export const getRelatedArticles = async (articleId: number): Promise<RelatedArticle[]> => {
+    const response = await api.get<RelatedArticlesResponse>(`/api/articles/${articleId}/related-articles`);
+    return response.result;
 };

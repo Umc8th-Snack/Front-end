@@ -5,6 +5,7 @@ import ArticleLayout from '@/layout/ArticleLayout';
 import { getArticleDetail } from '@/pages/article/apis/articleApi';
 import ArticleHeader from '@/pages/article/components/ArticleHeader';
 import AccordionTestPage from '@/pages/article/components/GlossaryQuiz';
+import RelatedArticleList from '@/pages/article/components/RelatedArticleList/RelatedArticleList';
 import SummarizedNewsContainer from '@/pages/article/components/SummarizedNewsContainer/SummarizedNewsContainer';
 import type { ArticleDetail } from '@/pages/article/types/article';
 import LoadingFallback from '@/routes/LoadingFallback';
@@ -57,7 +58,7 @@ const ArticlePage = () => {
 
     return (
         <>
-            <ArticleLayout>
+            <ArticleLayout sidebarContent={<RelatedArticleList onClose={() => {}} articleId={article.articleId} />}>
                 <ArticleHeader
                     title={article.title}
                     category={article.category}
@@ -85,7 +86,7 @@ const ArticlePage = () => {
 
             {/* 메모장 오버레이 */}
             {isMemoPadOpen && articleId && (
-                <div className="fixed top-0 right-0 z-50 px-18 py-8">
+                <div className="fixed top-0 right-0 z-50 px-18 py-18">
                     <div className="mt-20">
                         <MemoPad articleId={articleId} />
                     </div>

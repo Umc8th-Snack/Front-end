@@ -6,6 +6,7 @@ import ArticleLayout from '@/layout/ArticleLayout';
 import { getArticleDetail } from '@/pages/article/apis/articleApi';
 import ArticleHeader from '@/pages/article/components/ArticleHeader';
 import QuizCommentary from '@/pages/article/components/Quiz/QuizCommentary';
+import RelatedArticleList from '@/pages/article/components/RelatedArticleList/RelatedArticleList';
 import { useQuizCommentary } from '@/pages/article/hooks/useQuizCommentary';
 import LoadingFallback from '@/routes/LoadingFallback';
 import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
@@ -57,7 +58,7 @@ const QuizCommentaryPage = () => {
 
     return (
         <>
-            <ArticleLayout>
+            <ArticleLayout sidebarContent={<RelatedArticleList onClose={() => {}} articleId={article.articleId} />}>
                 <ArticleHeader
                     title={article.title}
                     category={article.category}
