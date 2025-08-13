@@ -25,7 +25,7 @@ const QuizResultMessage = ({ totalQuestions, correctAnswers, isVisible }: QuizRe
             };
         } else {
             return {
-                title: `좋아요! ${correctAnswers}문제 맞추셨어요.`,
+                title: `좋아요! ${correctAnswers}문제 맞히셨어요.`,
                 subtitle: '틀린 부분은 가볍게 복습해 보아요.',
             };
         }
