@@ -14,5 +14,5 @@ export type UpdateUserProfilePayload = {
 
 export const updateUserProfile = async (payload: UpdateUserProfilePayload): Promise<UserProfile> => {
     const res = await axiosInstance.patch('/api/users/me', payload);
-    return res.data.result;
+    return res.data.result as UserProfile;
 };

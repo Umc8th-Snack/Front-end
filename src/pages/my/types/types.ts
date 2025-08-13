@@ -2,7 +2,7 @@ export interface Memo {
     memoId: number;
     content: string;
     createdAt: string;
-    articleUrl: string;
+    articleId: number;
 }
 
 export interface MemoListResponse {

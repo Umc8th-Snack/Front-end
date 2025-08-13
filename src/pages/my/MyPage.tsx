@@ -58,7 +58,14 @@ const MyPage = () => {
             <TabMenu tab={tab} onChange={setTab} />
             <div className="mt-6 space-y-6">
                 {tab === 'memo'
-                    ? memos.map((m) => <MemoCard key={m.memoId} date={formatDate(m.createdAt)} content={m.content} />)
+                    ? memos.map((m) => (
+                          <MemoCard
+                              key={m.memoId}
+                              date={formatDate(m.createdAt)}
+                              content={m.content}
+                              articleId={m.articleId}
+                          />
+                      ))
                     : scraps.map((s) => (
                           <ScrapCard
                               key={s.scrapId}
