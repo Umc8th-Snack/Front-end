@@ -1,4 +1,3 @@
-// src/pages/my/components/Profile.tsx
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useEffect, useRef, useState } from 'react';

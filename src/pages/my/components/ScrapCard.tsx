@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import ArrowUpright from '@/pages/my/assets/arrow-upright.svg';
+import ArrowUpright from '@/pages/my/assets/arrow-up-right.svg?react';
 
 interface ScrapCardProps {
     title: string;

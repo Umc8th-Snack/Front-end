@@ -1,11 +1,3 @@
-export type ApiEnvelope<T> = {
-    isSuccess: boolean;
-    code: string;
-    message: string;
-    result: T;
-    error?: Record<string, unknown>;
-};
-
 // 이메일 변경
 export interface ChangeEmailPayload {
     newEmail: string;
