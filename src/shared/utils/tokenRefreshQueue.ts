@@ -10,6 +10,7 @@ class TokenRefreshQueue {
     private failedQueue: Array<{
         resolve: (value: InternalAxiosRequestConfig) => void;
         reject: (error: AxiosError) => void;
+        originalRequest: InternalAxiosRequestConfig;
     }> = [];
 
     /**
@@ -42,7 +43,7 @@ class TokenRefreshQueue {
         console.log('📋 [TOKEN QUEUE] 요청을 대기열에 추가:', request.url);
 
         return new Promise((resolve, reject) => {
-            this.failedQueue.push({ resolve, reject });
+            this.failedQueue.push({ resolve, reject, originalRequest: request });
         });
     }
 
@@ -52,14 +53,11 @@ class TokenRefreshQueue {
     processQueue(token: string): void {
         console.log(`✅ [TOKEN QUEUE] 대기열 처리 시작 (${this.failedQueue.length}개 요청)`);
 
-        this.failedQueue.forEach(({ resolve }, index) => {
+        this.failedQueue.forEach(({ resolve, originalRequest }, index) => {
             console.log(`  - 요청 ${index + 1} 처리 중...`);
-            // 새 토큰으로 헤더 업데이트하여 요청 재시도
-            resolve({
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            } as InternalAxiosRequestConfig);
+            // 원본 요청의 config를 유지하면서 새 토큰으로 헤더 업데이트
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            resolve(originalRequest);
         });
 
         this.clearQueue();
