@@ -1,6 +1,6 @@
 export const ROUTES = {
     HOME: '/',
-    ARTICLE: '/article',
+    ARTICLES: '/articles',
     MY_PAGE: '/mypage',
     CUSTOM_FEED: '/custom-feed',
     SEARCH: '/search',

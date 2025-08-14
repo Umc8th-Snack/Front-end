@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
 
@@ -7,31 +7,6 @@ interface QuizExitModalProps {
     onContinue: () => void;
     onExit: () => void;
 }
-
-// TODO: 아래 코드는 임시 기본 핸들러
-// 라우팅 설정 후 실제 로직으로 변경하기
-const DummyQuizExitModal = () => {
-    const [isOpen, setIsOpen] = useState(true);
-
-    const handleClose = () => {
-        console.log('모달 닫기');
-        setIsOpen(false);
-    };
-
-    const handleContinue = () => {
-        alert('퀴즈 이어풀기');
-        setIsOpen(false);
-    };
-
-    const handleExit = () => {
-        alert('퀴즈 중단하기');
-        setIsOpen(false);
-    };
-
-    if (!isOpen) return null;
-
-    return <QuizExitModal onClose={handleClose} onContinue={handleContinue} onExit={handleExit} />;
-};
 
 const QuizExitModal = ({ onClose, onContinue, onExit }: QuizExitModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
@@ -102,8 +77,5 @@ const QuizExitModal = ({ onClose, onContinue, onExit }: QuizExitModalProps) => {
     );
 };
 
-// 임시 export:
-export default DummyQuizExitModal;
-
-// TODO: 실제 사용 시 밑의 코드로 변경하기
-// export default QuizExitModal;
+// 실제 QuizExitModal export
+export default QuizExitModal;

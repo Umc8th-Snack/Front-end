@@ -1,14 +1,13 @@
-// Navbar.tsx
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import SearchIcon from '@/shared/assets/search.svg?react';
+import SettingsDropdown from '@/pages/settings/components/SettingsDropdown/SettingsDropdown';
 import SnackLogo from '@/shared/assets/snack.svg?react';
 import LoginModal from '@/shared/components/modal/loginModal/LoginModal';
+import SearchBar from '@/shared/components/Navbar/SearchBar';
 import { useAuth } from '@/shared/context/AuthContext';
 
 import ConsentModal from '../modal/ConsentModal/ConsentModal';
-import SettingsDropdown from '../modal/SettingsDropdown/SettingsDropdown';
 
 const Navbar = () => {
     const { isAuthenticated, user } = useAuth();
@@ -30,21 +29,11 @@ const Navbar = () => {
         <header className="w-full">
             <div className="mx-auto flex h-[120px] w-full max-w-[1200px] items-center justify-between px-4 py-8 lg:px-0">
                 {/* 로고 */}
-                <div className="flex items-center">
+                <div className="flex flex-1 items-center">
                     <Link to="/" className="flex shrink-0 items-center">
                         <SnackLogo className="h-[55px] w-[120px] lg:h-[64px] lg:w-[140px]" />
                     </Link>
-
-                    <div className="border-main mx-4 flex h-[40px] w-full max-w-[555px] min-w-[250px] flex-1 gap-4 rounded-full border px-4 py-2 outline-none focus:ring-1 focus:ring-blue-400 lg:h-[45px] lg:min-w-[410px]">
-                        <input
-                            type="text"
-                            placeholder="찾고싶은 기사가 있나요?"
-                            className="placeholder: text-18px-medium lg:text-20px-medium text-main-70 w-full pl-1 outline-none focus:outline-none"
-                        />
-                        <button className="hover:cursor-pointer">
-                            <SearchIcon className="h-6 w-6 lg:h-7 lg:w-7" />
-                        </button>
-                    </div>
+                    <SearchBar />
                 </div>
 
                 {/* 우측 메뉴 */}
@@ -67,8 +56,8 @@ const Navbar = () => {
                                 메인피드
                             </Link>
                             <Link
-                                to="/article"
-                                className={`hover:text-main transition-colors ${location.pathname === '/article' ? 'text-main' : ''}`}
+                                to="/articles/:articleId"
+                                className={`hover:text-main transition-colors ${location.pathname.startsWith('/articles') ? 'text-main' : ''}`}
                             >
                                 맞춤피드
                             </Link>

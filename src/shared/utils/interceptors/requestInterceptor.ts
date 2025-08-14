@@ -1,12 +1,15 @@
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
+const ACCESS_TOKEN_KEY = 'accessToken';
 /**
  * 토큰을 가져오는 함수 (나중에 구현)
  */
 const getAccessToken = (): string | null => {
-    // TODO: 실제 토큰 관리 로직 구현
-    // localStorage, sessionStorage, 또는 상태 관리에서 토큰 가져오기
-    return null;
+    try {
+        return localStorage.getItem(ACCESS_TOKEN_KEY); // 스웨거에서 받은 토큰을 여기 키로 넣어두면 됨
+    } catch {
+        return null;
+    }
 };
 
 /**

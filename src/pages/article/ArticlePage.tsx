@@ -1,41 +1,99 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import ArticleLayout from '@/layout/ArticleLayout';
+import { getArticleDetail } from '@/pages/article/apis/articleApi';
+import ArticleHeader from '@/pages/article/components/ArticleHeader';
+import AccordionTestPage from '@/pages/article/components/GlossaryQuiz';
+import RelatedArticleList from '@/pages/article/components/RelatedArticleList/RelatedArticleList';
 import SummarizedNewsContainer from '@/pages/article/components/SummarizedNewsContainer/SummarizedNewsContainer';
-import AccordionTestPage from '@/pages/test/AccordionTestPage';
-import ChainIcon from '@/shared/assets/icons/chain-icon.svg?react';
-import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
-import CategoryChips from '@/shared/components/chip/CategoryChips';
+import type { ArticleDetail } from '@/pages/article/types/article';
+import LoadingFallback from '@/routes/LoadingFallback';
+import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
 
 const ArticlePage = () => {
-    const handleToggleChange = (_checked: boolean) => {
-        handleToggle(_checked);
+    const { articleId } = useParams<{ articleId: string }>();
+    const [article, setArticle] = useState<ArticleDetail | null>(null);
+
+    // 메모장 상태 관리
+    const [isMemoPadOpen, setIsMemoPadOpen] = useState(false);
+
+    // 메모장 토글 핸들러
+    const handleToggleChange = (checked: boolean) => {
+        setIsMemoPadOpen(checked);
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!articleId) return;
+            try {
+                //  실제 API 호출
+                const data = await getArticleDetail(Number(articleId));
+                setArticle(data);
+            } catch (e) {
+                console.error('기사 상세 로딩 실패:', e);
+
+                // API 호출 실패 시 더미 데이터 사용
+                const dummyArticle = {
+                    articleId: Number(articleId),
+                    title: 'LG전자, AI 체험 공간 오픈...역사와 최신 기술 동시 체험',
+                    summary:
+                        'LG전자가 AI 체험 공간을 오픈했다. 이 공간에서는 LG의 역사를 체험하면서 동시에 최신 AI 기술을 체험할 수 있다. 이는 LG가 AI 기술 발전에 얼마나 집중하고 있는지를 보여주는 좋은 예시다.',
+                    publishedAt: '2025-01-27T00:00:00.000Z',
+                    category: '사회',
+                    articleUrl: 'https://example.com/article',
+                    imageUrl: 'https://via.placeholder.com/400x300',
+                    snackUrl: 'https://snack.com/article',
+                    viewCount: 1234,
+                };
+                setArticle(dummyArticle);
+            }
+        };
+        void fetchData();
+    }, [articleId]);
+
+    if (!article) {
+        return <LoadingFallback />;
+    }
+
     return (
-        <div className="w-[714px] pl-6">
-            <div className="mx-auto flex max-w-[714px] min-w-2xl flex-col gap-6 px-6 py-4">
-                <CategoryChips categories={['스포츠']} isClickable={false} bgColor="bg-main" />
-                <div className="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
-                    <h1 className="text-36px-semibold flex-shrink-0">스포츠 기사</h1>
-                    <div className="flex items-center gap-1">
-                        <ChainIcon />
-                        <h2 className="text-20px-medium text-black-70">원문링크: https://abcd.co</h2>
-                    </div>
-                    <div className="flex flex-1 items-center justify-end gap-1">
-                        <div className="text-20px-medium text-black-70">메모장</div>
-                        <ToggleSwitch onChange={handleToggleChange} checked={false} />;
-                    </div>
-                </div>
+        <>
+            <ArticleLayout sidebarContent={<RelatedArticleList onClose={() => {}} articleId={article.articleId} />}>
+                <ArticleHeader
+                    title={article.title}
+                    category={article.category}
+                    originalLink={article.articleUrl}
+                    isNotepadEnabled={isMemoPadOpen}
+                    onNotepadToggle={handleToggleChange}
+                />
+
                 <hr className="border-black-30 w-full border-t" />
-                <div className="flex justify-center">
-                    <SummarizedNewsContainer />
+
+                {article && (
+                    <div className="flex justify-center pt-4">
+                        <SummarizedNewsContainer
+                            summary={article.summary}
+                            articleId={article.articleId}
+                            title={article.title}
+                            image={article.imageUrl ?? ''}
+                        />
+                    </div>
+                )}
+                <div className="pt-8">
+                    <AccordionTestPage articleId={articleId} />
                 </div>
-                <AccordionTestPage />
-            </div>
-        </div>
+            </ArticleLayout>
+
+            {/* 메모장 오버레이 */}
+            {isMemoPadOpen && articleId && (
+                <div className="fixed top-0 right-0 z-50 px-18 py-18">
+                    <div className="mt-20">
+                        <MemoPad articleId={articleId} />
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 
 export default ArticlePage;
-
-function handleToggle(_checked: boolean) {
-    throw new Error('Function not implemented.');
-}

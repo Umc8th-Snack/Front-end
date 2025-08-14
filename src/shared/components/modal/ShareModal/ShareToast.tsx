@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
-interface Props {
+interface ShareToastProps {
     message: string;
     duration?: number; // ms 단위
     onDone?: () => void; // 토스트가 사라질 때 호출
 }
 
-function ShareToast({ message, duration = 500, onDone }: Props) {
+function ShareToast({ message, duration = 500, onDone }: ShareToastProps) {
     const [fadeOut, setFadeOut] = useState(false);
 
     useEffect(() => {
