@@ -44,10 +44,10 @@ const HomePage = () => {
             </div>
 
             {/* 기사 카드 그리드 */}
-            <div className="mx-auto max-w-[1151px] px-4">
-                <div className="grid grid-cols-3 justify-items-center gap-[33px] min-[1151px]:grid-cols-4">
+            <div className="mx-auto max-w-[1200px] px-4">
+                <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {articleData.map((article, index) => (
-                        <ArticleCard key={index} title={article.title} category={article.category} />
+                        <ArticleCard key={index} title={article.title} category={article.category} size="main" />
                     ))}
                 </div>
             </div>

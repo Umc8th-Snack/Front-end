@@ -84,7 +84,7 @@ const RelatedArticleList = ({ onClose, articleId }: RelatedArticleListProps) => 
                             onClick={() => void handleArticleClick(article.articleId)}
                             className="cursor-pointer text-left"
                         >
-                            <ArticleCard title={article.title} imageUrl={article.imageUrl} />
+                            <ArticleCard title={article.title} imageUrl={article.imageUrl} size="sidebar" />
                         </button>
                     ))
                 )}
