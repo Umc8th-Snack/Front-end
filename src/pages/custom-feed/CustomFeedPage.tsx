@@ -99,7 +99,7 @@ const CustomFeedPage = () => {
                                 onClick={() => void navigate(`/articles/${article.articleId}`)}
                                 className="cursor-pointer text-left"
                             >
-                                <ArticleCard title={article.title} category={cardCategory} imageUrl={url} />
+                                <ArticleCard title={article.title} category={cardCategory} imageUrl={url} size="main" />
                             </button>
                         );
                     })}

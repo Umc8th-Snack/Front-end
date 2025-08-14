@@ -157,7 +157,7 @@ const HomePage = () => {
             </div>
 
             {/* 기사 카드 그리드 */}
-            <div className="mx-auto max-w-[1151px] px-4">
+            <div className="mx-auto max-w-[1200px] px-4">
                 {isLoading ? (
                     <div className="flex h-[400px] items-center justify-center">
                         <div className="text-24px-medium text-black-70">잠시만요, 스낵이 기사를 담는 중이에요…</div>
@@ -179,7 +179,7 @@ const HomePage = () => {
                     </div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-3 justify-items-center gap-[33px] min-[1151px]:grid-cols-4">
+                        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                             {articles
                                 .filter(
                                     (a) => typeof a.imageUrl === 'string' && /^https?:\/\//i.test(a.imageUrl.trim())
@@ -190,7 +190,12 @@ const HomePage = () => {
                                         onClick={() => void navigate(`/articles/${article.articleId}`)}
                                         className="cursor-pointer text-left"
                                     >
-                                        <ArticleCard title={article.title} imageUrl={article.imageUrl!.trim()} />
+                                        <ArticleCard 
+                                            title={article.title} 
+                                            imageUrl={article.imageUrl!.trim()} 
+                                            category={article.category}
+                                            size="main" 
+                                        />
                                     </button>
                                 ))}
                         </div>
