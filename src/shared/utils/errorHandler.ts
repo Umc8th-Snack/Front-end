@@ -1,7 +1,5 @@
-import { authApi } from '../apis/auth';
 import { ERROR_MESSAGES, HTTP_STATUS } from '../constants/apiConstants';
 import type { CustomAxiosErrorTypes } from '../types/apiTypes';
-import { tokenUtils } from './auth';
 
 /**
  * API 에러 처리 함수
@@ -46,93 +44,41 @@ const handleServerError = async (error: CustomAxiosErrorTypes): Promise<void> =>
 };
 
 /**
- * 401 에러 처리 함수 - API 문서 기반 완전한 토큰 관리
+ * 401 에러 처리 함수 - Response Interceptor에서 처리되지 않은 경우만
  */
 const handleUnauthorizedError = async (error: CustomAxiosErrorTypes): Promise<void> => {
     const errorCode = error.response?.data?.code;
 
-    // API 문서의 에러 코드별 처리
-    console.log('🔍 [ERROR HANDLER] 401 에러 분석:', { errorCode, status: error.response?.status });
+    // Response Interceptor에서 이미 처리된 경우 로그만 출력
+    console.log('🔍 [ERROR HANDLER] 401 에러 감지 (Response Interceptor에서 처리됨):', {
+        errorCode,
+        status: error.response?.status,
+    });
 
+    // Response Interceptor에서 처리하지 못한 특수한 경우만 처리
     switch (errorCode) {
-        case 'AUTH_2166': // Access 토큰이 만료됨 - 재발급 시도
-        case 'AUTH_2161': // 유효하지 않은 Access 토큰 - 재발급 시도
-            console.log('🔄 [ERROR HANDLER] Access 토큰 문제 감지, 재발급 시도...');
-            await attemptTokenReissue(error);
+        // Refresh Token 관련 에러는 Response Interceptor에서 처리됨
+        case 'AUTH_2164': // Refresh 토큰이 만료됨
+        case 'AUTH_2165': // 서버에 Refresh 토큰이 존재하지 않음
+        case 'AUTH_2163': // Refresh 토큰이 존재하지 않음
+        case 'AUTH_2167': // 해당 계정은 토큰을 재발급 받을 수 없음
+            console.log('⚠️ [ERROR HANDLER] Refresh 토큰 문제 - Response Interceptor에서 처리되어야 함');
             break;
 
-        case 'AUTH_2164': // Refresh 토큰이 만료됨 - 로그아웃
-        case 'AUTH_2165': // 서버에 Refresh 토큰이 존재하지 않음 - 로그아웃
-        case 'AUTH_2163': // Refresh 토큰이 존재하지 않음 - 로그아웃
-        case 'AUTH_2167': // 해당 계정은 토큰을 재발급 받을 수 없음 - 로그아웃
-            console.log('🚪 [ERROR HANDLER] Refresh 토큰 문제 감지, 로그아웃 처리...');
-            handleForceLogout();
+        // Access Token 관련 에러도 Response Interceptor에서 처리됨
+        case 'AUTH_2166': // Access 토큰이 만료됨
+        case 'AUTH_2161': // 유효하지 않은 Access 토큰
+            console.log('⚠️ [ERROR HANDLER] Access 토큰 문제 - Response Interceptor에서 처리되어야 함');
             break;
 
         default:
-            // 일반적인 401 에러 - 재발급 시도 후 실패시 로그아웃
-            console.log('⚠️ [ERROR HANDLER] 일반 401 에러, 재발급 시도...');
-            await attemptTokenReissue(error);
+            // 기타 401 에러
+            console.log('⚠️ [ERROR HANDLER] 기타 401 에러');
     }
 };
 
-/**
- * 토큰 재발급 시도
- */
-const attemptTokenReissue = async (_originalError: CustomAxiosErrorTypes): Promise<void> => {
-    try {
-        console.log('🔄 [ERROR HANDLER] 토큰 재발급 요청 중...');
-
-        // /api/auth/reissue 호출
-        // Refresh Token은 HttpOnly 쿠키로 자동 전송 (withCredentials: true)
-        const reissueResponse = await authApi.reissueTokenWithToken();
-
-        // 새 Access Token 저장
-        if (reissueResponse.token) {
-            tokenUtils.setAccessToken(reissueResponse.token);
-
-            // 사용자 정보 업데이트
-            if (reissueResponse.data) {
-                localStorage.setItem('user', JSON.stringify(reissueResponse.data));
-            }
-
-            console.log('✅ [ERROR HANDLER] 토큰 재발급 성공, 새 토큰 저장 완료');
-            // NOTE: React Query 캐시 무효화는 useReissueToken hook에서 처리
-        } else {
-            throw new Error('재발급된 토큰을 찾을 수 없습니다.');
-        }
-
-        // 원본 요청 재시도는 response interceptor에서 처리
-    } catch (reissueError) {
-        console.error('❌ [ERROR HANDLER] 토큰 재발급 실패:', reissueError);
-        handleForceLogout();
-    }
-};
-
-/**
- * 강제 로그아웃 처리
- */
-const handleForceLogout = (): void => {
-    console.log('🚪 [ERROR HANDLER] 강제 로그아웃 처리 중...');
-
-    // Access Token 제거 (Refresh Token은 서버에서 쿠키 무효화)
-    tokenUtils.removeAccessToken();
-    console.log('🧹 [ERROR HANDLER] Access Token 제거 완료');
-
-    // 사용자 정보 제거
-    localStorage.removeItem('user');
-    console.log('🧹 [ERROR HANDLER] 사용자 정보 제거 완료');
-
-    // NOTE: React Query 캐시는 useLogout hook에서 처리
-    // 여기서는 queryClient.clear() 호출 불가 (순환 의존성)
-
-    // 홈페이지로 리다이렉트
-    console.log('🏠 [ERROR HANDLER] 홈페이지로 리다이렉트');
-    window.location.href = '/';
-
-    // 사용자에게 알림
-    alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
-};
+// attemptTokenReissue와 handleForceLogout 함수는 Response Interceptor로 이동됨
+// 토큰 재발급은 Response Interceptor에서 중앙 집중식으로 처리하여 중복 발급 방지
 
 /**
  * 에러 메시지 파싱 함수
