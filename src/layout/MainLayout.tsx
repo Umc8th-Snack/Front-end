@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom';
 
-import Navbar from '@/shared/components/Navbar/Navbar';
+import Navbar from '@/shared/components/navbar/Navbar';
 
 const MainLayout = () => {
     return (
         <div className="min-h-screen bg-white">
             {
-                <header className="bg-white shadow">
+                <header>
                     <Navbar />
                 </header>
             }
