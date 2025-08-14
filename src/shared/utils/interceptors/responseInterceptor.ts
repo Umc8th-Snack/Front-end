@@ -33,11 +33,18 @@ export const handleResponseError = async (error: AxiosError<ApiErrorTypes>): Pro
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
     const errorCode = error.response?.data?.code;
 
-    // 401 에러이고 Access Token 관련 에러인 경우
+    // 로그인/회원가입/토큰재발급 요청은 토큰 재발급 로직을 타지 않도록 예외 처리
+    const isAuthRequest =
+        originalRequest?.url?.includes('/api/auth/login') ||
+        originalRequest?.url?.includes('/api/users/signup') ||
+        originalRequest?.url?.includes('/api/auth/reissue');
+
+    // 401 에러이고 Access Token 관련 에러인 경우 (단, 인증 요청 제외)
     if (
         error.response?.status === 401 &&
         originalRequest &&
         !originalRequest._retry &&
+        !isAuthRequest && // 🚨 인증 요청은 토큰 재발급 로직 건너뛰기
         (errorCode === 'AUTH_2166' || errorCode === 'AUTH_2161') // Access Token 만료 또는 유효하지 않음
     ) {
         // 이미 토큰 재발급 중인 경우 - 대기열에 추가
@@ -118,6 +125,13 @@ export const handleResponseError = async (error: AxiosError<ApiErrorTypes>): Pro
 
             return Promise.reject(customError);
         }
+    }
+
+    // 로그인/회원가입/토큰재발급 요청의 경우 추가 로깅
+    if (isAuthRequest && error.response?.status === 401) {
+        console.log('🔐 [RESPONSE INTERCEPTOR] 인증 요청 401 에러 - 토큰 재발급 로직 건너뛰기');
+        console.log('  - URL:', originalRequest?.url);
+        console.log('  - Error Code:', errorCode);
     }
 
     // 그 외 에러는 기존 처리 로직으로
