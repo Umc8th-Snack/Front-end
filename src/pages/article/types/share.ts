@@ -14,10 +14,17 @@ export interface RelatedArticle {
     imageUrl: string;
 }
 
-export interface RelatedArticlesResponse {
+// export interface RelatedArticlesResponse {
+//     isSuccess: boolean;
+//     code: string;
+//     message: string;
+//     result: RelatedArticle[];
+//     error: Record<string, unknown>;
+// }
+export interface RelatedArticlesEnvelope {
     isSuccess: boolean;
     code: string;
     message: string;
     result: RelatedArticle[];
-    error: Record<string, unknown>;
+    error: unknown;
 }
