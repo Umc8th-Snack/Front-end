@@ -1,28 +1,39 @@
-/**
- * 카테고리 관련 상수 정의
- */
+export const API_CATEGORIES = ['정치', '경제', '사회', '생활/문화', '세계', 'IT/과학', '기타'] as const;
+export type ApiCategory = (typeof API_CATEGORIES)[number];
 
-// API에서 사용하는 카테고리 목록
-export const API_CATEGORIES = ['정치', '경제', '사회', '국제', '스포츠', '연예', 'IT/과학'] as const;
-
-// ArticleCard 컴포넌트에서 사용하는 카테고리 타입
 export type ArticleCardCategory = '정치' | '금융' | '사회' | '세계' | '과학' | '문화' | '기타';
 
-// API 카테고리를 ArticleCard 카테고리로 매핑
-export const CATEGORY_MAP = {
+export const CATEGORY_MAP: Record<ApiCategory, ArticleCardCategory> = {
     정치: '정치',
     경제: '금융',
     사회: '사회',
-    국제: '세계',
+    '생활/문화': '문화',
+    세계: '세계',
     'IT/과학': '과학',
-    스포츠: '문화',
-    연예: '문화',
+    기타: '기타',
 } as const;
 
-// 카테고리 변환 함수
-export const mapApiCategoryToCardCategory = (apiCategory: string): ArticleCardCategory => {
-    return CATEGORY_MAP[apiCategory as keyof typeof CATEGORY_MAP] || '기타';
-};
+export const mapApiCategoryToCardCategory = (apiCategory: string): ArticleCardCategory =>
+    (CATEGORY_MAP as Record<string, ArticleCardCategory>)[apiCategory] ?? '기타';
 
-// 기본 선택 카테고리
 export const DEFAULT_SELECTED_CATEGORIES = ['정치'] as const;
+
+export const CATEGORY_CODE_TO_KO: Record<string, ApiCategory> = {
+    '100': '정치',
+    '101': '경제',
+    '102': '사회',
+    '103': '생활/문화',
+    '104': '세계',
+    '105': 'IT/과학',
+    '000': '기타',
+} as const;
+
+export const CATEGORY_KO_TO_CODE: Record<ApiCategory, string> = {
+    정치: '100',
+    경제: '101',
+    사회: '102',
+    '생활/문화': '103',
+    세계: '104',
+    'IT/과학': '105',
+    기타: '000',
+} as const;
