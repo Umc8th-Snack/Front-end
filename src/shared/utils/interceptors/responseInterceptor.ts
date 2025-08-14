@@ -98,8 +98,24 @@ export const handleResponseError = async (error: AxiosError<ApiErrorTypes>): Pro
             tokenRefreshQueue.rejectQueue(refreshError as AxiosError);
             tokenRefreshQueue.stopRefreshing();
 
-            // 강제 로그아웃 처리는 errorHandler에서
-            await handleApiError(customError);
+            // Refresh Token 관련 에러 직접 처리 (중복 재발급 방지)
+            const refreshErrorCode = (refreshError as any)?.response?.data?.code;
+            if (
+                refreshErrorCode === 'AUTH_2164' || // Refresh 토큰이 만료됨
+                refreshErrorCode === 'AUTH_2165' || // 서버에 Refresh 토큰이 존재하지 않음
+                refreshErrorCode === 'AUTH_2163' || // Refresh 토큰이 존재하지 않음
+                refreshErrorCode === 'AUTH_2167' // 해당 계정은 토큰을 재발급 받을 수 없음
+            ) {
+                console.log('🚪 [RESPONSE INTERCEPTOR] Refresh 토큰 문제 감지, 강제 로그아웃 처리');
+                // 토큰 및 사용자 정보 제거
+                tokenUtils.removeAccessToken();
+                localStorage.removeItem('user');
+                // 홈페이지로 리다이렉트
+                window.location.href = '/';
+                // 사용자에게 알림
+                alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+            }
+
             return Promise.reject(customError);
         }
     }
