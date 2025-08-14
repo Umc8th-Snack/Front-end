@@ -3,6 +3,9 @@ export type ApiCategory = (typeof API_CATEGORIES)[number];
 
 export type ArticleCardCategory = '정치' | '금융' | '사회' | '세계' | '과학' | '문화' | '기타';
 
+// 요청 파라미터로 보낼 수 있는 값만 별도로 보관 (기타 제외)
+export const API_FILTERABLE_CATEGORIES: ApiCategory[] = ['정치', '경제', '사회', '생활/문화', '세계', 'IT/과학'];
+
 export const CATEGORY_MAP: Record<ApiCategory, ArticleCardCategory> = {
     정치: '정치',
     경제: '금융',

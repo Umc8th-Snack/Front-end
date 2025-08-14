@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import TodayGreetingBanner from '@/shared/components/banner/TodayGreetingBanner/TodayGreetingBanner/TodayGreetingBanner';
 import ArticleCard from '@/shared/components/card/ArticleCard';
 import OnboardingCard from '@/shared/components/card/OnboardingCard';
 import CategoryChips from '@/shared/components/chip/CategoryChips';
-import {
-    API_CATEGORIES,
-    DEFAULT_SELECTED_CATEGORIES,
-    mapApiCategoryToCardCategory,
-} from '@/shared/constants/categoryConstants';
+import { API_FILTERABLE_CATEGORIES, DEFAULT_SELECTED_CATEGORIES } from '@/shared/constants/categoryConstants';
 
 import { useMainFeedArticles } from './hooks/useMainFeedArticles';
 
@@ -16,6 +13,8 @@ const HomePage = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([...DEFAULT_SELECTED_CATEGORIES]);
     const observerRef = useRef<IntersectionObserver | null>(null);
     const loadMoreRef = useRef<HTMLDivElement>(null);
+
+    const navigate = useNavigate();
 
     // API 호출 훅 사용
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useMainFeedArticles({
@@ -62,7 +61,7 @@ const HomePage = () => {
     const articles = data?.pages.flatMap((page) => page.articles) || [];
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8">
+        <div className="min-h-screen py-8">
             {/* 인사말 배너 */}
             <div className="mb-[51px]">
                 <TodayGreetingBanner />
@@ -76,7 +75,7 @@ const HomePage = () => {
             {/* 카테고리 선택 */}
             <div className="mx-auto mb-12 max-w-[1121px]">
                 <CategoryChips
-                    categories={[...API_CATEGORIES]}
+                    categories={[...API_FILTERABLE_CATEGORIES]}
                     selected={selectedCategories}
                     onChange={handleCategoryChange}
                 />
@@ -86,26 +85,37 @@ const HomePage = () => {
             <div className="mx-auto max-w-[1151px] px-4">
                 {isLoading ? (
                     <div className="flex h-[400px] items-center justify-center">
-                        <div className="text-gray-500">기사를 불러오는 중...</div>
+                        <div className="text-24px-medium text-black-70">잠시만요, 스낵이 기사를 담는 중이에요…</div>
                     </div>
                 ) : isError ? (
                     <div className="flex h-[400px] items-center justify-center">
-                        <div className="text-red-500">{error?.message || '기사를 불러오는데 실패했습니다.'}</div>
+                        <div className="text-24px-medium text-danger/70">
+                            {error?.message || '앗, 뉴스를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.'}
+                        </div>
                     </div>
                 ) : articles.length === 0 ? (
-                    <div className="flex h-[400px] items-center justify-center">
-                        <div className="text-gray-500">표시할 기사가 없습니다.</div>
+                    <div className="flex h-[200px] items-center justify-center">
+                        <div className="text-24px-medium text-black-70 text-center leading-relaxed">
+                            <span className="block">아직 선택한 카테고리가 없어요.😭</span>
+                            <span className="block">관심 분야를 골라볼까요?</span>
+                        </div>
                     </div>
                 ) : (
                     <>
                         <div className="grid grid-cols-3 justify-items-center gap-[33px] min-[1151px]:grid-cols-4">
-                            {articles.map((article) => (
-                                <ArticleCard
-                                    key={article.articleId}
-                                    title={article.title}
-                                    category={mapApiCategoryToCardCategory(article.category)}
-                                />
-                            ))}
+                            {articles
+                                .filter(
+                                    (a) => typeof a.imageUrl === 'string' && /^https?:\/\//i.test(a.imageUrl.trim())
+                                )
+                                .map((article) => (
+                                    <button
+                                        key={article.articleId}
+                                        onClick={() => void navigate(`/articles/${article.articleId}`)}
+                                        className="cursor-pointer text-left"
+                                    >
+                                        <ArticleCard title={article.title} imageUrl={article.imageUrl!.trim()} />
+                                    </button>
+                                ))}
                         </div>
 
                         {/* 무한 스크롤 트리거 */}
