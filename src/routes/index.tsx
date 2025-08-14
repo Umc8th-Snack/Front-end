@@ -2,6 +2,8 @@ import { lazy, Suspense } from 'react';
 import type { RouteObject } from 'react-router-dom';
 
 import MainLayout from '@/layout/MainLayout';
+import QuizCommentary from '@/pages/article/QuizCommentaryPage';
+import SharePage from '@/pages/article/SharePage';
 
 import LoadingFallback from './LoadingFallback';
 import ProtectedRoute from './ProtectedRoute';
@@ -15,9 +17,6 @@ const SearchPage = lazy(() => import('@/pages/search/SearchPage'));
 const PasswordChangePage = lazy(() => import('@/pages/settings/PasswordChangePage'));
 const DeleteAccountPage = lazy(() => import('@/pages/settings/DeleteAccountPage'));
 const EditProfilePage = lazy(() => import('@/pages/my/EditProfilePage'));
-const AccordionTestPage = lazy(() => import('@/pages/test/AccordionTestPage'));
-const ForgotPasswordPage = lazy(() => import('@/pages/forgot-password/ForgotPasswordPage'));
-const QuizCommentary = lazy(() => import('@/pages/test/QuizCommentaryPage'));
 
 const routes: RouteObject[] = [
     {
@@ -34,18 +33,18 @@ const routes: RouteObject[] = [
             },
 
             {
-                path: 'article',
+                path: 'articles/quiz-commentary',
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
-                        <ArticlePage />
+                        <QuizCommentary />
                     </Suspense>
                 ),
             },
             {
-                path: 'article/quiz-commentary',
+                path: 'articles/:articleId',
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
-                        <QuizCommentary />
+                        <ArticlePage />
                     </Suspense>
                 ),
             },
@@ -94,22 +93,6 @@ const routes: RouteObject[] = [
                 ),
             },
             {
-                path: 'accordion-test',
-                element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <AccordionTestPage />
-                    </Suspense>
-                ),
-            },
-            {
-                path: 'forgot-password',
-                element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <ForgotPasswordPage />
-                    </Suspense>
-                ),
-            },
-            {
                 path: '/settings/password',
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
@@ -130,6 +113,14 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <DeleteAccountPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/share/:uuid',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <SharePage />
                     </Suspense>
                 ),
             },

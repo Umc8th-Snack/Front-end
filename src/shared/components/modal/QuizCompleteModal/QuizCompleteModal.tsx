@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
 import ThumbsUpIcon from '@/shared/assets/icons/thumbs-up.svg?react';
@@ -7,20 +7,6 @@ interface QuizCompleteModalProps {
     onClose: () => void;
     onConfirm: () => void;
 }
-
-const DummyQuizCompleteModal = () => {
-    const [isOpen, setIsOpen] = useState(true);
-
-    const handleClose = () => setIsOpen(false);
-    const handleConfirm = () => {
-        alert('정답 확인하러 가기');
-        setIsOpen(false);
-    };
-
-    if (!isOpen) return null;
-
-    return <QuizCompleteModal onClose={handleClose} onConfirm={handleConfirm} />;
-};
 
 const QuizCompleteModal = ({ onClose, onConfirm }: QuizCompleteModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
@@ -86,8 +72,5 @@ const QuizCompleteModal = ({ onClose, onConfirm }: QuizCompleteModalProps) => {
     );
 };
 
-// 임시 export
-export default DummyQuizCompleteModal;
-
-// 실제 사용 시:
-// export default QuizCompleteModal;
+// 실제 QuizCompleteModal export
+export default QuizCompleteModal;
