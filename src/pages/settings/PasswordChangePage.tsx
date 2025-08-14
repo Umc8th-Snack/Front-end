@@ -1,40 +1,63 @@
-import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import React, { useState } from 'react';
+
+import { changeMyPassword } from '@/pages/settings/apis/auth';
 
 const PasswordChangePage = () => {
-    const [email, setEmail] = useState('');
+    const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const isFormValid =
-        email.trim() !== '' &&
+        currentPassword.trim() !== '' &&
         newPassword.trim() !== '' &&
         confirmPassword.trim() !== '' &&
         newPassword === confirmPassword;
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: changeMyPassword,
+        // onSuccess: (data) => {
+        //     // TODO: 토스트/알럿 등으로 메시지 노출
+        //     // ex) toast.success(data.message ?? '비밀번호가 변경되었습니다.');
+        //     // TODO: 필요하면 페이지 이동
+        // },
+        // onError: (err: any) => {
+        //     // TODO: 에러 처리 (백엔드 에러 메시지 매핑)
+        //     // ex) toast.error(err.response?.data?.message ?? '변경에 실패했습니다.');
+        // },
+    });
+
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!isFormValid || isPending) return;
+        mutate({ currentPassword, newPassword, confirmPassword });
+    };
 
     return (
         <div className="mt-20 flex min-h-screen flex-col items-center">
             <h2 className="text-36px-semibold">비밀번호 변경</h2>
             <p className="text-24px-medium text-black-70">변경하실 새로운 비밀번호를 설정해주세요.</p>
-            <form className="mt-12 w-[432px] space-y-6">
-                {/* 이메일 입력 */}
+
+            <form onSubmit={onSubmit} className="mt-12 w-[432px] space-y-6">
+                {/* 현재 비밀번호 */}
                 <div>
-                    <label htmlFor="email" className="text-24px-medium">
-                        이메일
+                    <label htmlFor="current" className="text-24px-medium">
+                        현재 비밀번호
                     </label>
                     <input
-                        id="email"
-                        type="email"
-                        className="border-black-30 placeholder-black-30 text-24px-medium h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none"
-                        placeholder="이메일을 입력해주세요"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        id="current"
+                        type="password"
+                        className="border-black-30 text-24px-medium placeholder-black-30 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none"
+                        placeholder="현재 비밀번호를 입력해주세요"
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
                     />
                 </div>
 
-                {/* 비밀번호 입력 */}
+                {/* 새 비밀번호 */}
                 <div>
                     <label htmlFor="password" className="text-24px-medium">
-                        비밀번호
+                        새 비밀번호
                     </label>
                     <input
                         id="password"
@@ -59,17 +82,22 @@ const PasswordChangePage = () => {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
+                    {confirmPassword && newPassword !== confirmPassword && (
+                        <p className="mt-2 text-sm text-red-500">비밀번호가 일치하지 않습니다.</p>
+                    )}
                 </div>
 
                 {/* 버튼 */}
                 <button
                     type="submit"
-                    disabled={!isFormValid}
+                    disabled={!isFormValid || isPending}
                     className={`text-24px-medium mt-6 h-[68px] w-full rounded-[8px] py-2 text-white transition-colors ${
-                        isFormValid ? 'hover:bg-main cursor-pointer bg-blue-500' : 'bg-black-30 cursor-not-allowed'
+                        isFormValid && !isPending
+                            ? 'hover:bg-main cursor-pointer bg-blue-500'
+                            : 'bg-black-30 cursor-not-allowed'
                     }`}
                 >
-                    비밀번호 변경
+                    {isPending ? '변경 중...' : '비밀번호 변경'}
                 </button>
             </form>
         </div>

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import SettingsDropdown from '@/pages/settings/components/SettingsDropdown/SettingsDropdown';
 import SnackLogo from '@/shared/assets/snack.svg?react';
 import LoginModal from '@/shared/components/modal/loginModal/LoginModal';
 import SearchBar from '@/shared/components/Navbar/SearchBar';
 import { useAuth } from '@/shared/context/AuthContext';
 
 import ConsentModal from '../modal/ConsentModal/ConsentModal';
-import SettingsDropdown from '../modal/SettingsDropdown/SettingsDropdown';
 
 const Navbar = () => {
     const { isAuthenticated, user } = useAuth();

@@ -1,7 +1,9 @@
-// pages/settings/DeleteAccountPage.tsx
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import DeleteAccountModal from '@/shared/components/modal/DeleteAccountModal/DeleteAccountModal';
+import { deleteAccount } from '@/pages/settings/apis/auth';
+import DeleteAccountModal from '@/pages/settings/components/DeleteAccountModal/DeleteAccountModal';
 
 const DeleteAccountPage = () => {
     const [password, setPassword] = useState('');
@@ -9,24 +11,50 @@ const DeleteAccountPage = () => {
 
     const isFormValid = password.trim() !== '';
 
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
+    //  비밀번호 틀리면 서버에서 온 메시지를 alert로 보여줌
+    const { mutate, isPending } = useMutation({
+        mutationFn: (pw: string) => deleteAccount(pw),
+        onSuccess: () => {
+            // 토큰/캐시 정리
+            localStorage.removeItem('accessToken');
+
+            queryClient.clear();
+
+            setIsModalOpen(false);
+            alert('회원 탈퇴가 완료되었습니다.');
+            void navigate('/', { replace: true });
+        },
+        onError: (error: unknown) => {
+            setIsModalOpen(false);
+
+            // DeleteAccount에서 throw한 Error(message)를 그대로 출력
+            if (error instanceof Error) {
+                alert(error.message); // 예: "비밀번호가 올바르지 않습니다"
+            } else {
+                alert('회원 탈퇴에 실패했습니다. 다시 시도해주세요.');
+            }
+        },
+    });
+
     const handleOpenModal = (e: React.FormEvent) => {
         e.preventDefault();
-        if (isFormValid) {
-            setIsModalOpen(true);
-        }
+        if (isFormValid) setIsModalOpen(true);
     };
 
-    const handleCloseModal = () => setIsModalOpen(false);
+    const handleCloseModal = () => {
+        if (!isPending) setIsModalOpen(false);
+    };
 
     const handleConfirmDelete = () => {
-        alert('회원 탈퇴 완료');
-        setIsModalOpen(false);
-        // TODO: 실제 탈퇴 처리 로직 추가
+        // 모달의 "회원 탈퇴" 버튼 클릭 시 실제 API 호출
+        mutate(password);
     };
 
     const handleCancelDelete = () => {
-        alert('탈퇴 취소');
-        setIsModalOpen(false);
+        if (!isPending) setIsModalOpen(false);
     };
 
     return (
@@ -50,12 +78,14 @@ const DeleteAccountPage = () => {
 
                 <button
                     type="submit"
-                    disabled={!isFormValid}
+                    disabled={!isFormValid || isPending}
                     className={`text-24px-medium mt-6 h-[68px] w-full rounded-[8px] py-2 text-white transition-colors ${
-                        isFormValid ? 'hover:bg-main cursor-pointer bg-blue-500' : 'bg-black-30 cursor-not-allowed'
+                        isFormValid && !isPending
+                            ? 'hover:bg-main cursor-pointer bg-blue-500'
+                            : 'bg-black-30 cursor-not-allowed'
                     }`}
                 >
-                    회원 탈퇴
+                    {isPending ? '처리 중...' : '회원 탈퇴'}
                 </button>
             </form>
 
@@ -64,6 +94,7 @@ const DeleteAccountPage = () => {
                     onClose={handleCloseModal}
                     onConfirmDelete={handleConfirmDelete}
                     onCancel={handleCancelDelete}
+                    isLoading={isPending}
                 />
             )}
         </div>

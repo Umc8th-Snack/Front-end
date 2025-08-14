@@ -1,26 +1,52 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { fetchMemoList } from '@/pages/my/apis/memo';
+import { fetchScrapList } from '@/pages/my/apis/scrap';
+import type { Memo, Scrap } from '@/pages/my/types/types';
 
 import MemoCard from './components/MemoCard';
 import Pagination from './components/Pagination';
 import Profile from './components/Profile';
 import ScrapCard from './components/ScrapCard';
 import TabMenu from './components/TabMenu';
-import dummyMemos from './DummyData/DummyMemos';
-import dummyScraps from './DummyData/DummyScraps';
-import type { Memo, Scrap } from './types/types';
 
-//마이페이지
+const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+
 const MyPage = () => {
     const [tab, setTab] = useState<'memo' | 'scrap'>('memo');
+
+    // 메모 상태
+    const [memos, setMemos] = useState<Memo[]>([]);
     const [memoPage, setMemoPage] = useState(1);
+    const [totalMemoPages, setTotalMemoPages] = useState(1);
+
+    // 스크랩 상태
+    const [scraps, setScraps] = useState<Scrap[]>([]);
     const [scrapPage, setScrapPage] = useState(1);
+    const [totalScrapPages, setTotalScrapPages] = useState(1);
+
     const pageSize = 5;
 
-    const currentPage = tab === 'memo' ? memoPage : scrapPage;
-    const data = tab === 'memo' ? dummyMemos : dummyScraps;
-    const totalPages = Math.ceil(data.length / pageSize);
-    const paginatedData = data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    useEffect(() => {
+        if (tab === 'memo') {
+            void fetchMemoList(memoPage, pageSize).then((data) => {
+                setMemos(data.memos);
+                setTotalMemoPages(data.totalPages);
+            });
+        } else if (tab === 'scrap') {
+            void fetchScrapList(scrapPage, pageSize).then((data) => {
+                setScraps(data.scraps);
+                setTotalScrapPages(data.totalPages);
+            });
+        }
+    }, [tab, memoPage, scrapPage]);
 
+    const currentPage = tab === 'memo' ? memoPage : scrapPage;
     const changePage = (page: number) => {
         if (tab === 'memo') setMemoPage(page);
         else setScrapPage(page);
@@ -32,12 +58,28 @@ const MyPage = () => {
             <TabMenu tab={tab} onChange={setTab} />
             <div className="mt-6 space-y-6">
                 {tab === 'memo'
-                    ? (paginatedData as Memo[]).map((m) => <MemoCard key={m.id} date={m.date} content={m.content} />)
-                    : (paginatedData as Scrap[]).map((s) => (
-                          <ScrapCard key={s.id} title={s.title} summary={s.summary} />
+                    ? memos.map((m) => (
+                          <MemoCard
+                              key={m.memoId}
+                              date={formatDate(m.createdAt)}
+                              content={m.content}
+                              articleId={m.articleId}
+                          />
+                      ))
+                    : scraps.map((s) => (
+                          <ScrapCard
+                              key={s.scrapId}
+                              title={s.title}
+                              summary={s.summaryPreview}
+                              articleId={s.articleId}
+                          />
                       ))}
             </div>
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={changePage} />
+            <Pagination
+                currentPage={currentPage}
+                totalPages={tab === 'memo' ? totalMemoPages : totalScrapPages}
+                onPageChange={changePage}
+            />
         </div>
     );
 };
