@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/shared/context/AuthContext';
 import { useGoogleLogin } from '@/shared/hooks/useAuth';
-import { tokenUtils } from '@/shared/utils/auth';
 import { extractAuthCode, extractAuthError } from '@/shared/utils/googleAuth';
 
 /**
@@ -54,10 +53,7 @@ const GoogleCallbackPage = () => {
                     isNewUser: response.data.isNewUser,
                 });
 
-                // 토큰 저장
-                tokenUtils.setAccessToken(response.token);
-
-                // AuthContext에 사용자 정보 저장
+                // AuthContext에 토큰과 사용자 정보 저장 (login 함수에서 토큰 저장 처리)
                 login(response.token, {
                     userId: response.data.userId,
                     email: response.data.email,
