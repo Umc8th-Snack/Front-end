@@ -1,4 +1,4 @@
-import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { userApi } from '@/shared/apis/user';
 import { tokenUtils } from '@/shared/utils/auth';
@@ -26,11 +26,19 @@ interface AuthProviderProps {
 const AuthProvider = ({ children }: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const isInitializing = useRef(false); // 중복 초기화 방지용 플래그
 
     const isAuthenticated = !!user && tokenUtils.hasAccessToken();
 
     useEffect(() => {
+        // 이미 초기화 중이면 중복 실행 방지
+        if (isInitializing.current) {
+            console.log('⏭️ [AUTH CONTEXT] 이미 초기화 진행 중, 중복 실행 방지');
+            return;
+        }
+
         const initializeAuth = async () => {
+            isInitializing.current = true; // 초기화 시작 표시
             console.log('🔄 [AUTH CONTEXT] 인증 상태 초기화 시작');
 
             const token = tokenUtils.getAccessToken();
