@@ -1,14 +1,17 @@
-import type { InfiniteData } from '@tanstack/react-query';
+import { type InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useMainFeedArticles } from '@/pages/home/hooks/useMainFeedArticles';
-import type { MainFeedArticle } from '@/pages/home/types/feedTypes';
+import { fetchMainFeed } from '@/pages/home/apis/feedApi';
+import { FEED_QUERY_KEY } from '@/pages/home/hooks/useMainFeedArticles';
+import type { MainFeedArticle, MainFeedResult } from '@/pages/home/types/feedTypes';
 import TodayGreetingBanner from '@/shared/components/banner/TodayGreetingBanner/TodayGreetingBanner/TodayGreetingBanner';
 import ArticleCard from '@/shared/components/card/ArticleCard';
 import OnboardingCard from '@/shared/components/card/OnboardingCard';
 import CategoryChips from '@/shared/components/chip/CategoryChips';
 import { API_FILTERABLE_CATEGORIES, DEFAULT_SELECTED_CATEGORIES } from '@/shared/constants/categoryConstants';
+
+type PageParam = number | null;
 
 const HomePage = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([...DEFAULT_SELECTED_CATEGORIES]);
@@ -18,8 +21,26 @@ const HomePage = () => {
 
     const navigate = useNavigate();
 
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useMainFeedArticles({
-        categories: selectedCategories,
+    const isCategoryEmpty = selectedCategories.length === 0;
+
+    // ✅ 카테고리 미선택이면 enabled=false로 API 호출 자체를 막음
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useInfiniteQuery<
+        MainFeedResult, // TData
+        Error, // TError
+        MainFeedResult, // TQueryFnData
+        ReturnType<typeof FEED_QUERY_KEY>, // TQueryKey
+        PageParam // TPageParam
+    >({
+        queryKey: FEED_QUERY_KEY(selectedCategories),
+        initialPageParam: null,
+        enabled: !isCategoryEmpty,
+        queryFn: ({ pageParam }) =>
+            fetchMainFeed({
+                categories: selectedCategories,
+                lastArticleId: pageParam ?? null,
+            }),
+        getNextPageParam: (lastPage) => lastPage.nextCursorId ?? undefined,
+        staleTime: 60 * 1000,
     });
 
     const handleCategoryChange = (selected: string[]) => {
@@ -28,12 +49,16 @@ const HomePage = () => {
     };
 
     useEffect(() => {
+        if (isCategoryEmpty) return; // ✅ 미선택이면 로깅 스킵
         console.log('현재 선택된 카테고리:', selectedCategories);
         console.log('API 로딩 상태:', isLoading);
-    }, [selectedCategories, isLoading]);
+    }, [selectedCategories, isLoading, isCategoryEmpty]);
 
     useEffect(() => {
         if (observerRef.current) observerRef.current.disconnect();
+
+        // ✅ 미선택이면 옵저버 설치 안 함
+        if (isCategoryEmpty) return;
 
         observerRef.current = new IntersectionObserver(
             (entries) => {
@@ -41,7 +66,7 @@ const HomePage = () => {
                     void fetchNextPage();
                 }
             },
-            { threshold: 0.1 }
+            { threshold: 0.1, rootMargin: '100px' }
         );
 
         if (loadMoreRef.current) observerRef.current.observe(loadMoreRef.current);
@@ -49,10 +74,11 @@ const HomePage = () => {
         return () => {
             observerRef.current?.disconnect();
         };
-    }, [hasNextPage, isFetchingNextPage, fetchNextPage, selectedCategories]);
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage, isCategoryEmpty]);
 
     //  중복 제거(첫 등장 순서 유지)
     const articles = useMemo<MainFeedArticle[]>(() => {
+        if (isCategoryEmpty) return []; // ✅ 미선택이면 바로 빈 배열
         const seen = new Set<number>();
         const out: MainFeedArticle[] = [];
 
@@ -71,7 +97,43 @@ const HomePage = () => {
         });
 
         return out;
-    }, [data]);
+    }, [data, isCategoryEmpty]);
+
+    // ✅ 카테고리 미선택 상태: API 호출 없이 안내 문구만 렌더
+    if (isCategoryEmpty) {
+        return (
+            <div className="min-h-screen py-8">
+                {/* 인사말 배너 */}
+                <div className="mb-[51px]">
+                    <TodayGreetingBanner />
+                </div>
+
+                {/* 온보딩 카드 */}
+                <div className="mb-[67px] flex justify-center">
+                    <OnboardingCard />
+                </div>
+
+                {/* 카테고리 선택 */}
+                <div className="mx-auto mb-12 max-w-[1121px]">
+                    <CategoryChips
+                        categories={[...API_FILTERABLE_CATEGORIES]}
+                        selected={selectedCategories}
+                        onChange={handleCategoryChange}
+                    />
+                </div>
+
+                {/* 안내 문구 */}
+                <div className="mx-auto max-w-[1151px] px-4">
+                    <div className="flex h-[200px] items-center justify-center">
+                        <div className="text-24px-medium text-black-70 text-center leading-relaxed">
+                            <span className="block">아직 선택한 카테고리가 없어요.😭</span>
+                            <span className="block">관심 분야를 골라볼까요?</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen py-8">
