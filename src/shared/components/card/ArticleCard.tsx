@@ -8,10 +8,8 @@ interface ArticleCardProps {
 function ArticleCard({ title = 'article title', imageUrl, size = 'sidebar' }: ArticleCardProps) {
     // 크기에 따른 스타일 클래스
     const sizeClasses = {
-
-        main: 'h-[210px] w-[255px] p-6 text-20px-medium ', // 메인 페이지용 - 더 큰 크기, 작은 margin
+        main: 'min-h-[210px] min-w-[255px] w-full p-6 text-20px-medium ', // 메인 페이지용 - 더 큰 크기, 작은 margin
         sidebar: 'h-[168px] w-[204px] p-6 m-5 text-16px-medium ', // sidebar용 - 기존 크기, 기존 margin
-
     };
 
     const imageSizeClasses = {
@@ -21,7 +19,7 @@ function ArticleCard({ title = 'article title', imageUrl, size = 'sidebar' }: Ar
 
     return (
         <div
-            className={`bg-main-10 my-2 flex flex-col rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] ${sizeClasses[size]}`}
+            className={`bg-main-10 flex flex-col rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] ${sizeClasses[size]}`}
         >
             {/* 카테고리 아이콘 또는 이미지 */}
             <div className="mb-2 flex w-full justify-start">
