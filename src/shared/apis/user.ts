@@ -22,7 +22,7 @@ export const userApi = {
      */
     getMyInfo: async (): Promise<UserInfoResponse> => {
         console.log('👤 [USER API] 내 정보 조회 요청');
-        const response = await api.get<UserInfoResponse>('/users/me');
+        const response = await api.get<UserInfoResponse>('/api/users/me');
         console.log('✅ [USER API] 내 정보 조회 성공:', response);
         return response;
     },
@@ -33,7 +33,7 @@ export const userApi = {
      */
     updateMyInfo: async (data: Partial<UserInfoResponse>): Promise<UserInfoResponse> => {
         console.log('✏️ [USER API] 내 정보 수정 요청:', data);
-        const response = await api.patch<UserInfoResponse>('/users/me', data);
+        const response = await api.patch<UserInfoResponse>('/api/users/me', data);
         console.log('✅ [USER API] 내 정보 수정 성공:', response);
         return response;
     },
@@ -56,7 +56,7 @@ export const userApi = {
      */
     withdraw: async (password: string): Promise<void> => {
         console.log('🚪 [USER API] 회원 탈퇴 요청');
-        await api.post('/users/me/withdraw', { password });
+        await api.post('/api/users/me/withdraw', { password });
         console.log('✅ [USER API] 회원 탈퇴 완료');
     },
 };
