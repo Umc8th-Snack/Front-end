@@ -1,36 +1,30 @@
-// 기사 피드 관련 타입 정의
+export interface MainFeedParams {
+    /** UI에서 선택한 카테고리 코드들  혹은 한글명들 혼용 허용 */
+    categories: Array<string>;
+    /** 다음 페이지 커서: 마지막으로 받은 기사 ID */
+    lastArticleId?: number | null;
+}
 
-// 피드 기사 정보
-export interface ArticleInFeedDto {
+/** 서버 응답 형태 */
+export interface MainFeedArticle {
     articleId: number;
     title: string;
     summary: string;
     publishedAt: string;
     imageUrl: string | null;
-    viewCount: number;
-    articleUrl: string;
-    snackUrl: string;
     category: string;
+    hasNext?: boolean;
 }
 
-// API 응답 구조 (Snack API 공통 응답)
-export interface ApiResponse<T> {
+export interface MainFeedResult {
+    articles: MainFeedArticle[];
+    categories: string[];
+    nextCursorId: number | null;
+}
+
+export interface MainFeedEnvelope {
     isSuccess: boolean;
     code: string;
     message: string;
-    result?: T;
-    error?: unknown;
-}
-
-// 메인 피드 API 응답
-export interface MainFeedResponse {
-    articles: ArticleInFeedDto[];
-    lastArticleId: number | null;
-    hasNext: boolean;
-}
-
-// 메인 피드 요청 파라미터
-export interface MainFeedParams {
-    category: string[];
-    lastArticleId?: number;
+    result: MainFeedResult;
 }
