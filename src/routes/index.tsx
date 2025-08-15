@@ -6,7 +6,7 @@ import QuizCommentary from '@/pages/article/QuizCommentaryPage';
 import SharePage from '@/pages/article/SharePage';
 
 import LoadingFallback from './LoadingFallback';
-// import ProtectedRoute from './ProtectedRoute';
+import ProtectedRoute from './ProtectedRoute';
 
 const EmailChangePage = lazy(() => import('@/pages/settings/EmailChangePage'));
 const HomePage = lazy(() => import('@/pages/home/HomePage'));
@@ -61,7 +61,6 @@ const routes: RouteObject[] = [
             {
                 path: 'custom-feed',
                 element: (
-                  
                     // <ProtectedRoute isAuthenticated={false}>
                     <Suspense fallback={<LoadingFallback />}>
                         <CustomFeedPage />
@@ -72,11 +71,9 @@ const routes: RouteObject[] = [
             {
                 path: 'password-change',
                 element: (
-
                     <Suspense fallback={<LoadingFallback />}>
                         <PasswordChangePage />
                     </Suspense>
-
                 ),
             },
             {
