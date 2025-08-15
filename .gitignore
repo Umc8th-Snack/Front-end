@@ -29,3 +29,5 @@ CLAUDE.md
 # ESLint cache
 .eslintcache
 .env
+
+docs_temp/

@@ -1,15 +1,12 @@
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-const ACCESS_TOKEN_KEY = 'accessToken';
+import { tokenUtils } from '@/shared/utils/auth';
+
 /**
- * 토큰을 가져오는 함수 (나중에 구현)
+ * 토큰을 가져오는 함수
  */
 const getAccessToken = (): string | null => {
-    try {
-        return localStorage.getItem(ACCESS_TOKEN_KEY); // 스웨거에서 받은 토큰을 여기 키로 넣어두면 됨
-    } catch {
-        return null;
-    }
+    return tokenUtils.getAccessToken();
 };
 
 /**
@@ -20,11 +17,15 @@ export const handleRequestSuccess = (config: InternalAxiosRequestConfig): Intern
     const token = getAccessToken();
     if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
+        console.log('🎫 [REQUEST INTERCEPTOR] 토큰 자동 주입 완료');
+    } else {
+        console.log('❌ [REQUEST INTERCEPTOR] 토큰 없음 - 인증이 필요한 요청일 수 있음');
     }
 
     // 개발 환경에서 요청 로깅
     if (import.meta.env.DEV) {
-        console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`, {
+        console.log(`📡 [REQUEST INTERCEPTOR] ${config.method?.toUpperCase()} ${config.url}`, {
+            hasAuth: !!config.headers?.Authorization,
             data: config.data,
             params: config.params,
             headers: config.headers,

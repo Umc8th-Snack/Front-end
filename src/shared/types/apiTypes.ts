@@ -41,9 +41,54 @@ export interface ApiRequestOptionsTypes {
     timeout?: number;
 }
 
-// 토큰 타입 (나중에 인증 구현시 사용)
+// 토큰 타입
 export interface TokenTypes {
     accessToken: string;
     refreshToken?: string;
     expiresIn?: number;
+}
+
+// 로그인 요청 타입
+export interface LoginRequestTypes {
+    email: string;
+    password: string;
+}
+
+// 로그인 응답 타입
+export interface LoginResponseTypes {
+    userId: number;
+    email: string;
+    nickname: string;
+}
+
+// 회원가입 요청 타입
+export interface SignupRequestTypes {
+    email: string;
+    password: string;
+    nickname: string;
+}
+
+// 회원가입 응답 타입
+export interface SignupResponseTypes {
+    userId: number;
+    email: string;
+    nickname: string;
+}
+
+// API 표준 응답 타입 (API 명세 기준)
+export interface ApiStandardResponseTypes<T = unknown> {
+    isSuccess: boolean;
+    code: string;
+    message: string;
+    result: T;
+    error?: unknown;
+}
+
+// 소셜 로그인 응답 타입
+export interface SocialLoginResponseTypes {
+    userId: number;
+    email: string;
+    nickname: string;
+    profileImage?: string;
+    isNewUser?: boolean;
 }

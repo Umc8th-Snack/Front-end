@@ -1,7 +1,11 @@
-import type { AxiosError, AxiosResponse } from 'axios';
+import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
+import { authApi } from '../../apis/auth';
 import type { ApiErrorTypes, CustomAxiosErrorTypes } from '../../types/apiTypes';
+import { tokenUtils } from '../auth';
 import { handleApiError } from '../errorHandler';
+import { tokenRefreshQueue } from '../tokenRefreshQueue';
 
 /**
  * Response 인터셉터 - 성공 핸들러
@@ -20,15 +24,117 @@ export const handleResponseSuccess = (response: AxiosResponse): AxiosResponse =>
 };
 
 /**
- * Response 인터셉터 - 에러 핸들러
+ * Response 인터셉터 - 에러 핸들러 (토큰 재발급 큐잉 포함)
  */
-export const handleResponseError = (error: AxiosError<ApiErrorTypes>): Promise<CustomAxiosErrorTypes> => {
-    // 에러 타입 확장
+export const handleResponseError = async (error: AxiosError<ApiErrorTypes>): Promise<CustomAxiosErrorTypes> => {
     const customError = error as CustomAxiosErrorTypes;
     customError.isApiError = true;
 
-    // 에러 처리 로직 위임
-    void handleApiError(customError);
+    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const errorCode = error.response?.data?.code;
 
+    // 로그인/회원가입/토큰재발급 요청은 토큰 재발급 로직을 타지 않도록 예외 처리
+    const isAuthRequest =
+        originalRequest?.url?.includes('/api/auth/login') ||
+        originalRequest?.url?.includes('/api/users/signup') ||
+        originalRequest?.url?.includes('/api/auth/reissue');
+
+    // 401 에러이고 Access Token 관련 에러인 경우 (단, 인증 요청 제외)
+    if (
+        error.response?.status === 401 &&
+        originalRequest &&
+        !originalRequest._retry &&
+        !isAuthRequest && // 🚨 인증 요청은 토큰 재발급 로직 건너뛰기
+        (errorCode === 'AUTH_2166' || errorCode === 'AUTH_2161') // Access Token 만료 또는 유효하지 않음
+    ) {
+        // 이미 토큰 재발급 중인 경우 - 대기열에 추가
+        if (tokenRefreshQueue.getIsRefreshing()) {
+            console.log('⏳ [RESPONSE INTERCEPTOR] 토큰 재발급 중... 대기열 추가');
+
+            try {
+                // 대기열에서 새 토큰 대기
+                const config = await tokenRefreshQueue.addToQueue(originalRequest);
+                // 새 토큰으로 원본 요청 재시도
+                return axios({
+                    ...originalRequest,
+                    headers: {
+                        ...originalRequest.headers,
+                        ...config.headers,
+                    },
+                });
+            } catch (queueError) {
+                return Promise.reject(queueError);
+            }
+        }
+
+        // 토큰 재발급 시작
+        originalRequest._retry = true;
+        tokenRefreshQueue.startRefreshing();
+
+        try {
+            console.log('🔄 [RESPONSE INTERCEPTOR] 토큰 재발급 시도');
+
+            // 토큰 재발급 요청 (Refresh Token은 쿠키로 자동 전송)
+            const reissueResponse = await authApi.reissueTokenWithToken();
+
+            if (reissueResponse.token) {
+                // 새 Access Token 저장
+                tokenUtils.setAccessToken(reissueResponse.token);
+
+                // 사용자 정보 업데이트
+                if (reissueResponse.data) {
+                    localStorage.setItem('user', JSON.stringify(reissueResponse.data));
+                }
+
+                console.log('✅ [RESPONSE INTERCEPTOR] 토큰 재발급 성공');
+
+                // 대기열의 모든 요청 처리
+                tokenRefreshQueue.processQueue(reissueResponse.token);
+                tokenRefreshQueue.stopRefreshing();
+
+                // 원본 요청 재시도
+                originalRequest.headers.Authorization = `Bearer ${reissueResponse.token}`;
+                return axios(originalRequest);
+            } else {
+                throw new Error('토큰 재발급 실패');
+            }
+        } catch (refreshError) {
+            console.error('❌ [RESPONSE INTERCEPTOR] 토큰 재발급 실패:', refreshError);
+
+            // 대기열의 모든 요청 거부
+            tokenRefreshQueue.rejectQueue(refreshError as AxiosError);
+            tokenRefreshQueue.stopRefreshing();
+
+            // Refresh Token 관련 에러 직접 처리 (중복 재발급 방지)
+            const refreshErrorCode = (refreshError as any)?.response?.data?.code;
+            if (
+                refreshErrorCode === 'AUTH_2164' || // Refresh 토큰이 만료됨
+                refreshErrorCode === 'AUTH_2165' || // 서버에 Refresh 토큰이 존재하지 않음
+                refreshErrorCode === 'AUTH_2163' || // Refresh 토큰이 존재하지 않음
+                refreshErrorCode === 'AUTH_2167' // 해당 계정은 토큰을 재발급 받을 수 없음
+            ) {
+                console.log('🚪 [RESPONSE INTERCEPTOR] Refresh 토큰 문제 감지, 강제 로그아웃 처리');
+                // 토큰 및 사용자 정보 제거
+                tokenUtils.removeAccessToken();
+                localStorage.removeItem('user');
+                // 홈페이지로 리다이렉트
+                window.location.href = '/';
+                // 사용자에게 알림
+                alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+            }
+
+            return Promise.reject(customError);
+        }
+    }
+
+    // 로그인/회원가입/토큰재발급 요청의 경우 추가 로깅
+    if (isAuthRequest && error.response?.status === 401) {
+        console.log('🔐 [RESPONSE INTERCEPTOR] 인증 요청 401 에러 - 토큰 재발급 로직 건너뛰기');
+        console.log('  - URL:', originalRequest?.url);
+        console.log('  - Error Code:', errorCode);
+    }
+
+    // 그 외 에러는 기존 처리 로직으로
+    await handleApiError(customError);
     return Promise.reject(customError);
 };

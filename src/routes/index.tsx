@@ -51,15 +51,17 @@ const routes: RouteObject[] = [
             {
                 path: 'mypage',
                 element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <MyPage />
-                    </Suspense>
+                    <ProtectedRoute>
+                        <Suspense fallback={<LoadingFallback />}>
+                            <MyPage />
+                        </Suspense>
+                    </ProtectedRoute>
                 ),
             },
             {
                 path: 'custom-feed',
                 element: (
-                    <ProtectedRoute isAuthenticated={false}>
+                    <ProtectedRoute>
                         <Suspense fallback={<LoadingFallback />}>
                             <CustomFeedPage />
                         </Suspense>
@@ -69,7 +71,7 @@ const routes: RouteObject[] = [
             {
                 path: 'password-change',
                 element: (
-                    <ProtectedRoute isAuthenticated={false}>
+                    <ProtectedRoute>
                         <Suspense fallback={<LoadingFallback />}>
                             <PasswordChangePage />
                         </Suspense>
@@ -87,33 +89,41 @@ const routes: RouteObject[] = [
             {
                 path: '/mypage/edit-profile',
                 element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <EditProfilePage />
-                    </Suspense>
+                    <ProtectedRoute>
+                        <Suspense fallback={<LoadingFallback />}>
+                            <EditProfilePage />
+                        </Suspense>
+                    </ProtectedRoute>
                 ),
             },
             {
                 path: '/settings/password',
                 element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <PasswordChangePage />
-                    </Suspense>
+                    <ProtectedRoute>
+                        <Suspense fallback={<LoadingFallback />}>
+                            <PasswordChangePage />
+                        </Suspense>
+                    </ProtectedRoute>
                 ),
             },
             {
                 path: '/settings/email',
                 element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <EmailChangePage />
-                    </Suspense>
+                    <ProtectedRoute>
+                        <Suspense fallback={<LoadingFallback />}>
+                            <EmailChangePage />
+                        </Suspense>
+                    </ProtectedRoute>
                 ),
             },
             {
                 path: '/settings/delete',
                 element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <DeleteAccountPage />
-                    </Suspense>
+                    <ProtectedRoute>
+                        <Suspense fallback={<LoadingFallback />}>
+                            <DeleteAccountPage />
+                        </Suspense>
+                    </ProtectedRoute>
                 ),
             },
             {
