@@ -1,55 +1,102 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+
+import { useChangeEmail } from './hooks/useChangeEmail';
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const EmailChangePage = () => {
-    const [email, setEmail] = useState('');
     const [newEmail, setNewEmail] = useState('');
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [errorMsg, setErrorMsg] = useState<string | null>(null);
+    const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-    const isFormValid = email.trim() !== '' && newEmail.trim() !== '';
+    const { mutateAsync, isPending } = useChangeEmail();
+
+    const isFormValid = emailRegex.test(newEmail.trim()) && currentPassword.trim().length > 0;
+
+    // Promise를 반환하지 않는 동기 핸들러 (eslint: no-misused-promises 대응)
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault();
+
+        if (!isFormValid || isPending) return;
+        setErrorMsg(null);
+        setSuccessMsg(null);
+
+        void mutateAsync({
+            newEmail: newEmail.trim(),
+            currentPassword,
+        })
+            .then((result) => {
+                setSuccessMsg(`이메일이 ${result.email} 로 변경되었습니다.`);
+                setNewEmail('');
+                setCurrentPassword('');
+            })
+            .catch((err) => {
+                const msg = err instanceof Error ? err.message : '이메일 변경 중 오류가 발생했습니다.';
+                setErrorMsg(msg);
+            });
+    };
 
     return (
         <div className="mt-20 flex min-h-screen flex-col items-center">
             <h2 className="text-36px-semibold">이메일 변경</h2>
 
-            <form className="mt-22 w-[432px] space-y-6">
-                {/* 이메일 입력 */}
+            <form className="mt-22 w-[432px] space-y-6" onSubmit={handleSubmit}>
+                {/* 새 이메일 입력 */}
                 <div>
-                    <label htmlFor="email" className="text-24px-medium">
-                        이메일
+                    <label htmlFor="newEmail" className="text-24px-medium">
+                        새 이메일
                     </label>
                     <input
-                        id="email"
+                        id="newEmail"
                         type="email"
                         className="border-black-30 placeholder-black-30 text-24px-medium h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none"
-                        placeholder="이메일을 입력해주세요"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="새 이메일을 입력해주세요"
+                        value={newEmail}
+                        onChange={(e) => setNewEmail(e.target.value)}
+                        autoComplete="email"
                     />
                 </div>
 
-                {/* 비밀번호 입력 */}
+                {/* 현재 비밀번호 입력 */}
                 <div>
-                    <label htmlFor="password" className="text-24px-medium">
-                        비밀번호
+                    <label htmlFor="currentPassword" className="text-24px-medium">
+                        현재 비밀번호
                     </label>
                     <input
-                        id="password"
+                        id="currentPassword"
                         type="password"
                         className="border-black-30 text-24px-medium placeholder-black-30 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none"
-                        placeholder="새 비밀번호를 입력해주세요"
-                        value={newEmail}
-                        onChange={(e) => setNewEmail(e.target.value)}
+                        placeholder="현재 비밀번호를 입력해주세요"
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                        autoComplete="current-password"
                     />
                 </div>
+
+                {/* 에러/성공 메시지 */}
+                {errorMsg && (
+                    <p className="text-sm text-red-500" role="alert">
+                        {errorMsg}
+                    </p>
+                )}
+                {successMsg && (
+                    <p className="text-sm text-green-600" role="status">
+                        {successMsg}
+                    </p>
+                )}
 
                 {/* 버튼 */}
                 <button
                     type="submit"
-                    disabled={!isFormValid}
+                    disabled={!isFormValid || isPending}
                     className={`text-24px-medium mt-6 h-[68px] w-full rounded-[8px] py-2 text-white transition-colors ${
-                        isFormValid ? 'hover:bg-main cursor-pointer bg-blue-500' : 'bg-black-30 cursor-not-allowed'
+                        isFormValid && !isPending
+                            ? 'hover:bg-main cursor-pointer bg-blue-500'
+                            : 'bg-black-30 cursor-not-allowed'
                     }`}
                 >
-                    이메일 변경
+                    {isPending ? '변경 중...' : '이메일 변경'}
                 </button>
             </form>
         </div>

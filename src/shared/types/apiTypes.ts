@@ -2,9 +2,11 @@ import { AxiosError } from 'axios';
 
 // 기본 API 응답 타입
 export interface ApiResponseTypes<T = unknown> {
-    data: T;
-    status: number;
+    isSuccess: boolean;
+    code: string;
     message: string;
+    result: T | null;
+    error?: unknown;
 }
 
 // 페이지네이션 응답 타입

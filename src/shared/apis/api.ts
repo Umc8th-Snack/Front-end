@@ -22,7 +22,11 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data.data;
+        if (!response.data.isSuccess) {
+            throw new Error(response.data.message || 'API 요청 실패');
+        }
+
+        return response.data.result as T;
     },
 
     /**
@@ -33,7 +37,11 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data.data;
+        if (!response.data.isSuccess) {
+            throw new Error(response.data.message || 'API 요청 실패');
+        }
+
+        return response.data.result as T;
     },
 
     /**
@@ -55,7 +63,11 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data.data;
+        if (!response.data.isSuccess) {
+            throw new Error(response.data.message || 'API 요청 실패');
+        }
+
+        return response.data.result as T;
     },
 
     /**
@@ -66,7 +78,11 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data.data;
+        if (!response.data.isSuccess) {
+            throw new Error(response.data.message || 'API 요청 실패');
+        }
+
+        return response.data.result as T;
     },
 
     /**
@@ -77,7 +93,11 @@ const api = {
             headers: options?.headers,
             timeout: options?.timeout,
         });
-        return response.data.data;
+        if (!response.data.isSuccess) {
+            throw new Error(response.data.message || 'API 요청 실패');
+        }
+
+        return response.data.result as T;
     },
 };
 
