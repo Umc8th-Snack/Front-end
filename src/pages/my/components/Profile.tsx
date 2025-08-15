@@ -1,3 +1,4 @@
+// src/pages/my/components/Profile.tsx
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useEffect, useRef, useState } from 'react';
@@ -12,9 +13,9 @@ import { QUERY_KEYS } from '@/pages/my/constants/queryConstants';
 const MAX_MB = 5;
 const ALLOWED = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 
-// 공통 에러 메시지 추출기 (any 금지)
+// 공통 에러 메시지 추출기
 const getErrorMessage = (err: unknown) => {
-    if (isAxiosError(err)) return err.response?.data?.message ?? err.message;
+    if (isAxiosError(err)) return (err.response?.data as any)?.message ?? err.message;
     if (err instanceof Error) return err.message;
     return '오류가 발생했어요.';
 };
@@ -32,23 +33,30 @@ const Profile = () => {
         queryFn: fetchUserProfile,
     });
 
-    // 업로드 직후 화면에 즉시 반영하기 위한 로컬 상태
+    // 업로드/삭제에 따른 즉시 반영용 로컬 상태
     const [localImageUrl, setLocalImageUrl] = useState<string | null>(null);
     const [isUploading, setUploading] = useState(false);
     const [isDeleting, setDeleting] = useState(false);
     const [progress, setProgress] = useState(0);
 
-    // 이미지 로드 실패 시 기본이미지로 전환하기 위한 플래그
+    // 이미지 로드 실패 시 기본이미지로 전환
     const [imageError, setImageError] = useState(false);
 
-    // 서버에서 새 값이 오면 로컬 미리보기/에러 초기화
+    // 서버가 여전히 삭제된 fileUrl을 내려줘도, 강제로 기본이미지를 보여주기 위한 락
+    const [showDefault, setShowDefault] = useState(false);
+
+    // 서버에서 새 값이 오면 미리보기 초기화(기본이미지 락은 건드리지 않음)
     useEffect(() => {
         setLocalImageUrl(null);
-        setImageError(false);
+        if (profile?.profileImage) {
+            // 서버가 유효한 URL을 내려줄 때만 에러 플래그 해제
+            setImageError(false);
+        }
     }, [profile?.profileImage]);
 
-    const currentImage = localImageUrl ?? profile?.profileImage ?? null;
-    const isDefaultView = !currentImage || imageError; // 기본이미지 표시 여부
+    // 기본이미지 강제락이 켜져 있으면 무조건 기본이미지
+    const currentImage = showDefault ? null : (localImageUrl ?? profile?.profileImage ?? null);
+    const isDefaultView = showDefault || imageError || !currentImage;
 
     const openPicker = () => fileInputRef.current?.click();
 
@@ -69,22 +77,25 @@ const Profile = () => {
             setUploading(true);
             setProgress(0);
 
-            // 1) 파일 업로드 (S3) → fileUrl 획득
-            const result = await uploadProfileImage(file, setProgress); // result.fileUrl
+            // 1) 업로드 → fileUrl 획득
+            const result = await uploadProfileImage(file, setProgress);
 
             // 2) 내 정보 수정 API로 프로필 이미지 URL 저장
             await updateUserProfile({ profileImage: result.fileUrl });
 
-            // 3) 화면 즉시 반영 + 서버 데이터 갱신
+            // 3) 즉시 반영(캐시 버스터로 캐시 무효화) + 기본이미지 락 해제
+            const bust = `?_=${Date.now()}`;
+            setLocalImageUrl(result.fileUrl + bust);
+            setShowDefault(false);
             setImageError(false);
-            setLocalImageUrl(result.fileUrl);
+
+            // 4) 캐시 즉시 갱신 + 재검증
             qc.setQueryData(QUERY_KEYS.USER_PROFILE, (prev: any) =>
                 prev ? { ...prev, profileImage: result.fileUrl } : prev
             );
             void qc.invalidateQueries({ queryKey: QUERY_KEYS.USER_PROFILE });
         } catch (err: unknown) {
-            const msg = getErrorMessage(err);
-            alert(msg);
+            alert(getErrorMessage(err));
         } finally {
             setUploading(false);
             setProgress(0);
@@ -92,7 +103,8 @@ const Profile = () => {
         }
     };
 
-    // 삭제: S3/DB에서 프로필 이미지 삭제
+    // 삭제: 서버 구조상 profileImage는 계속 같은 URL을 줄 수 있으므로
+    // showDefault 락으로 무조건 기본이미지를 강제 표시
     const handleDeleteImage = async () => {
         if (isDefaultView) return; // 기본이미지 상태라면 삭제 불필요
         const ok = confirm('프로필 사진을 삭제하시겠어요?');
@@ -101,14 +113,21 @@ const Profile = () => {
         try {
             setDeleting(true);
 
-            await deleteProfileImage(currentImage);
+            // ① 즉시 기본이미지로 전환 (락 활성화)
+            setShowDefault(true);
             setLocalImageUrl(null);
             setImageError(true);
-            qc.setQueryData(QUERY_KEYS.USER_PROFILE, (prev: any) => (prev ? { ...prev, profileImage: null } : prev));
+
+            // ② 스토리지/백엔드에서 파일 삭제
+            await deleteProfileImage(currentImage);
+
+            // ③ 서버 재조회(화면은 showDefault로 고정이므로 흔들리지 않음)
             void qc.invalidateQueries({ queryKey: QUERY_KEYS.USER_PROFILE });
         } catch (err: unknown) {
-            const msg = getErrorMessage(err);
-            alert(msg);
+            // 실패 시 락 해제 & 원복
+            setShowDefault(false);
+            setImageError(false);
+            alert(getErrorMessage(err));
         } finally {
             setDeleting(false);
         }
@@ -138,6 +157,7 @@ const Profile = () => {
                             alt="프로필 이미지"
                             className="h-full w-full object-cover"
                             onError={() => setImageError(true)} // 로드 실패 → 기본이미지 전환
+                            draggable={false}
                         />
                     )}
                 </button>
@@ -146,7 +166,7 @@ const Profile = () => {
                 {!isDefaultView && (
                     <button
                         type="button"
-                        onClick={() => void handleDeleteImage()} // ✅ no-misused-promises 해결
+                        onClick={() => void handleDeleteImage()}
                         className="absolute -top-2 -right-2 rounded-full p-1 focus:outline-none disabled:opacity-50"
                         title="프로필 사진 삭제"
                         aria-label="프로필 사진 삭제"

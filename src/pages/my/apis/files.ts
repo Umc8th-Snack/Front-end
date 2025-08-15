@@ -2,45 +2,89 @@ import type { AxiosProgressEvent } from 'axios';
 
 import axiosInstance from '@/shared/apis/axios';
 
-export interface UploadProfileResp {
+// 공통 응답 포맷
+export interface ApiEnvelope<T> {
+    isSuccess: boolean;
+    code: string;
+    message: string;
+    result: T;
+    error?: unknown;
+}
+
+// 업로드 결과 타입 (Swagger 스펙)
+export interface UploadProfileResult {
     fileName: string;
     fileUrl: string;
     originalFileName: string;
     fileSize: number;
 }
 
+/**
+ * 프로필 이미지 업로드
+ * - POST /api/files/upload/profile
+ * - 필드명: file
+ * - 허용: JPEG/JPG/PNG/GIF/WEBP, 최대 5MB
+ * - Content-Type 지정 금지 (브라우저가 boundary 자동 설정)
+ */
 export const uploadProfileImage = async (
     file: File,
     onProgress?: (pct: number) => void
-): Promise<UploadProfileResp> => {
+): Promise<UploadProfileResult> => {
+    const ALLOWED = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!ALLOWED.includes(file.type)) throw new Error('JPEG/JPG/PNG/GIF/WEBP만 업로드 가능합니다.');
+    if (file.size > 5 * 1024 * 1024) throw new Error('파일 크기는 5MB 이하만 허용됩니다.');
+
     const form = new FormData();
     form.append('file', file);
 
-    const res = await axiosInstance.post('/api/files/upload/profile', form, {
-        // Content-Type 생략: 브라우저가 multipart/form-data; boundary=... 자동 설정
-        onUploadProgress: (e: AxiosProgressEvent) => {
-            if (!onProgress) return;
-            // e.total이 없을 수도 있어(progress 제공 시 사용)
-            if (typeof e.progress === 'number') {
-                onProgress(Math.round(e.progress * 100));
-            } else if (e.total) {
-                onProgress(Math.round((e.loaded * 100) / e.total));
-            }
-        },
-    });
+    try {
+        const res = await axiosInstance.post<ApiEnvelope<UploadProfileResult>>('/api/files/upload/profile', form, {
+            headers: { Accept: '*/*' },
+            onUploadProgress: (e: AxiosProgressEvent) => {
+                if (onProgress && typeof e.total === 'number' && e.total > 0) {
+                    onProgress(Math.round((e.loaded / e.total) * 100));
+                }
+            },
+        });
 
-    if (!res.data?.isSuccess) {
-        throw new Error(res.data?.message ?? '업로드 실패');
+        if (!res.data?.isSuccess) {
+            throw new Error(res.data?.message ?? '프로필 이미지 업로드 실패');
+        }
+        return res.data.result;
+    } catch (err: any) {
+        const status = err?.response?.status;
+        const data = err?.response?.data;
+        console.error('[upload profile error]', status, data);
+        throw new Error(
+            (typeof data === 'string' ? data : data?.message) ??
+                err?.message ??
+                '프로필 이미지 업로드 중 오류가 발생했습니다.'
+        );
     }
-    return res.data.result as UploadProfileResp;
 };
 
-/** 프로필 이미지 삭제 */
+/**
+ * 프로필 이미지 삭제
+ * - DELETE /api/files/profile?fileUrl=...
+ *   (백엔드 스펙에 따라 경로/쿼리키가 다르면 여기를 맞춰주세요)
+ */
 export const deleteProfileImage = async (fileUrl: string): Promise<void> => {
-    const res = await axiosInstance.delete('/api/files/profile', { params: { fileUrl } });
-
-    if (!res.data?.isSuccess) {
-        throw new Error(res.data?.message ?? '프로필 이미지 삭제 실패');
+    try {
+        const res = await axiosInstance.delete<ApiEnvelope<unknown>>('/api/files/profile', {
+            params: { fileUrl },
+            headers: { Accept: '*/*' },
+        });
+        if (!res.data?.isSuccess) {
+            throw new Error(res.data?.message ?? '프로필 이미지 삭제 실패');
+        }
+    } catch (err: any) {
+        const status = err?.response?.status;
+        const data = err?.response?.data;
+        console.error('[delete profile image error]', status, data);
+        throw new Error(
+            (typeof data === 'string' ? data : data?.message) ??
+                err?.message ??
+                '프로필 이미지 삭제 중 오류가 발생했습니다.'
+        );
     }
-    // 성공 시 반환값 없음
 };
