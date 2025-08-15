@@ -71,7 +71,7 @@ const CustomFeedPage = () => {
             </div>
 
             <div className="mx-auto max-w-[1151px] px-4">
-                <div className="grid grid-cols-3 justify-items-center gap-[33px] min-[1151px]:grid-cols-4">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {items.map((article: CustomFeedArticle) => {
                         const raw =
                             Array.isArray(article.categories) && article.categories.length
