@@ -1,4 +1,4 @@
-import type { InfiniteData } from '@tanstack/react-query';
+import { type InfiniteData, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,6 +17,7 @@ const HomePage = () => {
     const loadMoreRef = useRef<HTMLDivElement>(null);
 
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useMainFeedArticles({
         categories: selectedCategories,
@@ -24,13 +25,35 @@ const HomePage = () => {
 
     const handleCategoryChange = (selected: string[]) => {
         console.log('카테고리 변경:', selected);
+        // 이전 쿼리 취소하여 중복 요청 방지
+        void queryClient.cancelQueries({ queryKey: ['main-feed'] });
         setSelectedCategories(selected);
     };
 
     useEffect(() => {
         console.log('현재 선택된 카테고리:', selectedCategories);
         console.log('API 로딩 상태:', isLoading);
-    }, [selectedCategories, isLoading]);
+
+        // 원본 데이터 확인 (필터링 전)
+        if (data?.pages) {
+            const allArticles = data.pages.flatMap((p) => p.articles);
+            const withImage = allArticles.filter((a) => a.imageUrl);
+            const withoutImage = allArticles.filter((a) => !a.imageUrl);
+
+            console.log('=== 서버 응답 분석 ===');
+            console.log('전체 기사 수:', allArticles.length);
+            console.log('imageUrl 있음:', withImage.length);
+            console.log('imageUrl 없음:', withoutImage.length);
+            console.log(
+                'imageUrl 샘플 (처음 3개):',
+                withImage.slice(0, 3).map((a) => ({
+                    title: a.title,
+                    imageUrl: a.imageUrl,
+                    category: a.category,
+                }))
+            );
+        }
+    }, [selectedCategories, isLoading, data]);
 
     useEffect(() => {
         if (observerRef.current) observerRef.current.disconnect();
@@ -41,7 +64,10 @@ const HomePage = () => {
                     void fetchNextPage();
                 }
             },
-            { threshold: 0.1 }
+            {
+                threshold: 0.1,
+                rootMargin: '100px', // 뷰포트 하단 100px 전에 미리 감지
+            }
         );
 
         if (loadMoreRef.current) observerRef.current.observe(loadMoreRef.current);
@@ -49,7 +75,7 @@ const HomePage = () => {
         return () => {
             observerRef.current?.disconnect();
         };
-    }, [hasNextPage, isFetchingNextPage, fetchNextPage, selectedCategories]);
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage]); // selectedCategories 제거하여 불필요한 Observer 재생성 방지
 
     //  중복 제거(첫 등장 순서 유지)
     const articles = useMemo<MainFeedArticle[]>(() => {
