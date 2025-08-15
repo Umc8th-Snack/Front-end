@@ -179,7 +179,7 @@ const HomePage = () => {
                     </div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
                             {articles
                                 .filter(
                                     (a) => typeof a.imageUrl === 'string' && /^https?:\/\//i.test(a.imageUrl.trim())
@@ -190,11 +190,11 @@ const HomePage = () => {
                                         onClick={() => void navigate(`/articles/${article.articleId}`)}
                                         className="cursor-pointer text-left"
                                     >
-                                        <ArticleCard 
-                                            title={article.title} 
-                                            imageUrl={article.imageUrl!.trim()} 
+                                        <ArticleCard
+                                            title={article.title}
+                                            imageUrl={article.imageUrl!.trim()}
                                             category={article.category}
-                                            size="main" 
+                                            size="main"
                                         />
                                     </button>
                                 ))}
