@@ -1,9 +1,11 @@
-// src/pages/my/components/SettingsDropdown.tsx
+// src/pages/settings/components/SettingsDropdown/SettingsDropdown.tsx
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getSettingsData } from '@/pages/settings/components/SettingsDropdown/settingsData';
+import { useAuth } from '@/shared/context/AuthContext';
+import { useLogout } from '@/shared/hooks/useAuth';
 
+import { getSettingsData } from './settingsData';
 import { useOutsideClick } from './useOutsideClick';
 
 interface SettingsDropdownProps {
@@ -15,9 +17,38 @@ interface SettingsDropdownProps {
 const SettingsDropdown = ({ open, setOpen, onShowConsentModal }: SettingsDropdownProps) => {
     const dropdownRef = useRef<HTMLDivElement>(null!);
     const navigate = useNavigate();
-    const settingsData = getSettingsData(navigate);
+    const { logout: authLogout } = useAuth();
+    const logoutMutation = useLogout();
 
     useOutsideClick(dropdownRef, () => setOpen(false));
+
+    const handleLogout = async () => {
+        console.log('🚪 [SETTINGS] 로그아웃 버튼 클릭');
+
+        try {
+            // 서버 로그아웃 API 호출 (refresh token 무효화)
+            console.log('📡 [SETTINGS] 서버 로그아웃 API 호출 시작');
+            await logoutMutation.mutateAsync();
+            console.log('✅ [SETTINGS] 서버 로그아웃 API 성공');
+
+            // 로컬 상태 정리 (토큰 제거, 사용자 정보 삭제)
+            console.log('🧹 [SETTINGS] 로컬 상태 정리 시작');
+            authLogout();
+
+            // 홈페이지로 리다이렉트
+            console.log('🏠 [SETTINGS] 홈페이지로 리다이렉트');
+            void navigate('/');
+        } catch (error) {
+            // 에러가 발생해도 로컬 상태는 정리
+            console.error('❌ [SETTINGS] 로그아웃 중 오류 발생:', error);
+            console.log('🧹 [SETTINGS] 오류 발생 시에도 로컬 상태 정리');
+            authLogout();
+            void navigate('/');
+        }
+    };
+
+    // settingsData를 컴포넌트 내부에서 생성하여 handleLogout 함수를 전달
+    const settingsData = getSettingsData(navigate, handleLogout);
 
     if (!open) return null;
 
@@ -36,8 +67,11 @@ const SettingsDropdown = ({ open, setOpen, onShowConsentModal }: SettingsDropdow
                                             setOpen(false);
                                             if (item.label === '정보 동의 설정') {
                                                 onShowConsentModal?.();
-                                            } else if (item.path) void navigate(item.path);
-                                            else if (item.onClick) void item.onClick();
+                                            } else if (item.path) {
+                                                void navigate(item.path);
+                                            } else if (item.onClick) {
+                                                void item.onClick();
+                                            }
                                         }}
                                         className="text-18px-medium text-black-50 w-full cursor-pointer text-left transition-colors hover:text-black"
                                     >

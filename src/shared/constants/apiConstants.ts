@@ -27,8 +27,8 @@ export const ERROR_MESSAGES = {
 
 // API 기본 설정
 export const API_CONFIG = {
-    BASE_URL: import.meta.env.VITE_API_BASE_URL,
-    WITH_CREDENTIALS: true,
+    BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
+    WITH_CREDENTIALS: true, // HttpOnly 쿠키를 사용하여 Refresh Token 자동 전송
     MAX_REDIRECTS: 5,
 } as const;
 

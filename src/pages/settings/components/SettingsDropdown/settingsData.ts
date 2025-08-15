@@ -1,8 +1,6 @@
 import type { NavigateFunction } from 'react-router-dom';
 
-import { logout } from '@/pages/settings/apis/auth';
-
-export const getSettingsData = (navigate: NavigateFunction) => [
+export const getSettingsData = (navigate: NavigateFunction, handleLogout?: () => Promise<void>) => [
     {
         category: '계정',
         items: [
@@ -17,16 +15,13 @@ export const getSettingsData = (navigate: NavigateFunction) => [
             { label: '회원 탈퇴', path: '/settings/delete' },
             {
                 label: '로그아웃',
-                onClick: async () => {
-                    try {
-                        await logout();
-                    } catch (e) {
-                        console.error('로그아웃 요청 실패', e);
-                    } finally {
+                onClick:
+                    handleLogout ||
+                    (async () => {
+                        // 폴백: handleLogout이 전달되지 않은 경우
                         localStorage.removeItem('accessToken');
                         void navigate('/');
-                    }
-                },
+                    }),
             },
         ],
     },
