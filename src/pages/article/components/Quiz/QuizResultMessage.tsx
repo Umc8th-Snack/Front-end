@@ -15,7 +15,7 @@ const QuizResultMessage = ({ totalQuestions, correctAnswers, isVisible }: QuizRe
     const getMessage = () => {
         if (correctRate === 100) {
             return {
-                title: `완벽해요! ${totalQuestions}문제 모두 맞추셨어요.`,
+                title: `완벽해요! ${totalQuestions}문제 모두 맞히셨어요.`,
                 subtitle: '오늘의 시사왕으로 임명합니다!',
             };
         } else if (correctRate === 0) {
