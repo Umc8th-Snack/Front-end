@@ -38,10 +38,14 @@ export const getGoogleAuthUrl = (): string => {
  */
 export const handleGoogleCallback = async (code: string) => {
     try {
-        const response = await api.get('/auth/google/callback', {
+        // const response = await api.get('/auth/google/callback', {
+        //     params: { code },
+        // });
+        // return response.data;
+        const result = await api.get('/auth/google/callback', {
             params: { code },
         });
-        return response.data;
+        return result;
     } catch (error) {
         console.error('❌ Google OAuth 콜백 처리 실패:', error);
         throw error;
