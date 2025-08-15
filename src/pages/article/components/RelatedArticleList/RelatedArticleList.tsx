@@ -54,8 +54,8 @@ const RelatedArticleList = ({ onClose, articleId }: RelatedArticleListProps) => 
             <div className="relative flex w-[240px] flex-col items-center rounded-[15px] bg-white p-8 shadow-[0_0_10px_rgba(0,0,0,0.15)]">
                 <h2 className="mt-4 mb-4 text-xl font-semibold">관련 기사 보러가기</h2>
                 <div className="flex flex-col gap-4">
-                    <div className="h-[220px] w-[210px] animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6"></div>
-                    <div className="h-[220px] w-[210px] animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6"></div>
+                    <div className="my-2 h-[168px] w-[204px] animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6"></div>
+                    <div className="my-2 h-[168px] w-[204px] animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6"></div>
                 </div>
             </div>
         );
@@ -84,7 +84,7 @@ const RelatedArticleList = ({ onClose, articleId }: RelatedArticleListProps) => 
                             onClick={() => void handleArticleClick(article.articleId)}
                             className="cursor-pointer text-left"
                         >
-                            <ArticleCard title={article.title} imageUrl={article.imageUrl} />
+                            <ArticleCard title={article.title} imageUrl={article.imageUrl} size="sidebar" />
                         </button>
                     ))
                 )}

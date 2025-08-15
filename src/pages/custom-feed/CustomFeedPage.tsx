@@ -59,7 +59,7 @@ const CustomFeedPage = () => {
         );
 
     return (
-        <div className="min-h-screen py-8">
+        <div className="min-h-screen px-4 py-8">
             {/* 인사말 배너 */}
             <div className="mb-[51px]">
                 <TodayGreetingBanner nickname="스내커" />
@@ -70,8 +70,8 @@ const CustomFeedPage = () => {
                 <OnboardingCard />
             </div>
 
-            <div className="mx-auto max-w-[1151px] px-4">
-                <div className="grid grid-cols-3 justify-items-center gap-[33px] min-[1151px]:grid-cols-4">
+            <div className="mx-auto max-w-[1151px]">
+                <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {items.map((article: CustomFeedArticle) => {
                         const raw =
                             Array.isArray(article.categories) && article.categories.length
@@ -99,7 +99,7 @@ const CustomFeedPage = () => {
                                 onClick={() => void navigate(`/articles/${article.articleId}`)}
                                 className="cursor-pointer text-left"
                             >
-                                <ArticleCard title={article.title} category={cardCategory} imageUrl={url} />
+                                <ArticleCard title={article.title} category={cardCategory} imageUrl={url} size="main" />
                             </button>
                         );
                     })}

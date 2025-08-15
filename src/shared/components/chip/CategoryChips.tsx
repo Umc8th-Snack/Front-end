@@ -11,7 +11,7 @@ interface ChipProps {
 function Chip({ label, selected, onClick, bgColor, isClickable = true }: ChipProps) {
     return (
         <button
-            className={`text-18px-medium h-[40px] w-[100px] cursor-pointer rounded-full ${
+            className={`text-18px-medium h-[40px] w-full min-w-[100px] cursor-pointer rounded-full md:w-[100px] ${
                 !isClickable
                     ? 'bg-main text-white'
                     : selected
@@ -63,7 +63,7 @@ function CategoryChips({
     };
 
     return (
-        <div className="mt-4 flex gap-6">
+        <div className="mt-4 grid grid-cols-3 gap-6 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-9">
             {categories.map((label) => (
                 <Chip
                     key={label}
