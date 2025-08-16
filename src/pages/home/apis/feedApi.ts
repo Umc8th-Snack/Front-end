@@ -21,7 +21,38 @@ export const fetchMainFeed = async (params: MainFeedParams): Promise<MainFeedRes
     for (const nm of names) search.append('category', nm);
     if (params.lastArticleId != null) search.append('lastArticleId', String(params.lastArticleId));
 
-    const res = await axiosInstance.get<MainFeedEnvelope>(`/api/feeds/main?${search.toString()}`);
-    if (!res.data?.isSuccess) throw new Error(res.data?.message || '메인 피드 조회 실패');
-    return res.data.result;
+    const url = `/api/feeds/main?${search.toString()}`;
+    console.log('🚀 [메인피드 API] 요청:', {
+        url,
+        categories: names,
+        lastArticleId: params.lastArticleId,
+        queryString: search.toString(),
+    });
+
+    try {
+        const res = await axiosInstance.get<MainFeedEnvelope>(url);
+        console.log('✅ [메인피드 API] 응답:', {
+            isSuccess: res.data?.isSuccess,
+            code: res.data?.code,
+            message: res.data?.message,
+            articlesCount: res.data?.result?.articles?.length,
+            nextCursorId: res.data?.result?.nextCursorId,
+            categories: res.data?.result?.categories,
+        });
+
+        if (!res.data?.isSuccess) {
+            console.error('❌ [메인피드 API] 실패:', {
+                isSuccess: res.data?.isSuccess,
+                code: res.data?.code,
+                message: res.data?.message,
+                fullResponse: res.data,
+            });
+            throw new Error(res.data?.message || '메인 피드 조회 실패');
+        }
+
+        return res.data.result;
+    } catch (error) {
+        console.error('❌ [메인피드 API] 에러:', error);
+        throw error;
+    }
 };
