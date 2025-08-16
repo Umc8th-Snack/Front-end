@@ -43,7 +43,14 @@ export const useMainFeedArticles = (opts: { categories: string[] }): UseInfinite
                 lastArticleId: pageParam ?? null,
             }),
         // 다음 페이지 없으면 undefined로 종료
-        getNextPageParam: (lastPage) => lastPage.nextCursorId ?? undefined,
+        getNextPageParam: (lastPage) => {
+            console.log('📄 [페이지네이션] 다음 페이지 확인:', {
+                nextCursorId: lastPage.nextCursorId,
+                articlesCount: lastPage.articles?.length,
+                hasNext: lastPage.nextCursorId !== null,
+            });
+            return lastPage.nextCursorId ?? undefined;
+        },
         staleTime: 60 * 1000,
     });
 };
