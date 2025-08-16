@@ -39,23 +39,21 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
             setErrorMsg('');
 
             try {
-                const result = await createShareLink(articleId);
-                const url = typeof result === 'string' ? result : (result?.url ?? '');
+                const { url } = await createShareLink(articleId); // ← 이 함수가 {url} 객체를 반환하도록 맞추기
                 if (!cancelled) {
                     setSharedUrl(url);
                     setStatus('ready');
                 }
             } catch (e: any) {
+                if (cancelled) return;
                 const code = e?.response?.data?.code;
                 const message = e?.response?.data?.message || '공유 링크 생성에 실패했습니다.';
-                if (!cancelled) {
-                    if (code === 'SHARE_6602') {
-                        setStatus('forbidden');
-                        setErrorMsg('이 기사는 정책상 공유할 수 없어요.');
-                    } else {
-                        setStatus('error');
-                        setErrorMsg(message);
-                    }
+                if (code === 'SHARE_6602') {
+                    setStatus('forbidden');
+                    setErrorMsg('이 기사는 정책상 공유할 수 없어요.');
+                } else {
+                    setStatus('error');
+                    setErrorMsg(message);
                 }
             }
         };
@@ -66,23 +64,20 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
         };
     }, [articleId]);
 
-    const guardShare = (action: () => void) => {
-        if (status === 'ready' && sharedUrl) {
-            action();
-        } else if (status === 'loading') {
-            setShowToast(true);
-            setTimeout(() => setShowToast(false), 1600);
-        } else {
-            // forbidden/error
-            setShowToast(true);
-            setTimeout(() => setShowToast(false), 1600);
-        }
-    };
-
     const handleCopyLink = async () => {
         if (!sharedUrl || status !== 'ready') return;
         await navigator.clipboard.writeText(sharedUrl);
         setShowToast(true);
+    };
+
+    const guardShare = (action: () => void | Promise<void>) => {
+        if (!sharedUrl) {
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 1600);
+            return;
+        }
+
+        void action();
     };
 
     return (
@@ -108,13 +103,15 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
                 <div className="text-36px-semibold mt-[24px] mb-[36px] text-center">공유하기</div>
 
                 {/* 상태 메시지 */}
-                {status === 'loading' && <div className="text-black-60 mb-4">링크를 생성 중입니다...</div>}
-                {status === 'forbidden' && (
-                    <div className="mb-4 text-red-500">{errorMsg || '공유할 수 없는 기사입니다.'}</div>
-                )}
-                {status === 'error' && (
-                    <div className="mb-4 text-red-500">{errorMsg || '공유 링크 생성 중 오류가 발생했습니다.'}</div>
-                )}
+                <div className="absolute top-[120px] flex items-center">
+                    {status === 'loading' && <div className="text-black-70">링크를 생성 중입니다...</div>}
+                    {status === 'forbidden' && (
+                        <div className="text-danger/90">{errorMsg || '공유할 수 없는 기사입니다.'}</div>
+                    )}
+                    {status === 'error' && (
+                        <div className="text-danger/90">{errorMsg || '공유 링크 생성 중 오류가 발생했습니다.'}</div>
+                    )}
+                </div>
 
                 {/* 공유 아이콘 */}
                 <div className="mb-[20px] flex w-[401px] justify-between opacity-100">
