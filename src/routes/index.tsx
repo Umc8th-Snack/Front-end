@@ -35,17 +35,21 @@ const routes: RouteObject[] = [
             {
                 path: 'articles/quiz-commentary',
                 element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <QuizCommentary />
-                    </Suspense>
+                    <ProtectedRoute>
+                        <Suspense fallback={<LoadingFallback />}>
+                            <QuizCommentary />
+                        </Suspense>
+                    </ProtectedRoute>
                 ),
             },
             {
                 path: 'articles/:articleId',
                 element: (
-                    <Suspense fallback={<LoadingFallback />}>
-                        <ArticlePage />
-                    </Suspense>
+                    <ProtectedRoute>
+                        <Suspense fallback={<LoadingFallback />}>
+                            <ArticlePage />
+                        </Suspense>
+                    </ProtectedRoute>
                 ),
             },
             {
@@ -61,11 +65,11 @@ const routes: RouteObject[] = [
             {
                 path: 'custom-feed',
                 element: (
-                    // <ProtectedRoute isAuthenticated={false}>
-                    <Suspense fallback={<LoadingFallback />}>
-                        <CustomFeedPage />
-                    </Suspense>
-                    // </ProtectedRoute>
+                    <ProtectedRoute>
+                        <Suspense fallback={<LoadingFallback />}>
+                            <CustomFeedPage />
+                        </Suspense>
+                    </ProtectedRoute>
                 ),
             },
             {
