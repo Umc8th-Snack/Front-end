@@ -33,11 +33,15 @@ export const handleRequestSuccess = (config: InternalAxiosRequestConfig): Intern
             ? config.headers
             : new AxiosHeaders(config.headers as Record<string, AxiosHeaderValue> | undefined));
 
-    // 1) Authorization
+    // 1) Authorization (토큰 재발급 요청은 제외)
+    const isReissueRequest = config.url?.includes('/auth/reissue');
     const token = getAccessToken();
-    if (token && config.headers) {
+
+    if (!isReissueRequest && token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
         console.log('🎫 [REQUEST INTERCEPTOR] 토큰 자동 주입 완료');
+    } else if (isReissueRequest) {
+        console.log('🔄 [REQUEST INTERCEPTOR] 토큰 재발급 요청 - Authorization 헤더 제외');
     } else {
         console.log('❌ [REQUEST INTERCEPTOR] 토큰 없음 - 인증이 필요한 요청일 수 있음');
     }
