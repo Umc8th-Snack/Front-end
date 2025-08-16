@@ -60,8 +60,15 @@ const HomePage = () => {
 
         observerRef.current = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-                    void fetchNextPage();
+                if (entries[0].isIntersecting) {
+                    console.log('🔍 [무한스크롤] 트리거 감지:', {
+                        hasNextPage,
+                        isFetchingNextPage,
+                        shouldFetch: hasNextPage && !isFetchingNextPage,
+                    });
+                    if (hasNextPage && !isFetchingNextPage) {
+                        void fetchNextPage();
+                    }
                 }
             },
             {
