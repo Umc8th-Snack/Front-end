@@ -14,7 +14,7 @@ const SearchBar = () => {
     };
 
     return (
-        <div className="border-main mx-4 flex h-[40px] w-full max-w-[555px] min-w-[250px] gap-4 rounded-full border px-4 py-2 outline-none focus:ring-1 focus:ring-blue-400 lg:h-[45px] lg:min-w-[410px]">
+        <div className="border-main mx-4 flex h-[40px] w-full max-w-[555px] min-w-[250px] gap-4 rounded-full border px-4 py-2 outline-none focus:ring-1 focus:ring-blue-400 lg:h-[45px] lg:min-w-[350px]">
             <input
                 type="text"
                 value={keyword}

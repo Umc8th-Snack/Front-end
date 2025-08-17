@@ -27,7 +27,7 @@ const Navbar = () => {
 
     return (
         <header className="w-full">
-            <div className="mx-auto flex h-[120px] w-full max-w-[1200px] items-center justify-between px-4 py-8 lg:px-0">
+            <div className="mx-auto flex h-[120px] w-full max-w-[1200px] items-center justify-between px-8 py-8">
                 {/* 로고 */}
                 <div className="flex flex-1 items-center">
                     <Link to="/" className="flex shrink-0 items-center">
@@ -47,7 +47,7 @@ const Navbar = () => {
                                 to="/mypage"
                                 className={`hover:text-main transition-colors ${location.pathname === '/mypage' ? 'text-main' : ''}`}
                             >
-                                마이페이지
+                                MY
                             </Link>
                             <Link
                                 to="/"
@@ -79,14 +79,11 @@ const Navbar = () => {
                     ) : (
                         <>
                             <button
-                                className="hover:text-main transition-colors"
+                                className="hover:text-main cursor-pointer transition-colors"
                                 onClick={() => setIsLoginModalOpen(true)}
                             >
                                 회원가입/로그인
                             </button>
-                            <Link to="/" className="hover:text-main transition-colors">
-                                홈 화면
-                            </Link>
                         </>
                     )}
                 </nav>
