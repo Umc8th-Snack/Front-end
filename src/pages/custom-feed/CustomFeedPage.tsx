@@ -10,12 +10,14 @@ import {
     CATEGORY_CODE_TO_KO,
     mapApiCategoryToCardCategory,
 } from '@/shared/constants/categoryConstants';
+import { useUserInfo } from '@/shared/hooks/useUser';
 
 import type { CustomFeedArticle } from './apis/customFeedApi';
 import { useCustomFeed } from './hooks/useCustomFeed';
 
 const CustomFeedPage = () => {
     const navigate = useNavigate();
+    const { data: userInfo } = useUserInfo();
     const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useCustomFeed({
         enabled: true,
     });
@@ -62,7 +64,7 @@ const CustomFeedPage = () => {
         <div className="min-h-screen px-4 py-8">
             {/* 인사말 배너 */}
             <div className="mx-auto mb-[51px] max-w-full lg:max-w-[1121px]">
-                <TodayGreetingBanner nickname="스내커" variant="custom-feed" />
+                <TodayGreetingBanner nickname={userInfo?.nickname || '스내커'} variant="custom-feed" />
             </div>
 
             {/* 온보딩 카드 */}
