@@ -45,6 +45,12 @@
     --text-24px-semibold: 24px;
     --text-24px-semibold--font-weight: 600;
 
+    --text-20px-semibold: 20px;
+    --text-20px-semibold--font-weight: 600;
+
+    --text-18px-semibold: 18px;
+    --text-18px-semibold--font-weight: 600;
+
     /* medium */
     --text-36px-medium: 36px;
     --text-36px-medium--font-weight: 500;
@@ -60,6 +66,9 @@
 
     --text-18px-medium: 18px;
     --text-18px-medium--font-weight: 500;
+
+    --text-16px-medium: 16px;
+    --text-16px-medium--font-weight: 500;
 
     --text-14px-medium: 14px;
     --text-14px-medium--font-weight: 500;

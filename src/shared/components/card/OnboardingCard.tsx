@@ -41,14 +41,14 @@ export default function OnboardingCard() {
     }, [embla]);
 
     return (
-        <section className="flex h-[322px] max-w-[1135px] flex-col items-center space-y-8 px-2">
+        <section className="flex h-[250px] max-w-full flex-col items-center space-y-6 sm:h-[260px] sm:max-w-[1000px] sm:space-y-8 sm:px-6 lg:h-[322px] lg:max-w-[1135px] lg:space-y-8 lg:px-8">
             {/* 캐러셀 박스 */}
             <div className="relative w-full">
-                {/* 좌우 버튼 */}
+                {/* 좌우 버튼 - 태블릿+에서만 표시 */}
                 <button
                     onClick={scrollPrev}
                     disabled={isStart}
-                    className="absolute top-1/2 -left-10 -translate-y-1/2 p-2"
+                    className="absolute top-1/2 -left-8 hidden -translate-y-1/2 p-2 sm:-left-10 sm:block lg:-left-10"
                 >
                     {isStart ? <LeftInactiveArrowIcon /> : <LeftActiveArrowIcon />}
                 </button>
@@ -56,20 +56,20 @@ export default function OnboardingCard() {
                 <button
                     onClick={scrollNext}
                     disabled={isEnd}
-                    className="absolute top-1/2 -right-10 -translate-y-1/2 p-2"
+                    className="absolute top-1/2 -right-8 hidden -translate-y-1/2 p-2 sm:-right-10 sm:block lg:-right-10"
                 >
                     {isEnd ? <RightInactiveArrowIcon /> : <RightActiveArrowIcon />}
                 </button>
 
                 {/* Embla 캐러셀 */}
-                <div className="overflow-hidden" ref={emblaRef}>
-                    <div className="scroll-snap-x scroll-snap-mandatory flex gap-7">
+                <div className="overflow-hidden rounded-[16px] sm:rounded-[20px] lg:rounded-[24px]" ref={emblaRef}>
+                    <div className="scroll-snap-x scroll-snap-mandatory flex gap-6 sm:gap-6 lg:gap-7">
                         {cards.map((card) => {
                             const IconComponent = card.icon;
                             return (
                                 <div
                                     key={card.id}
-                                    className="scroll-snap-center flex h-[280px] flex-shrink-0 flex-col rounded-[24px]"
+                                    className="scroll-snap-center flex h-[240px] flex-shrink-0 flex-col rounded-[16px] sm:h-[260px] sm:rounded-[20px] lg:h-[280px] lg:rounded-[24px]"
                                 >
                                     <IconComponent className="h-full w-full object-contain" />
                                 </div>

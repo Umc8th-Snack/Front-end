@@ -104,17 +104,18 @@ const HomePage = () => {
         return (
             <div className="min-h-screen py-8">
                 {/* 인사말 배너 */}
-                <div className="mb-[51px]">
+                <div className="mx-auto mb-[51px] max-w-full sm:max-w-[800px] lg:max-w-[1121px]">
                     <TodayGreetingBanner />
                 </div>
 
                 {/* 온보딩 카드 */}
-                <div className="mb-[67px] flex justify-center">
+                <div className="mb-20 flex justify-center sm:mb-24 lg:mb-[67px]">
                     <OnboardingCard />
                 </div>
 
                 {/* 카테고리 선택 */}
-                <div className="mx-auto mb-12 max-w-[1121px]">
+
+                <div className="mx-auto mb-6 max-w-[1121px] px-4 sm:mb-12">
                     <CategoryChips
                         categories={[...API_FILTERABLE_CATEGORIES]}
                         selected={selectedCategories}
@@ -138,17 +139,17 @@ const HomePage = () => {
     return (
         <div className="min-h-screen px-4 py-8">
             {/* 인사말 배너 */}
-            <div className="mb-[51px]">
-                <TodayGreetingBanner />
+            <div className="mx-auto mb-[51px] max-w-full lg:max-w-[1121px]">
+                <TodayGreetingBanner variant="home" />
             </div>
 
             {/* 온보딩 카드 */}
-            <div className="mb-[67px] flex justify-center">
+            <div className="mb-20 flex justify-center sm:mb-24 lg:mb-[67px]">
                 <OnboardingCard />
             </div>
 
             {/* 카테고리 선택 */}
-            <div className="mx-auto mb-12 max-w-[1121px]">
+            <div className="mx-auto mb-6 max-w-[1121px] sm:mb-12">
                 <CategoryChips
                     categories={[...API_FILTERABLE_CATEGORIES]}
                     selected={selectedCategories}
