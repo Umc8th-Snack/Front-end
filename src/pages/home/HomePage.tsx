@@ -139,7 +139,7 @@ const HomePage = () => {
         <div className="min-h-screen px-4 py-8">
             {/* 인사말 배너 */}
             <div className="mx-auto mb-[51px] max-w-full lg:max-w-[1121px]">
-                <TodayGreetingBanner />
+                <TodayGreetingBanner variant="home" />
             </div>
 
             {/* 온보딩 카드 */}

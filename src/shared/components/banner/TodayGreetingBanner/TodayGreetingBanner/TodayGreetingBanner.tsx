@@ -3,9 +3,10 @@ import SpringDots from '@/shared/assets/spring-dots.svg?react';
 
 interface TodayGreetingBannerProps {
     nickname?: string;
+    variant?: 'home' | 'custom-feed'; // 홈과 맞춤피드 구분
 }
 
-const TodayGreetingBanner = ({ nickname }: TodayGreetingBannerProps) => {
+const TodayGreetingBanner = ({ nickname, variant = 'home' }: TodayGreetingBannerProps) => {
     const today = new Date();
     const formatted = today.toLocaleDateString('ko-KR', {
         year: 'numeric',
@@ -14,9 +15,17 @@ const TodayGreetingBanner = ({ nickname }: TodayGreetingBannerProps) => {
         weekday: 'long',
     });
 
+    // variant에 따른 높이 결정
+    const heightClass =
+        variant === 'custom-feed'
+            ? 'h-[130px] sm:h-[110px]' // 맞춤피드: 높은 높이
+            : 'h-[90px] sm:h-[110px]'; // 메인피드: 낮은 높이
+
     return (
         <div className="flex w-full items-center justify-center">
-            <div className="border-black-30 relative flex h-[110px] w-full max-w-[1121px] items-center gap-6 rounded-2xl border bg-white px-4 shadow-[0_4px_10px_rgba(0,0,0,0.25)]">
+            <div
+                className={`border-black-30 relative flex ${heightClass} w-full max-w-[1121px] items-center gap-6 rounded-2xl border bg-white px-4 shadow-[0_4px_10px_rgba(0,0,0,0.25)]`}
+            >
                 {/* 스프링 장식 */}
                 <div className="absolute top-1/2 -left-[8px] -translate-y-1/2">
                     <SpringDots className="h-[82px] w-[28.5px]" />
