@@ -4,6 +4,7 @@ import ScrapButton from '@/pages/article/components/ScrapButton/ScrapButton';
 import RectangleIcon from '@/shared/assets/Rectangle105.svg?react';
 import ShareIcon from '@/shared/assets/Share.svg?react';
 import ShareModal from '@/shared/components/modal/ShareModal/ShareModal';
+import ShareToast from '@/shared/components/modal/ShareModal/ShareToast';
 
 interface SummarizedNewsContainerProps {
     summary: string;
@@ -21,9 +22,21 @@ const SummarizedNewsContainer = ({
     showActions = true,
 }: SummarizedNewsContainerProps) => {
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+    const [toastOpen, setToastOpen] = useState(false);
+    const [toastMsg, setToastMsg] = useState('');
 
     const handleOpenShareModal = () => setIsShareModalOpen(true);
     const handleCloseShareModal = () => setIsShareModalOpen(false);
+
+    const handleScrapSuccess = (scrapped: boolean) => {
+        setToastMsg(scrapped ? '스크랩에 추가됐어요.' : '스크랩을 취소했어요.');
+        setToastOpen(true);
+    };
+
+    const handleScrapError = (msg?: string) => {
+        setToastMsg(msg ?? '스크랩에 실패했어요. 다시 시도해 주세요.');
+        setToastOpen(true);
+    };
 
     return (
         <div className="border-main-30 w-[690px] rounded-[30px] border-[3px] bg-white px-[30px] pt-[30px] pb-[28px]">
@@ -34,7 +47,7 @@ const SummarizedNewsContainer = ({
                 </div>
                 {showActions && (
                     <div className="mt-[-25px] flex items-center gap-[21px]">
-                        <ScrapButton articleId={articleId} />
+                        <ScrapButton articleId={articleId} onSuccess={handleScrapSuccess} onError={handleScrapError} />
                         <button onClick={handleOpenShareModal} className="cursor-pointer" aria-label="공유하기">
                             <ShareIcon className="text-gray-400" />
                         </button>
@@ -52,6 +65,7 @@ const SummarizedNewsContainer = ({
                     onClose={handleCloseShareModal}
                 />
             )}
+            {toastOpen && <ShareToast message={toastMsg} onDone={() => setToastOpen(false)} />}
         </div>
     );
 };

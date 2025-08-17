@@ -5,41 +5,52 @@ import BookMarkIcon from '@/shared/assets/Bookmark.svg?react';
 
 interface ScrapButtonProps {
     articleId: number;
+    onSuccess?: (scrapped: boolean) => void;
+    onError?: (msg?: string) => void;
 }
 
-const ScrapButton = ({ articleId }: ScrapButtonProps) => {
+const ScrapButton = ({ articleId, onSuccess, onError }: ScrapButtonProps) => {
     const [isScrapped, setIsScrapped] = useState(false);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        // 초기 상태를 서버에서 불러오기
+        let mounted = true;
         const fetchScrapStatus = async () => {
             try {
                 const { data } = await getScrapExists(articleId);
-                setIsScrapped(data.result.scrapped);
-            } catch (e) {
-                console.error('스크랩 여부 확인 실패', e);
+                if (!mounted) return;
+                setIsScrapped(Boolean(data?.result?.scrapped));
+            } catch (_e) {
+                if (!mounted) return;
+                onError?.('스크랩 상태를 불러오지 못했어요.');
             } finally {
-                setLoading(false);
+                if (mounted) setLoading(false);
             }
         };
         void fetchScrapStatus();
-    }, [articleId]);
+        return () => {
+            mounted = false;
+        };
+    }, [articleId, onError]);
 
     const handleScrapToggle = async () => {
         if (loading) return;
         setLoading(true);
 
+        const prev = isScrapped;
+        const next = !prev;
+        setIsScrapped(next);
+
         try {
-            if (isScrapped) {
+            if (prev) {
                 await deleteScrap(articleId);
-                setIsScrapped(false);
             } else {
                 await addScrap(articleId);
-                setIsScrapped(true);
             }
-        } catch (e) {
-            console.error('스크랩 처리 실패', e);
+            onSuccess?.(next);
+        } catch (_e) {
+            setIsScrapped(prev);
+            onError?.('스크랩 처리에 실패했어요. 다시 시도해 주세요.');
         } finally {
             setLoading(false);
         }
