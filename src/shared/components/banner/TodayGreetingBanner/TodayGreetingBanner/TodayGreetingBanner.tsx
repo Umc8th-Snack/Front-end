@@ -26,14 +26,29 @@ const TodayGreetingBanner = ({ nickname }: TodayGreetingBannerProps) => {
                 <div className="flex flex-col justify-center p-6">
                     {/* 캘린더 아이콘 + 날짜 */}
                     <div className="flex items-center gap-[10px]">
-                        <CalendarIcon className={nickname ? 'h-[16.67px] w-[16.67px]' : 'h-[40px] w-[40px]'} />
-                        <p className={nickname ? 'text-14px-medium' : 'text-24px-medium'}>오늘은 {formatted}이에요.</p>
+                        <CalendarIcon
+                            className={
+                                nickname
+                                    ? 'h-[14px] w-[14px] sm:h-[15px] sm:w-[15px] lg:h-[16.67px] lg:w-[16.67px]'
+                                    : 'h-[28px] w-[28px] sm:h-[32px] sm:w-[32px] lg:h-[40px] lg:w-[40px]'
+                            }
+                        />
+                        <p
+                            className={
+                                nickname
+                                    ? 'text-14px-medium sm:text-15px-medium lg:text-16px-medium'
+                                    : 'text-16px-medium sm:text-18px-medium lg:text-20px-medium'
+                            }
+                        >
+                            오늘은 {formatted}이에요.
+                        </p>
                     </div>
 
                     {/* 맞춤 피드 안내 */}
                     {nickname && (
-                        <p className="text-24px-semibold mt-[6px] text-black">
-                            {nickname}님을 위한 오늘의 맞춤 피드를 보여드려요.
+                        <p className="text-18px-semibold sm:text-20px-semibold lg:text-24px-semibold mt-[6px] text-black">
+                            <span className="block sm:inline">{nickname}님을 위한 </span>
+                            <span className="block sm:inline">오늘의 맞춤 피드를 보여드려요.</span>
                         </p>
                     )}
                 </div>
