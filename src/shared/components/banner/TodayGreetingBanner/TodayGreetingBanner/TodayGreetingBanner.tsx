@@ -49,7 +49,19 @@ const TodayGreetingBanner = ({ nickname, variant = 'home' }: TodayGreetingBanner
                                     : 'text-16px-medium sm:text-18px-medium lg:text-20px-medium'
                             }
                         >
-                            오늘은 {formatted}이에요.
+                            {variant === 'home' ? (
+                                // 홈: 모바일에서만 줄바꿈
+                                <>
+                                    <span className="block sm:inline">오늘은 </span>
+                                    <span className="block sm:inline">{formatted}이에요.</span>
+                                </>
+                            ) : (
+                                // 맞춤피드: 모바일에서도 한 줄로!!
+                                <>
+                                    <span>오늘은 </span>
+                                    <span>{formatted}이에요.</span>
+                                </>
+                            )}
                         </p>
                     </div>
 

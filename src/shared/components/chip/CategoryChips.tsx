@@ -11,7 +11,7 @@ interface ChipProps {
 function Chip({ label, selected, onClick, bgColor, isClickable = true }: ChipProps) {
     return (
         <button
-            className={`text-14px-medium sm:text-16px-medium lg:text-18px-medium h-[40px] w-full min-w-[100px] cursor-pointer rounded-full md:w-[100px] ${
+            className={`text-16px-medium lg:text-18px-medium h-[40px] w-full min-w-[100px] cursor-pointer rounded-full md:w-[100px] ${
                 !isClickable
                     ? 'bg-main text-white'
                     : selected
