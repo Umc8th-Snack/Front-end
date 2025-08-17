@@ -63,7 +63,7 @@ function CategoryChips({
     };
 
     return (
-        <div className="mt-4 grid grid-cols-3 gap-6 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-9">
+        <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4 sm:gap-6 md:grid-cols-7 lg:grid-cols-9">
             {categories.map((label) => (
                 <Chip
                     key={label}

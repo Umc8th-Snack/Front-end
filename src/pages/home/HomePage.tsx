@@ -114,7 +114,7 @@ const HomePage = () => {
                 </div>
 
                 {/* 카테고리 선택 */}
-                <div className="mx-auto mb-12 max-w-[1121px] px-4">
+                <div className="mx-auto mb-6 max-w-[1121px] px-4 sm:mb-12">
                     <CategoryChips
                         categories={[...API_FILTERABLE_CATEGORIES]}
                         selected={selectedCategories}
@@ -148,7 +148,7 @@ const HomePage = () => {
             </div>
 
             {/* 카테고리 선택 */}
-            <div className="mx-auto mb-12 max-w-[1121px]">
+            <div className="mx-auto mb-6 max-w-[1121px] sm:mb-12">
                 <CategoryChips
                     categories={[...API_FILTERABLE_CATEGORIES]}
                     selected={selectedCategories}

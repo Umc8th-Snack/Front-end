@@ -41,7 +41,7 @@ export default function OnboardingCard() {
     }, [embla]);
 
     return (
-        <section className="flex h-[250px] max-w-full flex-col items-center space-y-6 sm:h-[260px] sm:max-w-[800px] sm:space-y-8 sm:px-6 lg:h-[322px] lg:max-w-[1135px] lg:space-y-8 lg:px-8">
+        <section className="flex h-[250px] max-w-full flex-col items-center space-y-6 sm:h-[260px] sm:max-w-[1000px] sm:space-y-8 sm:px-6 lg:h-[322px] lg:max-w-[1135px] lg:space-y-8 lg:px-8">
             {/* 캐러셀 박스 */}
             <div className="relative w-full">
                 {/* 좌우 버튼 - 태블릿+에서만 표시 */}
