@@ -104,7 +104,7 @@ const HomePage = () => {
         return (
             <div className="min-h-screen py-8">
                 {/* 인사말 배너 */}
-                <div className="mb-[51px]">
+                <div className="mx-auto mb-[51px] max-w-full sm:max-w-[800px] lg:max-w-[1121px]">
                     <TodayGreetingBanner />
                 </div>
 
@@ -114,7 +114,7 @@ const HomePage = () => {
                 </div>
 
                 {/* 카테고리 선택 */}
-                <div className="mx-auto mb-12 max-w-[1121px]">
+                <div className="mx-auto mb-12 max-w-[1121px] px-4">
                     <CategoryChips
                         categories={[...API_FILTERABLE_CATEGORIES]}
                         selected={selectedCategories}
@@ -138,7 +138,7 @@ const HomePage = () => {
     return (
         <div className="min-h-screen px-4 py-8">
             {/* 인사말 배너 */}
-            <div className="mb-[51px]">
+            <div className="mx-auto mb-[51px] max-w-full lg:max-w-[1121px]">
                 <TodayGreetingBanner />
             </div>
 

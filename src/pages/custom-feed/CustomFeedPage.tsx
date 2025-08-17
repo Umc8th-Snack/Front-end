@@ -61,7 +61,7 @@ const CustomFeedPage = () => {
     return (
         <div className="min-h-screen px-4 py-8">
             {/* 인사말 배너 */}
-            <div className="mb-[51px]">
+            <div className="mx-auto mb-[51px] max-w-full lg:max-w-[1121px]">
                 <TodayGreetingBanner nickname="스내커" />
             </div>
 
