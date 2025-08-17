@@ -14,6 +14,8 @@ import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
 const ArticlePage = () => {
     const { articleId } = useParams<{ articleId: string }>();
     const [article, setArticle] = useState<ArticleDetail | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
 
     // 메모장 상태 관리
     const [isMemoPadOpen, setIsMemoPadOpen] = useState(false);
@@ -26,34 +28,36 @@ const ArticlePage = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (!articleId) return;
+            setIsLoading(true);
+            setIsError(false);
             try {
-                //  실제 API 호출
                 const data = await getArticleDetail(Number(articleId));
                 setArticle(data);
-            } catch (e) {
-                console.error('기사 상세 로딩 실패:', e);
-
-                // API 호출 실패 시 더미 데이터 사용
-                const dummyArticle = {
-                    articleId: Number(articleId),
-                    title: 'LG전자, AI 체험 공간 오픈...역사와 최신 기술 동시 체험',
-                    summary:
-                        'LG전자가 AI 체험 공간을 오픈했다. 이 공간에서는 LG의 역사를 체험하면서 동시에 최신 AI 기술을 체험할 수 있다. 이는 LG가 AI 기술 발전에 얼마나 집중하고 있는지를 보여주는 좋은 예시다.',
-                    publishedAt: '2025-01-27T00:00:00.000Z',
-                    category: '사회',
-                    articleUrl: 'https://example.com/article',
-                    imageUrl: 'https://via.placeholder.com/400x300',
-                    snackUrl: 'https://snack.com/article',
-                    viewCount: 1234,
-                };
-                setArticle(dummyArticle);
+            } catch {
+                setIsError(true);
+            } finally {
+                setIsLoading(false);
             }
         };
         void fetchData();
     }, [articleId]);
 
-    if (!article) {
-        return <LoadingFallback />;
+    if (isLoading) return <LoadingFallback />;
+
+    if (isError || !article) {
+        return (
+            <div className="flex min-h-[60vh] items-center justify-center">
+                <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow">
+                    <p className="text-18px-medium mb-8">기사 정보를 불러오지 못했어요.</p>
+                    <button
+                        className="text-16px-medium bg-main cursor-pointer rounded-xl border border-black/10 px-4 py-2 text-white"
+                        onClick={() => location.reload()}
+                    >
+                        다시 시도하기
+                    </button>
+                </div>
+            </div>
+        );
     }
 
     return (
