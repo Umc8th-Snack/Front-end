@@ -13,7 +13,7 @@ interface HamburgerMenuProps {
 const HamburgerMenu = ({ isOpen, onClose, onShowConsentModal }: HamburgerMenuProps) => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { logout: authLogout } = useAuth();
+    const { logout: authLogout, user } = useAuth();
     const logoutMutation = useLogout();
     const menuRef = useRef<HTMLDivElement>(null);
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -127,7 +127,16 @@ const HamburgerMenu = ({ isOpen, onClose, onShowConsentModal }: HamburgerMenuPro
                 <div className="flex h-full flex-col">
                     {/* 헤더 */}
                     <div className="animate-in fade-in slide-in-from-top flex items-center justify-start px-7 pt-7 pb-2 delay-200 duration-700">
-                        <h2 className="text-lg font-semibold">메뉴</h2>
+                        {/* 모바일에서는 닉네임, 태블릿에서는 "메뉴" 표시 */}
+                        <div className="sm:hidden">
+                            <h2 className="text-lg font-semibold">
+                                <span className="font-bold">{user?.nickname}</span>님
+                            </h2>
+                            <div className="mt-1 h-px w-16 bg-gray-300"></div>
+                        </div>
+                        <div className="hidden sm:block">
+                            <h2 className="text-lg font-semibold">메뉴</h2>
+                        </div>
                     </div>
 
                     {/* 메뉴 아이템들 */}

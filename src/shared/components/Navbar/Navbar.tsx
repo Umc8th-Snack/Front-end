@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import SettingsDropdown from '@/pages/settings/components/SettingsDropdown/SettingsDropdown';
+import CookieIcon from '@/shared/assets/icons/cookie-icon.svg?react';
 import SnackLogo from '@/shared/assets/snack.svg?react';
 import LoginModal from '@/shared/components/modal/loginModal/LoginModal';
 import HamburgerMenu from '@/shared/components/navbar/HamburgerMenu';
@@ -41,7 +42,13 @@ const Navbar = () => {
                 {/* 로고 */}
                 <div className="flex flex-1 items-center">
                     <Link to="/" className="flex shrink-0 items-center">
-                        <SnackLogo className="w-[90px] sm:w-[110px] lg:w-[130px]" />
+                        {/* 모바일에서는 쿠키 아이콘, 태블릿/PC에서는 스낵 로고 */}
+                        <div className="block md:hidden">
+                            <CookieIcon className="w-[30px] sm:w-[40px]" />
+                        </div>
+                        <div className="hidden md:block">
+                            <SnackLogo className="w-[110px] lg:w-[130px]" />
+                        </div>
                     </Link>
                     <SearchBar />
                 </div>
@@ -102,7 +109,8 @@ const Navbar = () => {
                 <div className="flex items-center gap-4 lg:hidden">
                     {isAuthenticated ? (
                         <>
-                            <p className="text-16px-medium">
+                            {/* 태블릿에서만 닉네임 표시, 모바일에서는 제거 */}
+                            <p className="text-16px-medium hidden sm:block">
                                 <span className="font-bold">{user?.nickname}</span>님
                             </p>
                             <button
@@ -131,7 +139,7 @@ const Navbar = () => {
                             className="text-16px-medium hover:text-main cursor-pointer transition-colors"
                             onClick={() => setIsLoginModalOpen(true)}
                         >
-                            회원가입/로그인
+                            로그인
                         </button>
                     )}
                 </div>
