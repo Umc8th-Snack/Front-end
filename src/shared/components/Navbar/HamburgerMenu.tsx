@@ -185,7 +185,7 @@ const HamburgerMenu = ({ isOpen, onClose, onShowConsentModal }: HamburgerMenuPro
                             <div className="animate-in fade-in slide-in-from-right" style={{ animationDelay: '600ms' }}>
                                 <button
                                     onClick={handleSettingsClick}
-                                    className="block w-full rounded-lg p-3 text-left transition-all duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-md"
+                                    className="block w-full cursor-pointer rounded-lg p-3 text-left transition-all duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-md"
                                 >
                                     <div className="flex items-center justify-between">
                                         <span>설정</span>
@@ -212,31 +212,31 @@ const HamburgerMenu = ({ isOpen, onClose, onShowConsentModal }: HamburgerMenuPro
                                     <div className="mt-2 ml-4 space-y-2">
                                         <button
                                             onClick={() => handleSettingItemClick('password')}
-                                            className="block w-full rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
+                                            className="block w-full cursor-pointer rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
                                         >
                                             비밀번호 변경
                                         </button>
                                         <button
                                             onClick={() => handleSettingItemClick('email')}
-                                            className="block w-full rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
+                                            className="block w-full cursor-pointer rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
                                         >
                                             이메일 변경
                                         </button>
                                         <button
                                             onClick={() => handleSettingItemClick('consent')}
-                                            className="block w-full rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
+                                            className="block w-full cursor-pointer rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
                                         >
                                             정보 동의 설정
                                         </button>
                                         <button
                                             onClick={() => handleSettingItemClick('delete')}
-                                            className="block w-full rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
+                                            className="block w-full cursor-pointer rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
                                         >
                                             회원 탈퇴
                                         </button>
                                         <button
                                             onClick={() => handleSettingItemClick('logout')}
-                                            className="block w-full rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
+                                            className="block w-full cursor-pointer rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
                                         >
                                             로그아웃
                                         </button>
