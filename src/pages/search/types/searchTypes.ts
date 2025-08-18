@@ -20,3 +20,11 @@ export interface SemanticSearchResponse {
     result: SemanticSearchResult;
     error: unknown | null;
 }
+
+export type SearchHistoryResponse = {
+    isSuccess: boolean;
+    code: string;
+    message: string;
+    result: string[];
+    error: unknown | null;
+};
