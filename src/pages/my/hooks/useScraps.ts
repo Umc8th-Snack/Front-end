@@ -17,8 +17,11 @@ export const useScraps = (page: number, size: number, enabled = true) => {
         queryKey: MY_QUERY_KEYS.SCRAPS(page, size),
         queryFn: async (): Promise<ScrapListResponse> => fetchScrapList(page, size),
         enabled,
-        placeholderData: (prev) => prev,
-        staleTime: 30_000,
+        staleTime: 0,
+        refetchOnMount: 'always',
+        refetchOnWindowFocus: 'always',
+        refetchOnReconnect: 'always',
+
         gcTime: 5 * 60_000,
     });
 };

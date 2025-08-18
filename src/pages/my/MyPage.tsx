@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import EmptyState from './components/Emptystate';
+import EmptyState from './components/EmptyState';
 import MemoCard from './components/MemoCard';
 import Pagination from './components/Pagination';
 import Profile from './components/Profile';
