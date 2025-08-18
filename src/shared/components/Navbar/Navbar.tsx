@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import SettingsDropdown from '@/pages/settings/components/SettingsDropdown/SettingsDropdown';
-import CookieIcon from '@/shared/assets/icons/cookie-icon.svg?react';
+import MiniLogo from '@/shared/assets/minisnack.svg?react';
 import SnackLogo from '@/shared/assets/snack.svg?react';
 import LoginModal from '@/shared/components/modal/loginModal/LoginModal';
 import HamburgerMenu from '@/shared/components/navbar/HamburgerMenu';
@@ -44,13 +44,16 @@ const Navbar = () => {
                     <Link to="/" className="flex shrink-0 items-center">
                         {/* 모바일에서는 쿠키 아이콘, 태블릿/PC에서는 스낵 로고 */}
                         <div className="block md:hidden">
-                            <CookieIcon className="w-[30px] sm:w-[40px]" />
+                            <MiniLogo className="w-[50px] sm:w-[60px]" />
                         </div>
                         <div className="hidden md:block">
                             <SnackLogo className="w-[110px] lg:w-[130px]" />
                         </div>
                     </Link>
-                    <SearchBar />
+                    {/* 모바일에서 비로그인 상태일 때는 검색바 숨김 */}
+                    <div className={`${!isAuthenticated ? 'hidden sm:block' : ''}`}>
+                        <SearchBar />
+                    </div>
                 </div>
 
                 {/* 우측 메뉴 - PC에서만 표시 */}
@@ -139,7 +142,7 @@ const Navbar = () => {
                             className="text-16px-medium hover:text-main cursor-pointer transition-colors"
                             onClick={() => setIsLoginModalOpen(true)}
                         >
-                            로그인
+                            회원가입/로그인
                         </button>
                     )}
                 </div>
