@@ -17,6 +17,7 @@ const SearchPage = lazy(() => import('@/pages/search/SearchPage'));
 const PasswordChangePage = lazy(() => import('@/pages/settings/PasswordChangePage'));
 const DeleteAccountPage = lazy(() => import('@/pages/settings/DeleteAccountPage'));
 const EditProfilePage = lazy(() => import('@/pages/my/EditProfilePage'));
+const AuthSuccessPage = lazy(() => import('@/pages/auth/AuthSuccessPage'));
 
 const routes: RouteObject[] = [
     {
@@ -133,6 +134,14 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <SharePage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/auth/success',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <AuthSuccessPage />
                     </Suspense>
                 ),
             },
