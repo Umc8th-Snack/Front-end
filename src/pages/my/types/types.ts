@@ -3,7 +3,6 @@ export type Memo = {
     content: string;
     createdAt: string;
     articleId: number;
-    // 기존 호환성을 위한 별칭
     id: number;
     date: string;
 };
@@ -23,14 +22,14 @@ export interface ScrapListResponse {
     totalPages: number;
     totalElements: number;
 }
-export interface Scrap {
+export type Scrap = {
     scrapId: number;
     articleId: number;
     title: string;
     summaryPreview: string;
     category: string;
     publishedAt: string;
-}
+};
 
 //마이페이지 정보 조회
 export interface UserProfile {
