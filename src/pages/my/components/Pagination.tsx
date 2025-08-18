@@ -9,11 +9,14 @@ type PaginationProps = {
     onPageChange: (page: number) => void;
 };
 
-//시작 페이지와 끝 페이지 지정
+// 시작/끝 여부 헬퍼
 const isStart = (currentPage: number) => currentPage === 1;
 const isEnd = (currentPage: number, totalPages: number) => currentPage === totalPages;
 
 const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
+    // 👉 totalPages가 0이거나 1이면 페이지네이션 전체 숨김
+    if (totalPages <= 1) return null;
+
     const pagesPerGroup = 5;
     const currentGroup = Math.floor((currentPage - 1) / pagesPerGroup);
     const startPage = currentGroup * pagesPerGroup + 1;
@@ -35,7 +38,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
                 <button
                     key={page}
                     onClick={() => onPageChange(page)}
-                    className={`text-24px-medium px-3 py-1 ${currentPage === page ? 'text-main cursor-pointer' : 'text-black-30 cursor-pointer'}`}
+                    className={`text-24px-medium px-3 py-1 ${
+                        currentPage === page ? 'text-main cursor-pointer' : 'text-black-30 cursor-pointer'
+                    }`}
                 >
                     {page}
                 </button>

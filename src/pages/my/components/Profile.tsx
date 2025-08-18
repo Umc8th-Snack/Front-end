@@ -8,7 +8,7 @@ import { deleteProfileImage, uploadProfileImage } from '@/pages/my/apis/files';
 import { fetchUserProfile, updateUserProfile } from '@/pages/my/apis/user';
 import DefaultImage from '@/pages/my/assets/default-image.svg?react';
 import ProfileDeleteButton from '@/pages/my/assets/profileDeleteButton.svg?react';
-import { QUERY_KEYS } from '@/pages/my/constants/queryConstants';
+import { MY_QUERY_KEYS } from '@/pages/my/constants/queryConstants';
 
 const MAX_MB = 5;
 const ALLOWED = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
@@ -29,7 +29,7 @@ const Profile = () => {
         isLoading,
         isError,
     } = useQuery({
-        queryKey: QUERY_KEYS.USER_PROFILE,
+        queryKey: MY_QUERY_KEYS.USER_PROFILE,
         queryFn: fetchUserProfile,
     });
 
@@ -90,10 +90,10 @@ const Profile = () => {
             setImageError(false);
 
             // 4) 캐시 즉시 갱신 + 재검증
-            qc.setQueryData(QUERY_KEYS.USER_PROFILE, (prev: any) =>
+            qc.setQueryData(MY_QUERY_KEYS.USER_PROFILE, (prev: any) =>
                 prev ? { ...prev, profileImage: result.fileUrl } : prev
             );
-            void qc.invalidateQueries({ queryKey: QUERY_KEYS.USER_PROFILE });
+            void qc.invalidateQueries({ queryKey: MY_QUERY_KEYS.USER_PROFILE });
         } catch (err: unknown) {
             alert(getErrorMessage(err));
         } finally {
@@ -122,7 +122,7 @@ const Profile = () => {
             await deleteProfileImage(currentImage);
 
             // ③ 서버 재조회(화면은 showDefault로 고정이므로 흔들리지 않음)
-            void qc.invalidateQueries({ queryKey: QUERY_KEYS.USER_PROFILE });
+            void qc.invalidateQueries({ queryKey: MY_QUERY_KEYS.USER_PROFILE });
         } catch (err: unknown) {
             // 실패 시 락 해제 & 원복
             setShowDefault(false);
