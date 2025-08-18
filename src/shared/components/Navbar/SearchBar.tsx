@@ -14,7 +14,7 @@ const SearchBar = () => {
     };
 
     return (
-        <div className="border-main mx-4 flex h-[40px] w-full max-w-[555px] min-w-[250px] gap-4 rounded-full border px-4 py-2 outline-none focus:ring-1 focus:ring-blue-400 lg:h-[45px] lg:min-w-[410px]">
+        <div className="border-main flex h-[35px] w-full gap-4 rounded-full border px-4 py-2 outline-none focus:ring-1 focus:ring-blue-400 md:h-[40px] md:max-w-[455px] md:min-w-[300px] lg:h-[45px] lg:max-w-[555px] lg:min-w-[400px]">
             <input
                 type="text"
                 value={keyword}
@@ -25,10 +25,10 @@ const SearchBar = () => {
                     }
                 }}
                 placeholder="찾고싶은 기사가 있나요?"
-                className="placeholder:text-18px-medium lg:text-20px-medium text-main-70 w-full pl-1 outline-none focus:outline-none"
+                className="placeholder: text-14px-medium sm:text-16px-medium md:text-18px-medium lg:text-20px-medium text-main-70 w-full pl-1 outline-none focus:outline-none"
             />
             <button onClick={() => void goToSearch()} className="hover:cursor-pointer">
-                <SearchIcon className="h-6 w-6 lg:h-7 lg:w-7" />
+                <SearchIcon className="h-5 w-5 md:h-6 md:w-6 lg:h-7 lg:w-7" />
             </button>
         </div>
     );

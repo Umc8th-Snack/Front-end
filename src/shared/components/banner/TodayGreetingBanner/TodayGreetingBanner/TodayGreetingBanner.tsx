@@ -1,5 +1,6 @@
 import CalendarIcon from '@/shared/assets/calendar-icon.svg?react';
 import SpringDots from '@/shared/assets/spring-dots.svg?react';
+import { useAuth } from '@/shared/context/AuthContext';
 
 interface TodayGreetingBannerProps {
     nickname?: string;
@@ -14,6 +15,12 @@ const TodayGreetingBanner = ({ nickname, variant = 'home' }: TodayGreetingBanner
         day: 'numeric',
         weekday: 'long',
     });
+
+    // AuthContext에서 사용자 정보 가져오기
+    const { user } = useAuth();
+
+    const effectiveNickname = variant === 'custom-feed' ? (user?.nickname ?? '') : (nickname ?? '');
+    const hasNickname = variant === 'custom-feed' ? true : Boolean(effectiveNickname);
 
     // variant에 따른 높이 결정
     const heightClass =
@@ -66,9 +73,9 @@ const TodayGreetingBanner = ({ nickname, variant = 'home' }: TodayGreetingBanner
                     </div>
 
                     {/* 맞춤 피드 안내 */}
-                    {nickname && (
+                    {hasNickname && (
                         <p className="text-18px-semibold sm:text-20px-semibold lg:text-24px-semibold mt-[6px] text-black">
-                            <span className="block sm:inline">{nickname}님을 위한 </span>
+                            <span className="block sm:inline">{effectiveNickname}님을 위한 </span>
                             <span className="block sm:inline">오늘의 맞춤 피드를 보여드려요.</span>
                         </p>
                     )}
