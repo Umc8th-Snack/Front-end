@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import SettingsDropdown from '@/pages/settings/components/SettingsDropdown/SettingsDropdown';
-import MiniLogo from '@/shared/assets/minisnack.svg?react';
 import SnackLogo from '@/shared/assets/snack.svg?react';
 import LoginModal from '@/shared/components/modal/loginModal/LoginModal';
 import HamburgerMenu from '@/shared/components/navbar/HamburgerMenu';
@@ -38,19 +37,69 @@ const Navbar = () => {
 
     return (
         <header className="w-full">
-            <div className="mx-auto flex h-[100px] w-full max-w-[1200px] items-center justify-between px-4 py-6 md:h-[110px] md:py-7 lg:h-[120px] lg:py-8">
-                {/* 로고 */}
-                <div className="flex flex-1 items-center">
-                    <Link to="/" className="flex shrink-0 items-center">
-                        {/* 모바일에서는 쿠키 아이콘, 태블릿/PC에서는 스낵 로고 */}
-                        <div className="block md:hidden">
-                            <MiniLogo className="w-[50px] sm:w-[60px]" />
-                        </div>
-                        <div className="hidden md:block">
-                            <SnackLogo className="w-[110px] lg:w-[130px]" />
-                        </div>
-                    </Link>
+            <div className="mx-auto flex w-full max-w-[1200px] flex-col px-4 py-6 md:h-[110px] md:flex-row md:items-center md:justify-between md:py-7 lg:h-[120px] lg:py-8">
+                {/* 모바일: 로고와 햄버거 메뉴가 같은 줄에, 로고는 가운데 */}
+                <div className="flex items-center justify-between md:hidden">
+                    {/* 왼쪽 빈 공간 (햄버거 메뉴와 균형 맞추기) */}
+                    <div className="w-10"></div>
+
+                    {/* 가운데 로고 */}
+                    <div className="flex flex-1 justify-center">
+                        <Link to="/" className="flex shrink-0 items-center">
+                            <SnackLogo className="h-15 w-25" />
+                        </Link>
+                    </div>
+
+                    {/* 오른쪽 햄버거 메뉴 */}
+                    <div className="flex w-10 justify-end">
+                        {isAuthenticated ? (
+                            <button
+                                onClick={handleHamburgerToggle}
+                                className="cursor-pointer rounded-lg p-2 transition-colors hover:bg-gray-100"
+                                aria-label="메뉴 열기"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="28"
+                                    height="28"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="h-5 w-5"
+                                >
+                                    <path d="M3 12h18M3 6h18M3 18h18" />
+                                </svg>
+                            </button>
+                        ) : (
+                            <button
+                                className="text-16px-medium hover:text-main cursor-pointer transition-colors"
+                                onClick={() => setIsLoginModalOpen(true)}
+                            >
+                                로그인
+                            </button>
+                        )}
+                    </div>
+                </div>
+
+                {/* 모바일: 검색바를 로고와 햄버거 메뉴 아래로 이동 */}
+                <div className="mt-4 md:hidden">
                     {/* 모바일에서 비로그인 상태일 때는 검색바 숨김 */}
+                    {isAuthenticated && (
+                        <div className="w-full">
+                            <SearchBar />
+                        </div>
+                    )}
+                </div>
+
+                {/* PC/태블릿: 기존 레이아웃 유지 */}
+                <div className="hidden md:flex md:flex-1 md:items-center">
+                    <Link to="/" className="flex shrink-0 items-center">
+                        <SnackLogo className="mr-1 w-[110px] lg:w-[130px]" />
+                    </Link>
+                    {/* PC/태블릿에서 검색바 */}
                     <div className={`${!isAuthenticated ? 'hidden sm:block' : ''}`}>
                         <SearchBar />
                     </div>
@@ -109,11 +158,11 @@ const Navbar = () => {
                 </nav>
 
                 {/* 태블릿용 사용자 정보 및 햄버거 메뉴 */}
-                <div className="flex items-center gap-4 lg:hidden">
+                <div className="hidden md:flex md:items-center md:gap-4 lg:hidden">
                     {isAuthenticated ? (
                         <>
-                            {/* 태블릿에서만 닉네임 표시, 모바일에서는 제거 */}
-                            <p className="text-16px-medium hidden sm:block">
+                            {/* 태블릿에서만 닉네임 표시 */}
+                            <p className="text-16px-medium">
                                 <span className="font-bold">{user?.nickname}</span>님
                             </p>
                             <button
