@@ -27,17 +27,17 @@ const Navbar = () => {
 
     return (
         <header className="w-full">
-            <div className="mx-auto flex h-[120px] w-full max-w-[1200px] items-center justify-between px-8 py-8">
+            <div className="mx-auto flex h-[120px] w-full max-w-[1200px] items-center justify-between px-4 py-8">
                 {/* 로고 */}
                 <div className="flex flex-1 items-center">
                     <Link to="/" className="flex shrink-0 items-center">
-                        <SnackLogo className="h-[55px] w-[120px] lg:h-[64px] lg:w-[140px]" />
+                        <SnackLogo className="w-[90px] sm:w-[110px] lg:w-[130px]" />
                     </Link>
                     <SearchBar />
                 </div>
 
                 {/* 우측 메뉴 */}
-                <nav className="text-18px-medium lg:text-20px-medium flex shrink-0 items-center gap-6 text-black select-none lg:gap-8">
+                <nav className="text-18px-medium lg:text-20px-medium flex shrink-0 items-center gap-6 px-2 text-black select-none lg:gap-8">
                     {isAuthenticated ? (
                         <>
                             <p>
@@ -47,7 +47,7 @@ const Navbar = () => {
                                 to="/mypage"
                                 className={`hover:text-main transition-colors ${location.pathname === '/mypage' ? 'text-main' : ''}`}
                             >
-                                MY
+                                마이페이지
                             </Link>
                             <Link
                                 to="/"
