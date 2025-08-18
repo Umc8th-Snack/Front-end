@@ -40,8 +40,9 @@ const EmailChangePage = () => {
     return (
         <div className="mt-20 flex min-h-screen flex-col items-center">
             <h2 className="text-36px-semibold">이메일 변경</h2>
+            <p className="text-24px-medium text-black-70">변경하실 새로운 이메일을 설정해 주세요.</p>
 
-            <form className="mt-22 w-[432px] space-y-6" onSubmit={handleSubmit}>
+            <form className="mt-10 w-[432px] space-y-6" onSubmit={handleSubmit}>
                 {/* 새 이메일 입력 */}
                 <div>
                     <label htmlFor="newEmail" className="text-24px-medium">
@@ -50,8 +51,8 @@ const EmailChangePage = () => {
                     <input
                         id="newEmail"
                         type="email"
-                        className="border-black-30 placeholder-black-30 text-24px-medium h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none"
-                        placeholder="새 이메일을 입력해주세요"
+                        className="hover:border-main focus:ring-main border-black-30 text-24px-medium placeholder-black-30 mt-2 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none focus:ring-1"
+                        placeholder="새 이메일을 입력해 주세요"
                         value={newEmail}
                         onChange={(e) => setNewEmail(e.target.value)}
                         autoComplete="email"
@@ -66,8 +67,8 @@ const EmailChangePage = () => {
                     <input
                         id="currentPassword"
                         type="password"
-                        className="border-black-30 text-24px-medium placeholder-black-30 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none"
-                        placeholder="현재 비밀번호를 입력해주세요"
+                        className="hover:border-main focus:ring-main border-black-30 text-24px-medium placeholder-black-30 mt-2 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none focus:ring-1"
+                        placeholder="현재 비밀번호를 입력해 주세요"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         autoComplete="current-password"

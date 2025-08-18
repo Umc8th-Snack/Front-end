@@ -60,6 +60,7 @@ const DeleteAccountPage = () => {
     return (
         <div className="mt-20 flex min-h-screen flex-col items-center">
             <h2 className="text-36px-semibold">회원 탈퇴</h2>
+            <p className="text-24px-medium text-black-70">탈퇴 시 계정이 삭제됩니다.</p>
 
             <form onSubmit={handleOpenModal} className="mt-22 w-[432px] space-y-6">
                 <div>
@@ -69,7 +70,7 @@ const DeleteAccountPage = () => {
                     <input
                         id="password"
                         type="password"
-                        className="text-24px-medium border-black-30 placeholder-black-30 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none"
+                        className="hover:border-main focus:ring-main border-black-30 text-24px-medium placeholder-black-30 mt-2 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none focus:ring-1"
                         placeholder="비밀번호를 입력해주세요"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}

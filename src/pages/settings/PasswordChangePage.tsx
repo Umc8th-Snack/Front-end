@@ -36,7 +36,7 @@ const PasswordChangePage = () => {
     return (
         <div className="mt-20 flex min-h-screen flex-col items-center">
             <h2 className="text-36px-semibold">비밀번호 변경</h2>
-            <p className="text-24px-medium text-black-70">변경하실 새로운 비밀번호를 설정해주세요.</p>
+            <p className="text-24px-medium text-black-70">변경하실 새로운 비밀번호를 설정해 주세요.</p>
 
             <form onSubmit={onSubmit} className="mt-12 w-[432px] space-y-6">
                 {/* 현재 비밀번호 */}
@@ -47,8 +47,8 @@ const PasswordChangePage = () => {
                     <input
                         id="current"
                         type="password"
-                        className="border-black-30 text-24px-medium placeholder-black-30 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none"
-                        placeholder="현재 비밀번호를 입력해주세요"
+                        className="hover:border-main focus:ring-main border-black-30 text-24px-medium placeholder-black-30 mt-2 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none focus:ring-1"
+                        placeholder="현재 비밀번호를 입력해 주세요"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                     />
@@ -62,8 +62,8 @@ const PasswordChangePage = () => {
                     <input
                         id="password"
                         type="password"
-                        className="border-black-30 text-24px-medium placeholder-black-30 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none"
-                        placeholder="새 비밀번호를 입력해주세요"
+                        className="hover:border-main focus:ring-main border-black-30 text-24px-medium placeholder-black-30 mt-2 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none focus:ring-1"
+                        placeholder="새 비밀번호를 입력해 주세요"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                     />
@@ -77,8 +77,8 @@ const PasswordChangePage = () => {
                     <input
                         id="confirm"
                         type="password"
-                        className="border-black-30 text-24px-medium placeholder-black-30 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none"
-                        placeholder="비밀번호를 다시 입력해주세요"
+                        className="hover:border-main focus:ring-main border-black-30 text-24px-medium placeholder-black-30 mt-2 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none focus:ring-1"
+                        placeholder="비밀번호를 다시 입력해 주세요"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
