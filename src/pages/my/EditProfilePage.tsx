@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { fetchUserProfile, updateUserProfile } from '@/pages/my/apis/user';
-import { QUERY_KEYS } from '@/pages/my/constants/queryConstants';
+import { MY_QUERY_KEYS } from '@/pages/my/constants/queryConstants';
 
 const EditProfilePage = () => {
     const navigate = useNavigate();
     const qc = useQueryClient();
 
     const { data: me } = useQuery({
-        queryKey: QUERY_KEYS.USER_PROFILE,
+        queryKey: MY_QUERY_KEYS.USER_PROFILE,
         queryFn: fetchUserProfile,
     });
 
@@ -42,7 +42,7 @@ const EditProfilePage = () => {
                 introduction: form.introduction,
             }),
         onSuccess: async () => {
-            await qc.invalidateQueries({ queryKey: QUERY_KEYS.USER_PROFILE });
+            await qc.invalidateQueries({ queryKey: MY_QUERY_KEYS.USER_PROFILE });
             void navigate('/mypage');
         },
         onError: () => {

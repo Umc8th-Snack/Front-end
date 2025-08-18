@@ -12,17 +12,20 @@ const ScrapCard = ({ title, summary, articleId }: ScrapCardProps) => {
     const navigate = useNavigate();
 
     return (
-        <div className="border-main-70 h-[172px] w-[672px] rounded-[8px] border p-4">
-            <div className="flex items-center justify-between">
-                <div className="text-20px-bold text-black">{title}</div>
+        <div className="border-main-70 w-full rounded-lg border p-4 md:p-5">
+            <div className="flex items-center justify-between gap-3">
+                <div className="line-clamp-2 text-base font-semibold text-black md:text-lg">{title}</div>
                 <button
-                    className="top-3 right-3 cursor-pointer"
+                    className="-m-1 shrink-0 cursor-pointer p-1"
                     onClick={() => void navigate(`/articles/${articleId}`)}
+                    aria-label="기사로 이동"
                 >
-                    <ArrowUpright />
+                    <ArrowUpright className="h-5 w-5 md:h-6 md:w-6" />
                 </button>
             </div>
-            <p className="text-20px-medium text-black-70 mt-2">{summary}</p>
+            <p className="text-black-70 mt-2 line-clamp-3 text-sm leading-relaxed md:line-clamp-4 md:text-base">
+                {summary}
+            </p>
         </div>
     );
 };
