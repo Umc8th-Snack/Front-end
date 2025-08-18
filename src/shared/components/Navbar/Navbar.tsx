@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import SettingsDropdown from '@/pages/settings/components/SettingsDropdown/SettingsDropdown';
 import SnackLogo from '@/shared/assets/snack.svg?react';
 import LoginModal from '@/shared/components/modal/loginModal/LoginModal';
+import HamburgerMenu from '@/shared/components/navbar/HamburgerMenu';
 import SearchBar from '@/shared/components/navbar/SearchBar';
 import { useAuth } from '@/shared/context/AuthContext';
 
@@ -14,6 +15,7 @@ const Navbar = () => {
     const location = useLocation();
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
     //정보동의설정 모달 상태
     const [isConsentModalOpen, setIsConsentModalOpen] = useState(false);
 
@@ -25,9 +27,17 @@ const Navbar = () => {
         setIsConsentModalOpen(false);
     };
 
+    const handleHamburgerToggle = () => {
+        setIsHamburgerOpen(!isHamburgerOpen);
+    };
+
+    const handleCloseHamburger = () => {
+        setIsHamburgerOpen(false);
+    };
+
     return (
         <header className="w-full">
-            <div className="mx-auto flex h-[120px] w-full max-w-[1200px] items-center justify-between px-4 py-8">
+            <div className="mx-auto flex h-[100px] w-full max-w-[1200px] items-center justify-between px-4 py-6 md:h-[110px] md:py-7 lg:h-[120px] lg:py-8">
                 {/* 로고 */}
                 <div className="flex flex-1 items-center">
                     <Link to="/" className="flex shrink-0 items-center">
@@ -36,8 +46,8 @@ const Navbar = () => {
                     <SearchBar />
                 </div>
 
-                {/* 우측 메뉴 */}
-                <nav className="text-18px-medium lg:text-20px-medium flex shrink-0 items-center gap-6 px-2 text-black select-none lg:gap-8">
+                {/* 우측 메뉴 - PC에서만 표시 */}
+                <nav className="text-18px-medium lg:text-20px-medium hidden shrink-0 items-center gap-6 px-2 text-black select-none lg:flex lg:gap-8">
                     {isAuthenticated ? (
                         <>
                             <p>
@@ -87,9 +97,54 @@ const Navbar = () => {
                         </>
                     )}
                 </nav>
-                {isConsentModalOpen && <ConsentModal onClose={handleCloseConsentModal} />}
+
+                {/* 태블릿용 사용자 정보 및 햄버거 메뉴 */}
+                <div className="flex items-center gap-4 lg:hidden">
+                    {isAuthenticated ? (
+                        <>
+                            <p className="text-16px-medium">
+                                <span className="font-bold">{user?.nickname}</span>님
+                            </p>
+                            <button
+                                onClick={handleHamburgerToggle}
+                                className="cursor-pointer rounded-lg p-2 transition-colors hover:bg-gray-100"
+                                aria-label="메뉴 열기"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="h-5 w-5"
+                                >
+                                    <path d="M3 12h18M3 6h18M3 18h18" />
+                                </svg>
+                            </button>
+                        </>
+                    ) : (
+                        <button
+                            className="text-16px-medium hover:text-main cursor-pointer transition-colors"
+                            onClick={() => setIsLoginModalOpen(true)}
+                        >
+                            로그인
+                        </button>
+                    )}
+                </div>
             </div>
 
+            {/* 햄버거 메뉴 */}
+            <HamburgerMenu
+                isOpen={isHamburgerOpen}
+                onClose={handleCloseHamburger}
+                onShowConsentModal={handleOpenConsentModal}
+            />
+
+            {isConsentModalOpen && <ConsentModal onClose={handleCloseConsentModal} />}
             {/* 로그인 모달 */}
             <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
         </header>
