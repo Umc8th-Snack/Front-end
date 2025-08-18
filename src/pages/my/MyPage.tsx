@@ -96,7 +96,7 @@ const MyPage = () => {
                                     />
                                 ))
                             ) : (
-                                <EmptyState title="메모가 없어요" desc="기사에서 메모를 작성해보세요." />
+                                <EmptyState title="메모가 없어요" desc="기사에서 메모를 작성해보세요!" />
                             )
                         ) : scrapsData && scrapsData.scraps.length > 0 ? (
                             scrapsData.scraps.map((s) => (
@@ -108,7 +108,7 @@ const MyPage = () => {
                                 />
                             ))
                         ) : (
-                            <EmptyState title="스크랩이 없어요" desc="관심 있는 기사를 스크랩해보세요." />
+                            <EmptyState title="스크랩이 없어요" desc="관심 있는 기사를 스크랩해보세요!" />
                         )}
                     </div>
 
