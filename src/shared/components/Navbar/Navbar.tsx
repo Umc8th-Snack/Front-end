@@ -5,12 +5,11 @@ import SettingsDropdown from '@/pages/settings/components/SettingsDropdown/Setti
 import HamburgerIcon from '@/shared/assets/icons/hamburgerIcon.svg?react';
 import LoginIcon from '@/shared/assets/icons/login.svg?react';
 import SnackLogo from '@/shared/assets/snack.svg?react';
+import ConsentModal from '@/shared/components/modal/ConsentModal/ConsentModal';
 import LoginModal from '@/shared/components/modal/loginModal/LoginModal';
-import HamburgerMenu from '@/shared/components/navbar/HamburgerMenu';
-import SearchBar from '@/shared/components/navbar/SearchBar';
+import HamburgerMenu from '@/shared/components/Navbar/HamburgerMenu';
+import SearchBar from '@/shared/components/Navbar/SearchBar';
 import { useAuth } from '@/shared/context/AuthContext';
-
-import ConsentModal from '../modal/ConsentModal/ConsentModal';
 
 const Navbar = () => {
     const { isAuthenticated, user } = useAuth();
