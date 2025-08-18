@@ -59,17 +59,17 @@ const Navbar = () => {
                         {isAuthenticated ? (
                             <button
                                 onClick={handleHamburgerToggle}
-                                className="cursor-pointer rounded-lg p-2 transition-colors hover:bg-gray-100"
+                                className="group cursor-pointer rounded-lg p-2 transition-colors hover:bg-gray-100"
                                 aria-label="메뉴 열기"
                             >
-                                <HamburgerIcon />
+                                <HamburgerIcon className="text-black-70 group-hover:text-main h-6 w-6 [&_path]:stroke-current" />
                             </button>
                         ) : (
                             <button
-                                className="text-16px-medium hover:text-main cursor-pointer transition-colors"
+                                className="group cursor-pointer rounded-lg p-2 transition-colors hover:bg-gray-100"
                                 onClick={() => setIsLoginModalOpen(true)}
                             >
-                                <LoginIcon className="h-6 w-6 text-gray-800" />
+                                <LoginIcon className="group-hover:text-main h-6 w-6 text-gray-500" />
                             </button>
                         )}
                     </div>
