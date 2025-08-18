@@ -1,5 +1,8 @@
-import { useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+import { useAuth } from '@/shared/context/AuthContext';
+import { useLogout } from '@/shared/hooks/useAuth';
 
 interface HamburgerMenuProps {
     isOpen: boolean;
@@ -9,8 +12,12 @@ interface HamburgerMenuProps {
 
 const HamburgerMenu = ({ isOpen, onClose, onShowConsentModal }: HamburgerMenuProps) => {
     const location = useLocation();
+    const navigate = useNavigate();
+    const { logout: authLogout } = useAuth();
+    const logoutMutation = useLogout();
     const menuRef = useRef<HTMLDivElement>(null);
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
     useEffect(() => {
         if (!isOpen) return;
@@ -51,6 +58,50 @@ const HamburgerMenu = ({ isOpen, onClose, onShowConsentModal }: HamburgerMenuPro
             }
         };
     }, [isOpen, onClose]);
+
+    const handleLogout = async () => {
+        console.log('🚪 [HAMBURGER MENU] 로그아웃 버튼 클릭');
+
+        try {
+            await logoutMutation.mutateAsync();
+            console.log('✅ [HAMBURGER MENU] 서버 로그아웃 API 성공');
+            authLogout();
+            void navigate('/');
+            onClose();
+        } catch (error) {
+            console.error('❌ [HAMBURGER MENU] 로그아웃 중 오류 발생:', error);
+            authLogout();
+            void navigate('/');
+            onClose();
+        }
+    };
+
+    const handleSettingsClick = () => {
+        setIsSettingsOpen(!isSettingsOpen);
+    };
+
+    const handleSettingItemClick = (action: string) => {
+        setIsSettingsOpen(false);
+        onClose();
+
+        switch (action) {
+            case 'consent':
+                onShowConsentModal();
+                break;
+            case 'password':
+                void navigate('/settings/password');
+                break;
+            case 'email':
+                void navigate('/settings/email');
+                break;
+            case 'delete':
+                void navigate('/settings/delete');
+                break;
+            case 'logout':
+                void handleLogout();
+                break;
+        }
+    };
 
     if (!isOpen) return null;
 
@@ -121,16 +172,68 @@ const HamburgerMenu = ({ isOpen, onClose, onShowConsentModal }: HamburgerMenuPro
                                 마이페이지
                             </Link>
 
-                            <button
-                                onClick={() => {
-                                    onShowConsentModal();
-                                    onClose();
-                                }}
-                                className="animate-in fade-in slide-in-from-right block w-full rounded-lg p-3 text-left transition-all duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-md"
-                                style={{ animationDelay: '600ms' }}
-                            >
-                                설정
-                            </button>
+                            {/* 설정 메뉴 */}
+                            <div className="animate-in fade-in slide-in-from-right" style={{ animationDelay: '600ms' }}>
+                                <button
+                                    onClick={handleSettingsClick}
+                                    className="block w-full rounded-lg p-3 text-left transition-all duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-md"
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <span>설정</span>
+                                        <svg
+                                            className={`h-4 w-4 transition-transform duration-200 ${
+                                                isSettingsOpen ? 'rotate-180' : ''
+                                            }`}
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M19 9l-7 7-7-7"
+                                            />
+                                        </svg>
+                                    </div>
+                                </button>
+
+                                {/* 설정 하위 메뉴 */}
+                                {isSettingsOpen && (
+                                    <div className="mt-2 ml-4 space-y-2">
+                                        <button
+                                            onClick={() => handleSettingItemClick('password')}
+                                            className="block w-full rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
+                                        >
+                                            비밀번호 변경
+                                        </button>
+                                        <button
+                                            onClick={() => handleSettingItemClick('email')}
+                                            className="block w-full rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
+                                        >
+                                            이메일 변경
+                                        </button>
+                                        <button
+                                            onClick={() => handleSettingItemClick('consent')}
+                                            className="block w-full rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
+                                        >
+                                            정보 동의 설정
+                                        </button>
+                                        <button
+                                            onClick={() => handleSettingItemClick('delete')}
+                                            className="block w-full rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
+                                        >
+                                            회원 탈퇴
+                                        </button>
+                                        <button
+                                            onClick={() => handleSettingItemClick('logout')}
+                                            className="block w-full rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
+                                        >
+                                            로그아웃
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </nav>
                 </div>

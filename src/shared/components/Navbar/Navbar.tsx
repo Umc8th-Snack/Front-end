@@ -131,7 +131,7 @@ const Navbar = () => {
                             className="text-16px-medium hover:text-main cursor-pointer transition-colors"
                             onClick={() => setIsLoginModalOpen(true)}
                         >
-                            로그인
+                            회원가입/로그인
                         </button>
                     )}
                 </div>
