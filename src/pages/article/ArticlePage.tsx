@@ -9,6 +9,7 @@ import RelatedArticleList from '@/pages/article/components/RelatedArticleList/Re
 import SummarizedNewsContainer from '@/pages/article/components/SummarizedNewsContainer/SummarizedNewsContainer';
 import type { ArticleDetail } from '@/pages/article/types/article';
 import LoadingFallback from '@/routes/LoadingFallback';
+import FloatingMemoButton from '@/shared/components/button/FloatingMemoButton';
 import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
 
 const ArticlePage = () => {
@@ -96,6 +97,9 @@ const ArticlePage = () => {
                     </div>
                 </div>
             )}
+
+            {/* Floating 메모장 버튼 (lg 미만에서만 표시) */}
+            <FloatingMemoButton onClick={() => setIsMemoPadOpen(!isMemoPadOpen)} isActive={isMemoPadOpen} />
         </>
     );
 };
