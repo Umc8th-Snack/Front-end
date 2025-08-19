@@ -4,9 +4,9 @@ interface CircleShareButtonProps {
     icon: React.ReactNode;
     label: string;
     filled?: boolean;
-    bgColor?: string; // ex: 'bg-kakao-yellow'
-    borderColor?: string; // ex: 'border-naver-green'
-    textColor?: string; // ex: 'text-black-70'
+    bgColor?: string;
+    borderColor?: string;
+    textColor?: string;
     onClick?: () => void;
 }
 
@@ -23,14 +23,14 @@ function CircleShareButton({
     const finalStyle = filled ? bgColor : filledStyle;
 
     return (
-        <div className="flex w-[91px] flex-col items-center">
+        <div className="flex w-[72px] flex-col items-center sm:w-[91px]">
             <div
-                className={`flex h-[91px] w-[91px] cursor-pointer items-center justify-center rounded-full ${finalStyle}`}
+                className={`flex h-[80px] w-[80px] cursor-pointer items-center justify-center rounded-full sm:h-[91px] sm:w-[91px] ${finalStyle}`}
                 onClick={onClick}
             >
-                {icon}
+                <div className="flex h-[36px] w-[36px] items-center justify-center sm:h-[44px] sm:w-[44px]">{icon}</div>
             </div>
-            <span className={`text-18px-medium mt-[10px] ${textColor}`}>{label}</span>
+            <span className={`text-14px-medium sm:text-18px-medium mt-[6px] ${textColor}`}>{label}</span>
         </div>
     );
 }
