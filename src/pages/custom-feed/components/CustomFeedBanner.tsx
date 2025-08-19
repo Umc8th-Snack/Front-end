@@ -24,7 +24,7 @@ const CustomFeedBanner = () => {
                         </span>
                     </h3>
 
-                    <p className="text-14px-medium sm:text-20px-medium lg:text-24px-medium relative z-10 mt-2 text-center sm:mt-1.5">
+                    <p className="text-14px-medium sm:text-20px-medium lg:text-24px-medium relative z-10 mt-2 text-center sm:mt-1.5 lg:mt-4">
                         {nickname}님 전용 맞춤 피드,&nbsp;
                         <br className="block sm:hidden" />
                         메인 피드 탐색으로 시작해 보세요.
