@@ -125,7 +125,7 @@ const Profile = () => {
                         disabled={isUploading || isDeleting}
                     >
                         {isDefaultView ? (
-                            <DefaultImage />
+                            <DefaultImage className="h-full w-full" />
                         ) : (
                             <img
                                 src={currentImage!}
