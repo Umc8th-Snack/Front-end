@@ -138,12 +138,12 @@ const MemoPad = ({ articleId }: MemoPadProps) => {
     const isDisabled = isLoading || isCreating || isUpdating || isDeleting;
 
     return (
-        <div className="border-main-70 flex h-[320px] w-[500px] flex-col items-center justify-center rounded-[30px] border-[2px] bg-white p-4 shadow-2xl lg:h-[440px] lg:w-[360px] lg:p-0">
+        <div className="border-main-70 flex h-[320px] w-[320px] flex-col items-center justify-center rounded-[30px] border-[2px] bg-white p-4 shadow-2xl md:w-[500px] lg:h-[440px] lg:w-[360px] lg:p-0">
             <div className="text-28px-medium lg:text-36px-medium m-2 justify-center lg:mb-4">메모장</div>
-            <div className="bg-main-70 mb-6 h-[2px] w-[420px] lg:w-[300px]"></div>
+            <div className="bg-main-70 mb-6 h-[2px] w-[260px] md:w-[420px] lg:w-[300px]"></div>
 
             {/* 메모 입력 영역 */}
-            <div className="border-black-30 mb-4 h-[200px] w-[420px] gap-4 rounded-[16px] border-[2px] px-2 py-3 lg:mb-0 lg:h-[280px] lg:w-[300px]">
+            <div className="border-black-30 mb-2 h-[180px] w-[260px] gap-4 rounded-[16px] border-[2px] px-2 py-3 md:mb-4 md:h-[200px] md:w-[420px] lg:mb-0 lg:h-[280px] lg:w-[300px]">
                 <textarea
                     placeholder="메모를 입력하세요..."
                     value={currentContent}
