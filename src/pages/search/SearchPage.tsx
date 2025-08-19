@@ -60,8 +60,10 @@ const SearchPage = () => {
                                 aria-label={`${a.title}로 이동`}
                             >
                                 <div className="inline-block min-w-[200px] rounded-xl px-3 pt-2 hover:bg-black/5">
-                                    <h2 className="text-36px-semibold mb-2 text-black">{a.title}</h2>
-                                    <p className="text-black-70 text-20px-medium mb-6 w-full leading-8 break-words lg:max-w-[760px]">
+                                    <h2 className="text-20px-semibold sm:text-24px-semibold md:text-28px-semibold lg:text-36px-semibold mb-1.5 text-black sm:mb-2">
+                                        {a.title}
+                                    </h2>
+                                    <p className="text-black-70 text-14px-medium sm:text-16px-medium md:text-18px-medium lg:text-20px-medium mb-4 w-full leading-6 break-words sm:mb-5 sm:leading-7 md:leading-8 lg:mb-6 lg:max-w-[760px]">
                                         {a.summary}
                                     </p>
                                 </div>
