@@ -68,7 +68,7 @@ const GlossaryQuiz = ({ articleId }: GlossaryQuizProps) => {
     console.log('========================');
 
     return (
-        <div className="min-h-screen">
+        <div className="lg:min-h-screen">
             <div className="mx-auto max-w-4xl">
                 <div className="grid grid-cols-2 gap-8">
                     <div className="space-y-4">

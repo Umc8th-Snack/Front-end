@@ -39,7 +39,7 @@ const SummarizedNewsContainer = ({
     };
 
     return (
-        <div className="border-main-30 w-[690px] rounded-[30px] border-[3px] bg-white px-[30px] pt-[30px] pb-[28px]">
+        <div className="border-main-30 w-[100%] rounded-[30px] border-[3px] bg-white px-[30px] pt-[30px] pb-[28px]">
             <div className="flex justify-between">
                 <div className="flex space-x-[8px]">
                     <RectangleIcon />
