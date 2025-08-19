@@ -34,8 +34,8 @@ const QuizResultMessage = ({ totalQuestions, correctAnswers, isVisible }: QuizRe
     const message = getMessage();
 
     return (
-        <div className="border-main-70 mt-8 rounded-lg border-[2px] bg-white p-4 text-center">
-            <p className="text-18px-semibold md:text-24px-semibold lg:text-28px-semibold mb-2">{message.title}</p>
+        <div className="border-main-50 mt-8 rounded-lg border-2 bg-white px-2 py-4 text-center">
+            <p className="text-18px-semibold md:text-24px-semibold mb-2">{message.title}</p>
             <p className="text-14px-medium md:text-18px-medium lg:text-20px-medium text-black-50">{message.subtitle}</p>
         </div>
     );

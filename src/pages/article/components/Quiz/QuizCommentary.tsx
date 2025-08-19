@@ -23,7 +23,7 @@ function QuizCommentary({ questions, totalQuestions, correctAnswers }: QuizComme
     });
 
     return (
-        <div className="border-main-30 w-full rounded-[20px] border-[3px] bg-white px-6 pt-6 pb-6 lg:px-[30px] lg:pt-[30px] lg:pb-[28px]">
+        <div className="border-main-30 w-full rounded-[20px] border-[3px] bg-white px-4 pt-4 pb-4 md:px-6 md:pt-6 md:pb-6 lg:px-[30px] lg:pt-[30px] lg:pb-[28px]">
             <QuizHeader />
 
             {/* 스크롤 가능한 콘텐츠 영역 */}
