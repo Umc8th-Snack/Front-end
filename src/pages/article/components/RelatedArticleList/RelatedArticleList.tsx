@@ -51,11 +51,13 @@ const RelatedArticleList = ({ onClose, articleId }: RelatedArticleListProps) => 
 
     if (isLoading) {
         return (
-            <div className="relative flex w-[240px] flex-col items-center rounded-[15px] bg-white p-8 shadow-[0_0_10px_rgba(0,0,0,0.15)]">
-                <h2 className="mt-4 mb-4 text-xl font-semibold">관련 기사 보러가기</h2>
-                <div className="flex flex-col gap-4">
-                    <div className="my-2 h-[168px] w-[204px] animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6"></div>
-                    <div className="my-2 h-[168px] w-[204px] animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6"></div>
+            <div className="relative flex w-full flex-col rounded-[15px] bg-white p-8 lg:w-[240px] lg:items-center">
+                <h2 className="text-20px-semibold mt-4 mb-4">관련 기사 보러가기</h2>
+                {/* lg 미만: 가로 배치 스켈레톤, lg 이상: 세로 배치 스켈레톤 */}
+                <div className="flex flex-row gap-4 overflow-x-auto pb-4 lg:flex-col lg:overflow-x-visible lg:pb-0">
+                    <div className="h-[168px] w-[250px] flex-shrink-0 animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6 lg:w-[204px]"></div>
+                    <div className="h-[168px] w-[250px] flex-shrink-0 animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6 lg:w-[204px]"></div>
+                    <div className="h-[168px] w-[250px] flex-shrink-0 animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6 lg:w-[204px]"></div>
                 </div>
             </div>
         );
@@ -66,27 +68,29 @@ const RelatedArticleList = ({ onClose, articleId }: RelatedArticleListProps) => 
             role="dialog"
             aria-modal="true"
             aria-labelledby="related-articles-title"
-            className="relative flex w-[240px] flex-col items-center rounded-[15px] bg-white p-8 shadow-[0_0_10px_rgba(0,0,0,0.15)]"
+            className="relative flex w-full flex-col rounded-[15px] bg-white px-8 pt-4 pb-8 shadow-[0_0_10px_rgba(0,0,0,0.15)] lg:w-[240px] lg:items-center lg:p-8"
         >
-            <h2 id="related-articles-title" className="mt-4 mb-4 text-xl font-semibold">
+            <h2 id="related-articles-title" className="text-20px-semibold mt-4 mb-4 px-2 lg:px-0">
                 관련 기사 보러가기
             </h2>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 lg:flex-col">
                 {relatedArticles.length === 0 ? (
                     <div className="py-8 text-center text-gray-500">
                         <p>관련 기사가 없습니다.</p>
                     </div>
                 ) : (
-                    relatedArticles.map((article) => (
-                        <button
-                            key={article.articleId}
-                            onClick={() => void handleArticleClick(article.articleId)}
-                            className="cursor-pointer text-left"
-                        >
-                            <ArticleCard title={article.title} imageUrl={article.imageUrl} size="sidebar" />
-                        </button>
-                    ))
+                    <div className="flex flex-row gap-4 overflow-x-auto pb-4 lg:flex-col lg:overflow-x-visible lg:pb-0">
+                        {relatedArticles.map((article) => (
+                            <button
+                                key={article.articleId}
+                                onClick={() => void handleArticleClick(article.articleId)}
+                                className="flex-shrink-0 cursor-pointer text-left"
+                            >
+                                <ArticleCard title={article.title} imageUrl={article.imageUrl} size="sidebar" />
+                            </button>
+                        ))}
+                    </div>
                 )}
             </div>
         </div>
