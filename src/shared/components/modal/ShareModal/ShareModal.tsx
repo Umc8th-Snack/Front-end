@@ -161,7 +161,7 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
                 <ShareToast
                     message={
                         status === 'ready'
-                            ? '링크가 복사되었습니다.'
+                            ? '링크가 복사되었어요!'
                             : status === 'loading'
                               ? '링크 생성 중입니다.'
                               : '이 기사는 공유할 수 없어요.'

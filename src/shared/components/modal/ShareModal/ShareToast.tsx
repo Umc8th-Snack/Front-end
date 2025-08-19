@@ -26,7 +26,7 @@ function ShareToast({ message, duration = 500, onDone }: ShareToastProps) {
 
     return (
         <div
-            className={`bg-black-70 fixed bottom-20 left-1/2 z-[9999] flex min-h-[48px] w-auto max-w-[320px] -translate-x-1/2 items-center justify-center rounded-lg px-6 py-3 pt-[env(safe-area-inset-bottom,0px)] pb-[env(safe-area-inset-bottom,0px)] text-center break-words whitespace-pre-line text-white shadow-lg transition-opacity duration-300 sm:max-w-[420px] sm:shadow-xl md:min-h-[56px] md:max-w-[520px] md:px-8 md:py-4 ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
+            className={`bg-black-70 fixed bottom-20 left-1/2 z-[9999] flex min-h-[48px] w-[90vw] max-w-[360px] -translate-x-1/2 items-center justify-center rounded-lg px-6 py-3 pt-[env(safe-area-inset-bottom,0px)] pb-[env(safe-area-inset-bottom,0px)] text-center break-words whitespace-pre-line text-white shadow-lg transition-opacity duration-300 sm:max-w-[420px] sm:shadow-xl md:min-h-[56px] md:max-w-[520px] md:px-8 md:py-4 ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
             role="alert"
             aria-live="assertive"
         >
