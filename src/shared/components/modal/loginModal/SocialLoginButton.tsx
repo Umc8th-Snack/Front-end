@@ -8,13 +8,23 @@ interface SocialLoginButtonProps {
     onClick?: () => void;
     width: string;
     height: string;
+    borderColor?: string;
 }
 
-const SocialLoginButton = ({ text, icon, bgColor, textColor, onClick, height, width }: SocialLoginButtonProps) => {
+const SocialLoginButton = ({
+    text,
+    icon,
+    bgColor,
+    textColor,
+    onClick,
+    height,
+    width,
+    borderColor = 'border-none',
+}: SocialLoginButtonProps) => {
     return (
         <button
             onClick={onClick}
-            className={`flex items-center justify-center gap-3 h-[${height}] w-[${width}] rounded-[8px] ${bgColor} ${textColor} cursor-pointer border-[1px] border-gray-500 transition hover:opacity-70`}
+            className={`flex items-center justify-center gap-3 h-[${height}] w-[${width}] ${borderColor} rounded-[8px] ${bgColor} ${textColor} cursor-pointer transition hover:opacity-70`}
         >
             {icon && <span> {icon}</span>}
             <span>{text}</span>
