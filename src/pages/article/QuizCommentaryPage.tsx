@@ -9,6 +9,7 @@ import QuizCommentary from '@/pages/article/components/Quiz/QuizCommentary';
 import RelatedArticleList from '@/pages/article/components/RelatedArticleList/RelatedArticleList';
 import { useQuizCommentary } from '@/pages/article/hooks/useQuizCommentary';
 import LoadingFallback from '@/routes/LoadingFallback';
+import FloatingMemoButton from '@/shared/components/button/FloatingMemoButton';
 import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
 
 const QuizCommentaryPage = () => {
@@ -80,12 +81,18 @@ const QuizCommentaryPage = () => {
 
             {/* 메모장 오버레이 */}
             {isMemoPadOpen && articleId && (
-                <div className="fixed top-0 right-0 z-50 px-18 py-8">
-                    <div className="mt-20">
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 md:top-0 md:right-0 md:items-start md:justify-end md:bg-transparent md:p-4 md:px-18 md:py-18"
+                    onClick={() => setIsMemoPadOpen(false)}
+                >
+                    <div className="sm:mt-20" onClick={(e) => e.stopPropagation()}>
                         <MemoPad articleId={articleId} />
                     </div>
                 </div>
             )}
+
+            {/* Floating 메모장 버튼 (lg 미만에서만 표시) */}
+            <FloatingMemoButton onClick={() => setIsMemoPadOpen(!isMemoPadOpen)} isActive={isMemoPadOpen} />
         </>
     );
 };
