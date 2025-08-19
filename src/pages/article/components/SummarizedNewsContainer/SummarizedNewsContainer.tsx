@@ -39,14 +39,14 @@ const SummarizedNewsContainer = ({
     };
 
     return (
-        <div className="border-main-30 w-[100%] rounded-[30px] border-[3px] bg-white px-[30px] pt-[30px] pb-[28px]">
+        <div className="border-main-30 w-[100%] rounded-[20px] border-[3px] bg-white px-6 pt-6 pb-6 lg:px-[30px] lg:pt-[30px] lg:pb-[28px]">
             <div className="flex justify-between">
-                <div className="flex space-x-[8px]">
+                <div className="flex items-center space-x-[8px]">
                     <RectangleIcon />
-                    <span className="text-28px-semibold relative top-[-10px] text-black">간추린 뉴스</span>
+                    <span className="text-20px-semibold md:text-24px-semibold relative">간추린 뉴스</span>
                 </div>
                 {showActions && (
-                    <div className="mt-[-25px] flex items-center gap-[21px]">
+                    <div className="mt-[-5px] flex items-center gap-[21px] md:mt-[-8px]">
                         <ScrapButton articleId={articleId} onSuccess={handleScrapSuccess} onError={handleScrapError} />
                         <button onClick={handleOpenShareModal} className="cursor-pointer" aria-label="공유하기">
                             <ShareIcon className="text-gray-400" />
@@ -54,7 +54,9 @@ const SummarizedNewsContainer = ({
                     </div>
                 )}
             </div>
-            <div className="text-18px-medium text-black-70 mt-[5px] leading-8 break-words">{summary}</div>
+            <div className="text-16px-medium md:text-18px-medium text-black-70 mt-2 leading-8 break-words lg:mt-[5px]">
+                {summary}
+            </div>
 
             {isShareModalOpen && (
                 <ShareModal

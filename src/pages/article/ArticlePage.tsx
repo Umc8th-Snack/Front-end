@@ -83,7 +83,7 @@ const ArticlePage = () => {
                         />
                     </div>
                 )}
-                <div className="pt-8">
+                <div className="pt-4">
                     <AccordionTestPage articleId={articleId} />
                 </div>
             </ArticleLayout>

@@ -12,7 +12,7 @@ const ArticleLayout = ({ children, sidebarContent }: ArticleLayoutProps) => {
         <div className="px-6 py-6">
             <div className="mx-auto grid max-w-[1100px] grid-cols-[100%] lg:grid-cols-[70%_30%]">
                 <div>
-                    <div className="flex flex-col gap-4 py-6 lg:px-6">{children}</div>
+                    <div className="flex flex-col gap-4 pb-4 lg:px-6 lg:py-6">{children}</div>
                 </div>
 
                 {/* Sidebar */}

@@ -52,7 +52,7 @@ const RelatedArticleList = ({ onClose, articleId }: RelatedArticleListProps) => 
     if (isLoading) {
         return (
             <div className="relative flex w-full flex-col rounded-[15px] bg-white p-8 lg:w-[240px] lg:items-center">
-                <h2 className="text-24px-semibold mt-4 mb-4">관련 기사 보러가기</h2>
+                <h2 className="text-20px-semibold mt-4 mb-4">관련 기사 보러가기</h2>
                 <div className="flex flex-col gap-4 lg:flex-col">
                     <div className="my-2 h-[168px] w-[204px] animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6"></div>
                     <div className="my-2 h-[168px] w-[204px] animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6"></div>
@@ -69,7 +69,7 @@ const RelatedArticleList = ({ onClose, articleId }: RelatedArticleListProps) => 
             aria-labelledby="related-articles-title"
             className="relative flex w-full flex-col rounded-[15px] bg-white px-8 pt-4 pb-8 shadow-[0_0_10px_rgba(0,0,0,0.15)] lg:w-[240px] lg:items-center lg:p-8"
         >
-            <h2 id="related-articles-title" className="text-24px-semibold mt-4 mb-4 px-2 lg:px-0">
+            <h2 id="related-articles-title" className="text-20px-semibold mt-4 mb-4 px-2 lg:px-0">
                 관련 기사 보러가기
             </h2>
 

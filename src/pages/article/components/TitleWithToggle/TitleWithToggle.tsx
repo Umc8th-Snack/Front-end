@@ -63,7 +63,9 @@ export default function TitleWithToggle({
     return (
         <div ref={containerRef} className="w-full">
             {/* 첫 줄 전체 */}
-            <h1 className="text-36px-semibold col-span-2 leading-tight">{first}</h1>
+            <h1 className="text-24px-semibold md:text-28px-semibold lg:text-36px-semibold col-span-2 leading-tight">
+                {first}
+            </h1>
 
             {/* 두 번째 줄 + 토글 */}
             <div className="grid grid-cols-[1fr_auto] gap-4">
