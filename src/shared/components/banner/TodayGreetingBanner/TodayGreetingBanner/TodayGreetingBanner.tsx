@@ -57,13 +57,11 @@ const TodayGreetingBanner = ({ nickname, variant = 'home' }: TodayGreetingBanner
                             }
                         >
                             {variant === 'home' ? (
-                                // 홈: 모바일에서만 줄바꿈
                                 <>
-                                    <span className="block sm:inline">오늘은 </span>
-                                    <span className="block sm:inline">{formatted}이에요.</span>
+                                    <span>오늘은 </span>
+                                    <span>{formatted}이에요.</span>
                                 </>
                             ) : (
-                                // 맞춤피드: 모바일에서도 한 줄로!!
                                 <>
                                     <span>오늘은 </span>
                                     <span>{formatted}이에요.</span>
@@ -75,8 +73,8 @@ const TodayGreetingBanner = ({ nickname, variant = 'home' }: TodayGreetingBanner
                     {/* 맞춤 피드 안내 */}
                     {hasNickname && (
                         <p className="text-18px-semibold sm:text-20px-semibold lg:text-24px-semibold mt-[6px] text-black">
-                            <span className="block sm:inline">{effectiveNickname}님을 위한 </span>
-                            <span className="block sm:inline">오늘의 맞춤 피드를 보여드려요.</span>
+                            <span>{effectiveNickname}님을 위한 </span>
+                            <span>오늘의 맞춤 피드를 보여드려요.</span>
                         </p>
                     )}
                 </div>
