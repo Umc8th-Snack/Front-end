@@ -9,11 +9,17 @@ interface TodayGreetingBannerProps {
 
 const TodayGreetingBanner = ({ nickname, variant = 'home' }: TodayGreetingBannerProps) => {
     const today = new Date();
-    const formatted = today.toLocaleDateString('ko-KR', {
+    const formattedWithWeekday = today.toLocaleDateString('ko-KR', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
         weekday: 'long',
+    });
+
+    const formattedWithoutWeekday = today.toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
     });
 
     // AuthContext에서 사용자 정보 가져오기
@@ -59,12 +65,14 @@ const TodayGreetingBanner = ({ nickname, variant = 'home' }: TodayGreetingBanner
                             {variant === 'home' ? (
                                 <>
                                     <span>오늘은 </span>
-                                    <span>{formatted}이에요.</span>
+                                    {/* 모바일에서는 요일 없는 날짜, sm 이상에서는 요일 포함 날짜 */}
+                                    <span className="sm:hidden">{formattedWithoutWeekday}이에요.</span>
+                                    <span className="hidden sm:inline">{formattedWithWeekday}이에요.</span>
                                 </>
                             ) : (
                                 <>
                                     <span>오늘은 </span>
-                                    <span>{formatted}이에요.</span>
+                                    <span>{formattedWithoutWeekday}이에요.</span>
                                 </>
                             )}
                         </p>
@@ -72,9 +80,9 @@ const TodayGreetingBanner = ({ nickname, variant = 'home' }: TodayGreetingBanner
 
                     {/* 맞춤 피드 안내 */}
                     {hasNickname && (
-                        <p className="text-18px-semibold sm:text-20px-semibold lg:text-24px-semibold mt-[6px] text-black">
-                            <span>{effectiveNickname}님을 위한 </span>
-                            <span>오늘의 맞춤 피드를 보여드려요.</span>
+                        <p className="text-18px-semibold sm:text-20px-semibold lg:text-24px-semibold mt-[6px] break-keep whitespace-normal text-black">
+                            <span className="block sm:inline">{effectiveNickname}님을 위한 </span>
+                            <span className="block sm:inline">오늘의 맞춤 피드를 보여드려요.</span>
                         </p>
                     )}
                 </div>
