@@ -112,8 +112,8 @@ const MyPage = () => {
                         )}
                     </div>
 
-                    {/* 하단 고정 페이지네이션 (모바일) */}
-                    <div className="md:backdrop-blur-0 sticky right-0 bottom-0 left-0 -mx-4 bg-white/95 px-4 pt-3 pb-3 backdrop-blur md:static md:-mx-0 md:bg-transparent md:pt-0">
+                    {/* 페이지네이션 (스크롤과 함께 이동) */}
+                    <div className="mt-6 md:mt-8">
                         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={changePage} />
                     </div>
                 </>

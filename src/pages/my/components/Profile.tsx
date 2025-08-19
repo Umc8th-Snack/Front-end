@@ -1,4 +1,3 @@
-// src/pages/my/components/Profile.tsx
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useEffect, useRef, useState } from 'react';
@@ -13,7 +12,6 @@ import { MY_QUERY_KEYS } from '@/pages/my/constants/queryConstants';
 const MAX_MB = 5;
 const ALLOWED = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 
-// 공통 에러 메시지 추출기
 const getErrorMessage = (err: unknown) => {
     if (isAxiosError(err)) return (err.response?.data as any)?.message ?? err.message;
     if (err instanceof Error) return err.message;
@@ -33,28 +31,18 @@ const Profile = () => {
         queryFn: fetchUserProfile,
     });
 
-    // 업로드/삭제에 따른 즉시 반영용 로컬 상태
     const [localImageUrl, setLocalImageUrl] = useState<string | null>(null);
     const [isUploading, setUploading] = useState(false);
     const [isDeleting, setDeleting] = useState(false);
     const [progress, setProgress] = useState(0);
-
-    // 이미지 로드 실패 시 기본이미지로 전환
     const [imageError, setImageError] = useState(false);
-
-    // 서버가 여전히 삭제된 fileUrl을 내려줘도, 강제로 기본이미지를 보여주기 위한 락
     const [showDefault, setShowDefault] = useState(false);
 
-    // 서버에서 새 값이 오면 미리보기 초기화(기본이미지 락은 건드리지 않음)
     useEffect(() => {
         setLocalImageUrl(null);
-        if (profile?.profileImage) {
-            // 서버가 유효한 URL을 내려줄 때만 에러 플래그 해제
-            setImageError(false);
-        }
+        if (profile?.profileImage) setImageError(false);
     }, [profile?.profileImage]);
 
-    // 기본이미지 강제락이 켜져 있으면 무조건 기본이미지
     const currentImage = showDefault ? null : (localImageUrl ?? profile?.profileImage ?? null);
     const isDefaultView = showDefault || imageError || !currentImage;
 
@@ -63,7 +51,6 @@ const Profile = () => {
     const onFileChange = async (file?: File) => {
         if (!file) return;
 
-        // 간단 검증 (확장자/용량)
         if (!ALLOWED.includes(file.type)) {
             alert('JPG, JPEG, PNG, GIF, WEBP만 업로드 가능해요.');
             return;
@@ -77,19 +64,14 @@ const Profile = () => {
             setUploading(true);
             setProgress(0);
 
-            // 1) 업로드 → fileUrl 획득
             const result = await uploadProfileImage(file, setProgress);
-
-            // 2) 내 정보 수정 API로 프로필 이미지 URL 저장
             await updateUserProfile({ profileImage: result.fileUrl });
 
-            // 3) 즉시 반영(캐시 버스터로 캐시 무효화) + 기본이미지 락 해제
             const bust = `?_=${Date.now()}`;
             setLocalImageUrl(result.fileUrl + bust);
             setShowDefault(false);
             setImageError(false);
 
-            // 4) 캐시 즉시 갱신 + 재검증
             qc.setQueryData(MY_QUERY_KEYS.USER_PROFILE, (prev: any) =>
                 prev ? { ...prev, profileImage: result.fileUrl } : prev
             );
@@ -103,28 +85,20 @@ const Profile = () => {
         }
     };
 
-    // 삭제: 서버 구조상 profileImage는 계속 같은 URL을 줄 수 있으므로
-    // showDefault 락으로 무조건 기본이미지를 강제 표시
     const handleDeleteImage = async () => {
-        if (isDefaultView) return; // 기본이미지 상태라면 삭제 불필요
+        if (isDefaultView) return;
         const ok = confirm('프로필 사진을 삭제하시겠어요?');
         if (!ok || !currentImage) return;
 
         try {
             setDeleting(true);
-
-            // ① 즉시 기본이미지로 전환 (락 활성화)
             setShowDefault(true);
             setLocalImageUrl(null);
             setImageError(true);
 
-            // ② 스토리지/백엔드에서 파일 삭제
             await deleteProfileImage(currentImage);
-
-            // ③ 서버 재조회(화면은 showDefault로 고정이므로 흔들리지 않음)
             void qc.invalidateQueries({ queryKey: MY_QUERY_KEYS.USER_PROFILE });
         } catch (err: unknown) {
-            // 실패 시 락 해제 & 원복
             setShowDefault(false);
             setImageError(false);
             alert(getErrorMessage(err));
@@ -137,44 +111,54 @@ const Profile = () => {
     if (isError) return <div className="mb-8 text-red-500">프로필 조회 실패</div>;
 
     return (
-        <div className="mb-8 flex flex-col items-start text-center">
-            {/* 아바타 (클릭 → 파일 선택) + 삭제 버튼 */}
-            <div className="relative mt-4 h-[104px] w-[104px]">
-                {/* 프로필 이미지 버튼 */}
-                <button
-                    type="button"
-                    onClick={openPicker}
-                    className="h-full w-full overflow-hidden rounded-full ring-1 ring-black/10 hover:ring-black/20 focus:outline-none"
-                    title="프로필 사진 변경"
-                    aria-label="프로필 사진 변경"
-                    disabled={isUploading || isDeleting}
-                >
-                    {isDefaultView ? (
-                        <DefaultImage />
-                    ) : (
-                        <img
-                            src={currentImage!}
-                            alt="프로필 이미지"
-                            className="h-full w-full object-cover"
-                            onError={() => setImageError(true)} // 로드 실패 → 기본이미지 전환
-                            draggable={false}
-                        />
-                    )}
-                </button>
-
-                {/* 삭제 버튼: 기본이미지일 땐 숨김 */}
-                {!isDefaultView && (
+        <div className="mb-8 text-left md:text-center">
+            {/* 헤더: 모바일=가로 한줄, 데스크탑=세로(원래 레이아웃) */}
+            <div className="flex items-center gap-3 md:flex-col md:items-start md:gap-0">
+                {/* 아바타 + 삭제 */}
+                <div className="relative h-16 w-16 shrink-0 md:mt-4 md:h-[104px] md:w-[104px]">
                     <button
                         type="button"
-                        onClick={() => void handleDeleteImage()}
-                        className="absolute -top-2 -right-2 rounded-full p-1 focus:outline-none disabled:opacity-50"
-                        title="프로필 사진 삭제"
-                        aria-label="프로필 사진 삭제"
+                        onClick={openPicker}
+                        className="h-full w-full overflow-hidden rounded-full ring-1 ring-black/10 hover:ring-black/20 focus:outline-none"
+                        title="프로필 사진 변경"
+                        aria-label="프로필 사진 변경"
                         disabled={isUploading || isDeleting}
                     >
-                        <ProfileDeleteButton className="h-7 w-7" />
+                        {isDefaultView ? (
+                            <DefaultImage />
+                        ) : (
+                            <img
+                                src={currentImage!}
+                                alt="프로필 이미지"
+                                className="h-full w-full object-cover"
+                                onError={() => setImageError(true)}
+                                draggable={false}
+                            />
+                        )}
                     </button>
-                )}
+
+                    {/* 삭제 버튼 */}
+                    {!isDefaultView && (
+                        <button
+                            type="button"
+                            onClick={() => void handleDeleteImage()}
+                            className="absolute -top-2 -right-2 rounded-full p-0.5 focus:outline-none disabled:opacity-50 md:p-1"
+                            title="프로필 사진 삭제"
+                            aria-label="프로필 사진 삭제"
+                            disabled={isUploading || isDeleting}
+                        >
+                            <ProfileDeleteButton className="h-6 w-6 md:h-7 md:w-7" />
+                        </button>
+                    )}
+                </div>
+
+                {/* 닉네임/이메일: 모바일 작게 왼쪽 정렬, 데스크탑 원래 크기 & 중앙 정렬 */}
+                <div className="min-w-0 flex-1 text-left">
+                    <div className="md:text-36px-semibold truncate text-base font-semibold text-black md:mt-4">
+                        {profile?.nickname}
+                    </div>
+                    <div className="text-black-70 md:text-24px-medium truncate text-xs">{profile?.email}</div>
+                </div>
             </div>
 
             {/* 숨겨진 파일 입력 */}
@@ -188,7 +172,7 @@ const Profile = () => {
 
             {/* 업로드 진행률 */}
             {isUploading && (
-                <div className="mt-2 w-[104px]">
+                <div className="mt-2 w-40 md:mx-auto md:w-[104px]">
                     <div className="h-1 w-full overflow-hidden rounded bg-gray-200">
                         <div className="h-full rounded bg-black transition-all" style={{ width: `${progress}%` }} />
                     </div>
@@ -196,23 +180,20 @@ const Profile = () => {
                 </div>
             )}
 
-            <div className="text-36px-semibold mt-4 text-black">{profile?.nickname}</div>
-            <div className="text-24px-medium text-black-70">{profile?.email}</div>
-
-            <div className="mt-6 flex w-full items-end justify-between gap-4 text-left">
-                <p className="text-20px-medium text-black-30 flex-1 break-words">
+            {/* 소개 + 프로필 편집 버튼 */}
+            <div className="mt-4 flex w-full items-end justify-between gap-3 md:mt-6">
+                <p className="text-black-30 md:text-20px-medium min-w-0 flex-1 text-left text-sm break-all whitespace-pre-line md:break-words">
                     {profile?.introduction || '소개글을 작성해보세요!'}
                 </p>
 
                 <Link
                     to="/mypage/edit-profile"
-                    className="bg-main text-18px-medium inline-flex cursor-pointer items-center justify-center rounded-[8px] px-4 py-2 text-white hover:bg-blue-700"
+                    className="bg-main md:text-18px-medium inline-flex shrink-0 cursor-pointer items-center justify-center self-end rounded-[8px] px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700 md:px-4 md:py-2"
                 >
                     프로필 편집
                 </Link>
             </div>
-
-            <div className="bg-black-30 mt-2 h-[1px] w-full" />
+            <div className="bg-black-30 mt-2 h-px w-full" />
         </div>
     );
 };
