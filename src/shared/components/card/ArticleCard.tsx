@@ -9,7 +9,7 @@ function ArticleCard({ title = 'article title', imageUrl, size = 'sidebar' }: Ar
     // 크기에 따른 스타일 클래스
     const sizeClasses = {
         main: 'min-h-[210px] min-w-[255px] w-full p-6 text-20px-medium ', // 메인 페이지용 - 더 큰 크기, 작은 margin
-        sidebar: 'h-[168px] w-[204px] p-6 m-5 text-16px-medium ', // sidebar용 - 기존 크기, 기존 margin
+        sidebar: 'h-[168px] w-[220px] lg:w-[204px] p-6 lg:m-5 text-16px-medium ', // sidebar용 - 기존 크기, 기존 margin
     };
 
     const imageSizeClasses = {

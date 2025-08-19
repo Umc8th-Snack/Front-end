@@ -18,7 +18,9 @@ const ArticleLayout = ({ children, sidebarContent }: ArticleLayoutProps) => {
                 {/* Sidebar */}
                 <aside className="mt-8">
                     <div className="sticky top-15 flex justify-end">
-                        {sidebarContent || <RelatedArticleList onClose={() => {}} articleId={0} />}
+                        <div className="w-full lg:w-auto">
+                            {sidebarContent || <RelatedArticleList onClose={() => {}} articleId={0} />}
+                        </div>
                     </div>
                 </aside>
             </div>

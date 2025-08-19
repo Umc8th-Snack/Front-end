@@ -51,9 +51,10 @@ const RelatedArticleList = ({ onClose, articleId }: RelatedArticleListProps) => 
 
     if (isLoading) {
         return (
-            <div className="relative flex w-[240px] flex-col items-center rounded-[15px] bg-white p-8 shadow-[0_0_10px_rgba(0,0,0,0.15)]">
+            <div className="relative flex w-full flex-col rounded-[15px] bg-white p-8 shadow-[0_0_10px_rgba(0,0,0,0.15)] lg:w-[240px] lg:items-center">
                 <h2 className="mt-4 mb-4 text-xl font-semibold">관련 기사 보러가기</h2>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 lg:flex-col">
+                    <div className="my-2 h-[168px] w-[204px] animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6"></div>
                     <div className="my-2 h-[168px] w-[204px] animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6"></div>
                     <div className="my-2 h-[168px] w-[204px] animate-pulse rounded-lg rounded-tl-[22px] rounded-tr-[8px] rounded-br-[22px] rounded-bl-[8px] bg-gray-200 p-6"></div>
                 </div>
@@ -66,27 +67,29 @@ const RelatedArticleList = ({ onClose, articleId }: RelatedArticleListProps) => 
             role="dialog"
             aria-modal="true"
             aria-labelledby="related-articles-title"
-            className="relative flex w-[240px] flex-col items-center rounded-[15px] bg-white p-8 shadow-[0_0_10px_rgba(0,0,0,0.15)]"
+            className="relative flex w-full flex-col rounded-[15px] bg-white p-8 shadow-[0_0_10px_rgba(0,0,0,0.15)] lg:w-[240px] lg:items-center"
         >
-            <h2 id="related-articles-title" className="mt-4 mb-4 text-xl font-semibold">
+            <h2 id="related-articles-title" className="mt-4 mb-4 px-2 text-xl font-semibold lg:px-0">
                 관련 기사 보러가기
             </h2>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 lg:flex-col">
                 {relatedArticles.length === 0 ? (
                     <div className="py-8 text-center text-gray-500">
                         <p>관련 기사가 없습니다.</p>
                     </div>
                 ) : (
-                    relatedArticles.map((article) => (
-                        <button
-                            key={article.articleId}
-                            onClick={() => void handleArticleClick(article.articleId)}
-                            className="cursor-pointer text-left"
-                        >
-                            <ArticleCard title={article.title} imageUrl={article.imageUrl} size="sidebar" />
-                        </button>
-                    ))
+                    <div className="flex flex-row gap-4 overflow-x-auto pb-4 lg:flex-col lg:overflow-x-visible lg:pb-0">
+                        {relatedArticles.map((article) => (
+                            <button
+                                key={article.articleId}
+                                onClick={() => void handleArticleClick(article.articleId)}
+                                className="flex-shrink-0 cursor-pointer text-left"
+                            >
+                                <ArticleCard title={article.title} imageUrl={article.imageUrl} size="sidebar" />
+                            </button>
+                        ))}
+                    </div>
                 )}
             </div>
         </div>
