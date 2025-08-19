@@ -70,7 +70,7 @@ const GlossaryQuiz = ({ articleId }: GlossaryQuizProps) => {
     return (
         <div className="lg:min-h-screen">
             <div className="mx-auto max-w-4xl">
-                <div className="grid grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                     <div className="space-y-4">
                         <Accordion
                             title="용어집"
