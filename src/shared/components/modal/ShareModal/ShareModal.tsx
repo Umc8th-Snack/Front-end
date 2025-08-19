@@ -82,28 +82,38 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-10"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-6 pb-[env(safe-area-inset-bottom,0px)] sm:py-10"
             onClick={(e) => {
                 if (modalRef.current && !modalRef.current.contains(e.target as Node)) onClose();
+            }}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onClose();
+                }
             }}
         >
             <div
                 ref={modalRef}
-                className="relative flex w-[600px] flex-col items-center rounded-[10px] bg-white px-[40px] py-[40px]"
+                className="relative flex max-h-[85vh] w-full max-w-[600px] flex-col items-center overflow-y-auto rounded-[12px] bg-white px-5 py-6 sm:px-10 sm:py-10"
             >
                 {/* 닫기 버튼 */}
                 <button
-                    className="absolute top-[12px] right-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center"
+                    className="absolute top-3 right-3 flex h-10 w-10 cursor-pointer items-center justify-center"
                     onClick={onClose}
                     aria-label="닫기"
                 >
                     <XIcon />
                 </button>
 
-                <div className="text-36px-semibold mt-[24px] mb-[36px] text-center">공유하기</div>
+                <div id="share-modal-title" className="text-24px-semibold sm:text-36px-semibold mt-2 text-center">
+                    공유하기
+                </div>
 
                 {/* 상태 메시지 */}
-                <div className="absolute top-[120px] flex items-center">
+                <div className="mb-4 flex min-h-[24px] items-center">
                     {status === 'loading' && <div className="text-black-70">링크를 생성 중입니다...</div>}
                     {status === 'forbidden' && (
                         <div className="text-danger/90">{errorMsg || '공유할 수 없는 기사입니다.'}</div>
@@ -114,7 +124,7 @@ const ShareModal = ({ articleId, title, description, image, onClose }: ShareModa
                 </div>
 
                 {/* 공유 아이콘 */}
-                <div className="mb-[20px] flex w-[401px] justify-between opacity-100">
+                <div className="mb-8 grid w-full grid-cols-3 justify-items-center gap-4 sm:flex sm:w-[401px] sm:justify-between">
                     <CircleShareButton
                         icon={<KakaoIcon width={44} height={44} />}
                         label="카카오톡"
