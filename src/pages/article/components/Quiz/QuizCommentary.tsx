@@ -1,7 +1,6 @@
 import QuizHeader from '@/pages/article/components/Quiz/QuizHeader';
 import QuizQuestionItem from '@/pages/article/components/Quiz/QuizQuestionItem';
 import QuizResultMessage from '@/pages/article/components/Quiz/QuizResultMessage';
-import { SCROLL_CONFIG } from '@/pages/article/constants/quiz';
 import { useQuizScroll } from '@/pages/article/hooks/useQuizScroll';
 
 interface Question {
@@ -28,13 +27,13 @@ function QuizCommentary({ questions, totalQuestions, correctAnswers }: QuizComme
             <QuizHeader />
 
             {/* 스크롤 가능한 콘텐츠 영역 */}
-            <div ref={scrollRef} className={`${SCROLL_CONFIG.MAX_HEIGHT} overflow-y-auto p-2`}>
+            <div ref={scrollRef} className="p-2 lg:max-h-140 lg:overflow-y-auto">
                 {/* 문제별 해설 */}
                 {questions.map((question) => (
                     <QuizQuestionItem key={question.id} question={question} />
                 ))}
 
-                {/* 결과 메시지 (스크롤 시 나타남) */}
+                {/* 결과 메시지 (lg 미만에서는 즉시 표시, lg 이상에서는 스크롤 시 표시) */}
                 <QuizResultMessage
                     totalQuestions={totalQuestions}
                     correctAnswers={correctAnswers}
