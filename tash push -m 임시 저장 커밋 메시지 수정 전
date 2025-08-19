@@ -1,5 +1,0 @@
-[33ma83a6cd[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeat/article-responsive-sizing/#153[m[33m)[m design: md부터 summarized 디테일 수정
-[33m617fcca[m design: md부터 min-h-screen XX
-[33m363c9c3[m design: SummerizedNewsContainer 하드코딩 삭제
-[33mf41f0cf[m feat: lg 이하일 때 관련 기사 가로로 스와이프
-[33m2fb9ec1[m design: lg 아래에서부터 레이아웃 1/1로 변경
