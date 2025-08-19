@@ -39,3 +39,9 @@ export interface UserProfile {
     profileImage: string;
     introduction: string;
 }
+
+export type PaginationProps = {
+    currentPage: number;
+    totalPages: number;
+    onPageChange: (page: number) => void;
+};
