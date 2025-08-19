@@ -100,7 +100,7 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
                 <button
                     onClick={handleLoginSubmit}
                     disabled={!isFormValid || isPending}
-                    className={`text-20px-medium h-[56px] w-full rounded-md py-3 text-white ${
+                    className={`text-20px-medium h-[56px] w-full rounded-md py-3 text-white transition hover:opacity-70 ${
                         isFormValid && !isPending ? 'bg-main cursor-pointer' : 'bg-black-30 cursor-not-allowed'
                     }`}
                 >
