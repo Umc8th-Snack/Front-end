@@ -182,7 +182,7 @@ const Profile = () => {
 
             {/* 소개 + 프로필 편집 버튼 */}
             <div className="mt-4 flex w-full items-end justify-between gap-3 md:mt-6">
-                <p className="text-black-30 md:text-20px-medium min-w-0 flex-1 text-left text-sm break-all whitespace-pre-line md:break-words">
+                <p className="text-black-70 md:text-20px-medium min-w-0 flex-1 text-left text-sm break-all whitespace-pre-line md:break-words">
                     {profile?.introduction || '소개글을 작성해보세요!'}
                 </p>
 
