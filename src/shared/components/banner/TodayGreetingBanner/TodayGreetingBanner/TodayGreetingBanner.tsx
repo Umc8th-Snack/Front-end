@@ -81,8 +81,8 @@ const TodayGreetingBanner = ({ nickname, variant = 'home' }: TodayGreetingBanner
                     {/* 맞춤 피드 안내 */}
                     {hasNickname && (
                         <p className="text-18px-semibold sm:text-20px-semibold lg:text-24px-semibold mt-[6px] break-keep whitespace-normal text-black">
-                            <span>{effectiveNickname}님을 위한 </span>
-                            <span>오늘의 맞춤 피드를 보여드려요.</span>
+                            <span className="block sm:inline">{effectiveNickname}님을 위한 </span>
+                            <span className="block sm:inline">오늘의 맞춤 피드를 보여드려요.</span>
                         </p>
                     )}
                 </div>
