@@ -76,9 +76,7 @@ const CustomFeedPage = () => {
 
             {/* 온보딩 카드 */}
             <div className="mb-20 w-full sm:mb-24 lg:mb-[67px]">
-                <div className="-mx-4 mx-auto max-w-[1121px] px-5 sm:mx-0 sm:px-0">
-                    <OnboardingCard />
-                </div>
+                <OnboardingCard />
             </div>
 
             <div className="mx-auto max-w-[1151px]">
