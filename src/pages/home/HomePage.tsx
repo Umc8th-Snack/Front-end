@@ -49,7 +49,7 @@ const HomePage = () => {
     };
 
     useEffect(() => {
-        if (isCategoryEmpty) return; // ✅ 미선택이면 로깅 스킵
+        if (isCategoryEmpty) return; // 미선택이면 로깅 스킵
         console.log('현재 선택된 카테고리:', selectedCategories);
         console.log('API 로딩 상태:', isLoading);
     }, [selectedCategories, isLoading, isCategoryEmpty]);
@@ -57,7 +57,7 @@ const HomePage = () => {
     useEffect(() => {
         if (observerRef.current) observerRef.current.disconnect();
 
-        // ✅ 미선택이면 옵저버 설치 안 함
+        // 미선택이면 옵저버 설치 안 함
         if (isCategoryEmpty) return;
 
         observerRef.current = new IntersectionObserver(
@@ -78,7 +78,7 @@ const HomePage = () => {
 
     //  중복 제거(첫 등장 순서 유지)
     const articles = useMemo<MainFeedArticle[]>(() => {
-        if (isCategoryEmpty) return []; // ✅ 미선택이면 바로 빈 배열
+        if (isCategoryEmpty) return []; // 미선택이면 바로 빈 배열
         const seen = new Set<number>();
         const out: MainFeedArticle[] = [];
 
@@ -99,7 +99,7 @@ const HomePage = () => {
         return out;
     }, [data, isCategoryEmpty]);
 
-    // ✅ 카테고리 미선택 상태: API 호출 없이 안내 문구만 렌더
+    // 카테고리 미선택 상태: API 호출 없이 안내 문구만 렌더
     if (isCategoryEmpty) {
         return (
             <div className="min-h-screen py-8">
@@ -109,7 +109,7 @@ const HomePage = () => {
                 </div>
 
                 {/* 온보딩 카드 */}
-                <div className="mb-20 flex justify-center sm:mb-24 lg:mb-[67px]">
+                <div className="mb-20 sm:mb-24 lg:mb-[67px]">
                     <OnboardingCard />
                 </div>
 
@@ -144,7 +144,7 @@ const HomePage = () => {
             </div>
 
             {/* 온보딩 카드 */}
-            <div className="mb-20 flex justify-center sm:mb-24 lg:mb-[67px]">
+            <div className="mb-20 sm:mb-24 lg:mb-[67px]">
                 <OnboardingCard />
             </div>
 

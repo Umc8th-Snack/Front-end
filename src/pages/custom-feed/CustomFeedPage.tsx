@@ -75,7 +75,7 @@ const CustomFeedPage = () => {
             </div>
 
             {/* 온보딩 카드 */}
-            <div className="mb-20 flex justify-center sm:mb-24 lg:mb-[67px]">
+            <div className="mb-20 w-full sm:mb-24 lg:mb-[67px]">
                 <OnboardingCard />
             </div>
 
