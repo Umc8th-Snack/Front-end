@@ -8,7 +8,7 @@ const VerifyCodePage = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [code, setCode] = useState('');
-    const [errorMsg, setErrorMsg] = useState<string | null>(null);
+    const [errorMsg, setErrorMsg] = useState<string | React.ReactNode>(null);
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
     // 이메일 정보 가져오기 (sessionStorage)
@@ -48,7 +48,7 @@ const VerifyCodePage = () => {
             })
             .catch((err: any) => {
                 // 서버 에러 응답 구조에 따른 메시지 처리
-                let errorMessage = '인증 코드 확인에 실패했습니다.';
+                let errorMessage: string | React.ReactNode = '인증 코드 확인에 실패했습니다.';
 
                 // axios 에러 응답에서 code와 message 확인
                 const errorCode = err?.response?.data?.code;
@@ -56,10 +56,22 @@ const VerifyCodePage = () => {
 
                 if (errorCode === 'USER_2671') {
                     // 인증코드 불일치
-                    errorMessage = '인증 코드가 일치하지 않습니다. 이메일로 받은 6자리 숫자를 다시 확인해주세요.';
+                    errorMessage = (
+                        <>
+                            인증 코드가 일치하지 않습니다.
+                            <br />
+                            이메일로 받은 6자리 숫자를 다시 확인해주세요.
+                        </>
+                    );
                 } else if (errorCode === 'USER_2672') {
                     // 인증코드 만료
-                    errorMessage = '인증 코드의 유효 시간이 만료되었습니다. 처음부터 다시 시도해주세요.';
+                    errorMessage = (
+                        <>
+                            인증 코드의 유효 시간이 만료되었습니다.
+                            <br />
+                            처음부터 다시 시도해주세요.
+                        </>
+                    );
                 } else if (serverMessage) {
                     // 서버에서 보낸 다른 메시지가 있으면 사용
                     errorMessage = serverMessage;
