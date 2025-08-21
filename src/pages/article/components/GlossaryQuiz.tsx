@@ -32,16 +32,16 @@ const GlossaryQuiz = ({ articleId }: GlossaryQuizProps) => {
         try {
             if (reportType === 'term') {
                 await reportTerm(articleIdNumber);
-                setToastMessage('용어 신고가 접수되었습니다.');
+                setToastMessage('용어 신고 완료');
             } else {
                 await reportQuiz(articleIdNumber);
-                setToastMessage('퀴즈 해설 신고가 접수되었습니다.');
+                setToastMessage('퀴즈 신고 완료');
             }
         } catch (err: unknown) {
             if (axios.isAxiosError(err) && err.response?.status === 409) {
-                setToastMessage('이미 신고한 항목입니다.');
+                setToastMessage('이미 신고한 항목이에요.');
             } else {
-                setToastMessage('신고 처리 중 오류가 발생했습니다.');
+                setToastMessage('잠시 후 다시 시도해 주세요.');
             }
         } finally {
             setReportType(null);
@@ -68,9 +68,9 @@ const GlossaryQuiz = ({ articleId }: GlossaryQuizProps) => {
     console.log('========================');
 
     return (
-        <div className="min-h-screen">
+        <div className="lg:min-h-screen">
             <div className="mx-auto max-w-4xl">
-                <div className="grid grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                     <div className="space-y-4">
                         <Accordion
                             title="용어집"

@@ -13,6 +13,7 @@ import {
 import { useUserInfo } from '@/shared/hooks/useUser';
 
 import type { CustomFeedArticle } from './apis/customFeedApi';
+import CustomFeedBanner from './components/CustomFeedBanner';
 import { useCustomFeed } from './hooks/useCustomFeed';
 
 const CustomFeedPage = () => {
@@ -48,15 +49,21 @@ const CustomFeedPage = () => {
 
     if (isError)
         return (
-            <div className="mx-auto flex h-[400px] max-w-[1121px] items-center justify-center">
-                <div className="text-red-500">맞춤 피드를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</div>
+            <div className="min-h-[380px] px-4 py-8">
+                <div className="mx-auto max-w-[1121px]">
+                    {/* 맞춤 피드 시작 안내 배너 적용 */}
+                    <CustomFeedBanner />
+                </div>
             </div>
         );
 
     if (!items.length)
         return (
-            <div className="mx-auto flex h-[400px] max-w-[1121px] items-center justify-center">
-                <div className="text-black/60">아직 보여드릴 맞춤 뉴스가 없어요.</div>
+            <div className="min-h-[380px] px-4 py-8">
+                <div className="mx-auto max-w-[1121px]">
+                    {/* 맞춤 피드 시작 안내 배너 적용 */}
+                    <CustomFeedBanner />
+                </div>
             </div>
         );
 
@@ -68,7 +75,7 @@ const CustomFeedPage = () => {
             </div>
 
             {/* 온보딩 카드 */}
-            <div className="mb-20 flex justify-center sm:mb-24 lg:mb-[67px]">
+            <div className="mb-20 w-full sm:mb-24 lg:mb-[67px]">
                 <OnboardingCard />
             </div>
 

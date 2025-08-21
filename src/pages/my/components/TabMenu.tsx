@@ -5,19 +5,15 @@ type TabMenuProps = {
 
 const TabMenu = ({ tab, onChange }: TabMenuProps) => {
     return (
-        <div className="mb-4 flex">
+        <div className="sticky top-0 z-10 mb-3 flex gap-2 bg-white/90 py-2 backdrop-blur supports-[backdrop-filter]:bg-white/70 md:mb-4">
             <button
-                className={`text-24px-semibold flex-1 cursor-pointer border-b-2 py-1 text-center transition-colors duration-200 ${
-                    tab === 'memo' ? 'border-main text-main' : 'border-black-30 text-black-30'
-                }`}
+                className={`flex-1 cursor-pointer border-b-2 py-2 text-center text-base font-semibold transition-colors md:text-lg ${tab === 'memo' ? 'border-main text-main' : 'border-black-30 text-black-30'}`}
                 onClick={() => onChange('memo')}
             >
                 메모장
             </button>
             <button
-                className={`text-24px-semibold flex-1 cursor-pointer border-b-2 py-1 text-center transition-colors duration-200 ${
-                    tab === 'scrap' ? 'border-main text-main' : 'border-black-30 text-black-30'
-                }`}
+                className={`flex-1 cursor-pointer border-b-2 py-2 text-center text-base font-semibold transition-colors md:text-lg ${tab === 'scrap' ? 'border-main text-main' : 'border-black-30 text-black-30'}`}
                 onClick={() => onChange('scrap')}
             >
                 스크랩

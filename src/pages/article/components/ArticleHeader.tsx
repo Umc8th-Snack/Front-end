@@ -29,7 +29,7 @@ function ArticleHeader({
                             href={originalLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-20px-medium text-black-70 decoration-black-70 inline-block max-w-[525px] truncate align-bottom underline decoration-[0.5px] underline-offset-5"
+                            className="text-18px-medium md:text-20px-medium text-black-70 decoration-black-70 inline-block max-w-[525px] truncate align-bottom underline decoration-[0.5px] underline-offset-5"
                             title={originalLink}
                         >
                             원문링크

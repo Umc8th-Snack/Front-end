@@ -26,12 +26,13 @@ function ShareToast({ message, duration = 500, onDone }: ShareToastProps) {
 
     return (
         <div
-            className={`bg-black-70 fixed top-[85vh] left-1/2 z-[9999] flex h-[80px] w-[400px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[8px] text-white shadow-md transition-opacity duration-300 ${
-                fadeOut ? 'opacity-0' : 'opacity-100'
-            }`}
+            className={`bg-black-70 fixed bottom-20 left-1/2 z-[9999] flex min-h-[48px] w-[90vw] max-w-[360px] -translate-x-1/2 items-center justify-center rounded-lg px-6 py-3 pt-[env(safe-area-inset-bottom,0px)] pb-[env(safe-area-inset-bottom,0px)] text-center break-words whitespace-pre-line text-white shadow-lg transition-opacity duration-300 sm:max-w-[420px] sm:shadow-xl md:min-h-[56px] md:max-w-[520px] md:px-8 md:py-4 ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
             role="alert"
+            aria-live="assertive"
         >
-            <span className="text-24px-semibold">{message}</span>
+            <span className="text-16px-semibold sm:text-20px-semibold md:text-24px-semibold flex flex-1 items-center justify-center text-center leading-normal break-words whitespace-normal">
+                {message}
+            </span>
         </div>
     );
 }

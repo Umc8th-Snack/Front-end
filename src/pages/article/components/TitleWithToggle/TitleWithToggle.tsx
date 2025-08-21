@@ -63,12 +63,15 @@ export default function TitleWithToggle({
     return (
         <div ref={containerRef} className="w-full">
             {/* 첫 줄 전체 */}
-            <h1 className="text-36px-semibold col-span-2 leading-tight">{first}</h1>
+            <h1 className="text-24px-semibold md:text-28px-semibold lg:text-36px-semibold col-span-2 leading-tight">
+                {first}
+            </h1>
 
             {/* 두 번째 줄 + 토글 */}
             <div className="grid grid-cols-[1fr_auto] gap-4">
                 <span className="text-36px-semibold self-center leading-none break-words">{rest}</span>
-                <div className="mt-[-40px] flex items-center gap-2 self-center">
+                {/* lg 이상에서만 토글 표시 */}
+                <div className="mt-[-40px] hidden items-center gap-2 self-center lg:flex">
                     <span className="text-20px-medium text-black-70 leading-none">메모장</span>
                     <ToggleSwitch onChange={onToggleChange} checked={checked} />
                 </div>

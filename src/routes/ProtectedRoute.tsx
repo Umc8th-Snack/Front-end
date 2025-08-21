@@ -47,7 +47,7 @@ const ProtectedRoute = ({ redirectPath = '/', children, useModal = true }: Prote
     let content: ReactNode = null;
 
     if (loading) {
-        content = <div>로딩 중...</div>;
+        content = <div></div>;
     } else if (!isAuthenticated) {
         if (isLogoutTransition) {
             // 로그아웃 직후 깜빡임 방지, 모달 억제 플래그 전달

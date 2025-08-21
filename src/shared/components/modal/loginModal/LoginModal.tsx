@@ -99,6 +99,7 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                                 textColor="text-black"
                                 width="320px"
                                 height="56px"
+                                borderColor="border-[1px] border-gray-500"
                                 onClick={handleGoogleLogin}
                             />
 
@@ -108,6 +109,7 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                                 textColor="text-white"
                                 width="320px"
                                 height="56px"
+                                borderColor="border-none"
                                 onClick={handleEmailLoginClick}
                             />
                         </div>

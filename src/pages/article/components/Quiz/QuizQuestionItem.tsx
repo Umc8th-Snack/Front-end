@@ -18,21 +18,23 @@ const QuizQuestionItem = ({ question }: QuizQuestionItemProps) => {
     return (
         <div className="border-black-30 mb-10 border-b pb-6 last:mb-0">
             <span
-                className={`text-36px-semibold whitespace-nowrap ${question.isCorrect ? 'text-main' : 'text-red-500'}`}
+                className={`text-24px-semibold md:text-28px-semibold lg:text-36px-semibold whitespace-nowrap ${question.isCorrect ? 'text-main' : 'text-red-500'}`}
             >
                 {question.isCorrect ? QUIZ_MESSAGES.CORRECT : QUIZ_MESSAGES.INCORRECT}
             </span>
             <div className="mb-6 flex items-start gap-4">
-                <h3 className="text-28px-semibold flex-1">
+                <h3 className="text-20px-semibold md:text-24px-semibold lg:text-28px-semibold flex-1">
                     Q{question.id}. {question.question}
                 </h3>
             </div>
 
             <div className="mb-4 flex justify-between">
-                <p className="text-24px-semibold text-main">답: {question.answer}</p>
+                <p className="text-18px-semibold md:text-20px-semibold lg:text-24px-semibold text-main">
+                    답: {question.answer}
+                </p>
             </div>
 
-            <div className="text-20px-medium" style={{ color: 'var(--color-black-30)' }}>
+            <div className="text-16px-medium md:text-20px-medium lg:text-24px-medium text-black-30">
                 <h4 className="mb-1">해설</h4>
                 <p className="leading-relaxed">{question.explanation}</p>
             </div>

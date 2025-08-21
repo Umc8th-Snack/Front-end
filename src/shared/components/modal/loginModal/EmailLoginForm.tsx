@@ -57,6 +57,13 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
 
     const isFormValid = formData.email.trim() && formData.password.trim();
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleLoginSubmit();
+        }
+    };
+
     return (
         <>
             <div className="mt-12 text-center">
@@ -65,7 +72,7 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
             </div>
 
             {/* 입력 필드 */}
-            <div className="mt-16 flex flex-col gap-2 px-12">
+            <div className="mt-16 flex flex-col gap-2 px-12" onKeyDown={handleKeyDown}>
                 <InputBox
                     label="이메일"
                     name="email"
@@ -100,7 +107,7 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
                 <button
                     onClick={handleLoginSubmit}
                     disabled={!isFormValid || isPending}
-                    className={`text-20px-medium h-[56px] w-full rounded-md py-3 text-white ${
+                    className={`text-20px-medium h-[56px] w-full rounded-md py-3 text-white transition hover:opacity-70 ${
                         isFormValid && !isPending ? 'bg-main cursor-pointer' : 'bg-black-30 cursor-not-allowed'
                     }`}
                 >

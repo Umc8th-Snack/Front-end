@@ -9,6 +9,7 @@ import RelatedArticleList from '@/pages/article/components/RelatedArticleList/Re
 import SummarizedNewsContainer from '@/pages/article/components/SummarizedNewsContainer/SummarizedNewsContainer';
 import type { ArticleDetail } from '@/pages/article/types/article';
 import LoadingFallback from '@/routes/LoadingFallback';
+import FloatingMemoButton from '@/shared/components/button/FloatingMemoButton';
 import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
 
 const ArticlePage = () => {
@@ -83,19 +84,25 @@ const ArticlePage = () => {
                         />
                     </div>
                 )}
-                <div className="pt-8">
+                <div className="pt-4">
                     <AccordionTestPage articleId={articleId} />
                 </div>
             </ArticleLayout>
 
             {/* 메모장 오버레이 */}
             {isMemoPadOpen && articleId && (
-                <div className="fixed top-0 right-0 z-50 px-18 py-18">
-                    <div className="mt-20">
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 md:top-0 md:right-0 md:items-start md:justify-end md:bg-transparent md:p-4 md:px-18 md:py-18"
+                    onClick={() => setIsMemoPadOpen(false)}
+                >
+                    <div className="sm:mt-20" onClick={(e) => e.stopPropagation()}>
                         <MemoPad articleId={articleId} />
                     </div>
                 </div>
             )}
+
+            {/* Floating 메모장 버튼 (lg 미만에서만 표시) */}
+            <FloatingMemoButton onClick={() => setIsMemoPadOpen(!isMemoPadOpen)} isActive={isMemoPadOpen} />
         </>
     );
 };
