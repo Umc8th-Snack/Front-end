@@ -18,6 +18,9 @@ const PasswordChangePage = lazy(() => import('@/pages/settings/PasswordChangePag
 const DeleteAccountPage = lazy(() => import('@/pages/settings/DeleteAccountPage'));
 const EditProfilePage = lazy(() => import('@/pages/my/EditProfilePage'));
 const AuthSuccessPage = lazy(() => import('@/pages/auth/AuthSuccessPage'));
+const ForgotPasswordPage = lazy(() => import('@/pages/forgot-password/ForgotPasswordPage'));
+const VerifyCodePage = lazy(() => import('@/pages/forgot-password/VerifyCodePage'));
+const ResetPasswordPage = lazy(() => import('@/pages/forgot-password/ResetPasswordPage'));
 
 const routes: RouteObject[] = [
     {
@@ -142,6 +145,30 @@ const routes: RouteObject[] = [
                 element: (
                     <Suspense fallback={<LoadingFallback />}>
                         <AuthSuccessPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/forgot-password',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <ForgotPasswordPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/forgot-password/verify',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <VerifyCodePage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/forgot-password/reset',
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <ResetPasswordPage />
                     </Suspense>
                 ),
             },

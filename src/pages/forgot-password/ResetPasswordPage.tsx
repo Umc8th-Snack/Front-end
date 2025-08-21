@@ -1,78 +1,92 @@
 import { useMutation } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { changeMyPassword } from '@/pages/settings/apis/auth';
+import { authApi } from '@/shared/apis/auth';
 
-const PasswordChangePage = () => {
-    const [currentPassword, setCurrentPassword] = useState('');
+const ResetPasswordPage = () => {
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-    const isFormValid =
-        currentPassword.trim() !== '' &&
-        newPassword.trim() !== '' &&
-        confirmPassword.trim() !== '' &&
-        newPassword === confirmPassword;
+    // 이메일 정보 가져오기 (sessionStorage)
+    useEffect(() => {
+        const savedEmail = sessionStorage.getItem('resetEmail');
+        const verificationComplete = sessionStorage.getItem('verificationComplete');
+
+        if (!savedEmail || !verificationComplete) {
+            // 정보가 없으면 처음부터 다시
+            void navigate('/forgot-password');
+            return;
+        }
+        setEmail(savedEmail);
+    }, [navigate]);
+
+    const isFormValid = newPassword.trim() !== '' && confirmPassword.trim() !== '' && newPassword === confirmPassword;
 
     const { mutateAsync, isPending } = useMutation({
-        mutationFn: changeMyPassword,
+        mutationFn: async (data: { email: string; newPassword: string; confirmPassword: string }) => {
+            return authApi.setNewPassword(data);
+        },
     });
 
-    const onSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!isFormValid || isPending) return;
 
         setErrorMsg(null);
         setSuccessMsg(null);
 
-        void mutateAsync({ currentPassword, newPassword, confirmPassword })
+        void mutateAsync({ email, newPassword, confirmPassword })
             .then(() => {
                 setSuccessMsg('비밀번호가 성공적으로 변경되었습니다.');
-                // 폼 초기화
-                setCurrentPassword('');
-                setNewPassword('');
-                setConfirmPassword('');
+                // sessionStorage 정리
+                sessionStorage.removeItem('resetEmail');
+                sessionStorage.removeItem('resetToken');
+                // 로그인 페이지로 이동
+                setTimeout(() => {
+                    void navigate('/');
+                }, 2000);
             })
             .catch((err) => {
-                const msg =
-                    err instanceof Error ? err.message : '비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인해주세요.';
+                const msg = err instanceof Error ? err.message : '비밀번호 변경에 실패했습니다. 다시 시도해주세요.';
                 setErrorMsg(msg);
             });
     };
 
     return (
         <div className="mt-20 flex min-h-screen flex-col items-center">
-            <h2 className="text-36px-semibold">비밀번호 변경</h2>
-            <p className="text-24px-medium text-black-70">변경하실 새로운 비밀번호를 설정해 주세요.</p>
+            <h2 className="text-36px-semibold">새 비밀번호 설정</h2>
+            <p className="text-24px-medium text-black-70">새로운 비밀번호를 입력해주세요</p>
 
-            <form onSubmit={onSubmit} className="mt-12 w-[432px] space-y-6">
-                {/* 현재 비밀번호 */}
+            <form onSubmit={handleSubmit} className="mt-12 w-[432px] space-y-6">
+                {/* 이메일 표시 (읽기 전용) */}
                 <div>
-                    <label htmlFor="current" className="text-24px-medium">
-                        현재 비밀번호
+                    <label htmlFor="email" className="text-24px-medium">
+                        이메일
                     </label>
                     <input
-                        id="current"
-                        type="password"
-                        className="hover:border-main focus:ring-main border-black-30 text-24px-medium placeholder-black-30 mt-2 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none focus:ring-1"
-                        placeholder="현재 비밀번호를 입력해 주세요"
-                        value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)}
+                        id="email"
+                        type="email"
+                        className="border-black-30 text-24px-medium mt-2 h-[68px] w-full cursor-not-allowed rounded-[8px] border bg-gray-50 px-3 py-2 outline-none"
+                        value={email}
+                        readOnly
                     />
                 </div>
 
                 {/* 새 비밀번호 */}
                 <div>
-                    <label htmlFor="password" className="text-24px-medium">
+                    <label htmlFor="newPassword" className="text-24px-medium">
                         새 비밀번호
                     </label>
                     <input
-                        id="password"
+                        id="newPassword"
                         type="password"
                         className="hover:border-main focus:ring-main border-black-30 text-24px-medium placeholder-black-30 mt-2 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none focus:ring-1"
-                        placeholder="새 비밀번호를 입력해 주세요"
+                        placeholder="새 비밀번호를 입력해주세요"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                     />
@@ -80,14 +94,14 @@ const PasswordChangePage = () => {
 
                 {/* 비밀번호 확인 */}
                 <div>
-                    <label htmlFor="confirm" className="text-24px-medium">
-                        비밀번호 재확인
+                    <label htmlFor="confirmPassword" className="text-24px-medium">
+                        비밀번호 확인
                     </label>
                     <input
-                        id="confirm"
+                        id="confirmPassword"
                         type="password"
                         className="hover:border-main focus:ring-main border-black-30 text-24px-medium placeholder-black-30 mt-2 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none focus:ring-1"
-                        placeholder="비밀번호를 다시 입력해 주세요"
+                        placeholder="비밀번호를 다시 입력해주세요"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
@@ -125,4 +139,4 @@ const PasswordChangePage = () => {
     );
 };
 
-export default PasswordChangePage;
+export default ResetPasswordPage;
