@@ -75,9 +75,6 @@ export interface SignupResponseTypes {
     nickname: string;
 }
 
-// API 표준 응답 타입 (하위 호환성을 위한 별칭)
-export type ApiStandardResponseTypes<T = unknown> = ApiResponseTypes<T>;
-
 // 소셜 로그인 응답 타입
 export interface SocialLoginResponseTypes {
     userId: number;
