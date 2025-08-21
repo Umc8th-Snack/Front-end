@@ -2,8 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// TODO: API import
-// import { sendPasswordResetCode } from '@/shared/apis/auth';
+import { authApi } from '@/shared/apis/auth';
 
 const ForgotPasswordPage = () => {
     const navigate = useNavigate();
@@ -15,13 +14,9 @@ const ForgotPasswordPage = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isFormValid = emailRegex.test(email.trim());
 
-    // TODO: 실제 API 연결
     const { mutateAsync, isPending } = useMutation({
         mutationFn: async (email: string) => {
-            // return sendPasswordResetCode(email);
-            console.log('Sending code to:', email);
-            // 임시 응답
-            return Promise.resolve();
+            return authApi.sendPasswordResetCode(email);
         },
     });
 

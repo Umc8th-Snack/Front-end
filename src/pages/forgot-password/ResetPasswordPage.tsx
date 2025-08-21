@@ -2,8 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// TODO: API import
-// import { setNewPassword } from '@/shared/apis/auth';
+import { authApi } from '@/shared/apis/auth';
 
 const ResetPasswordPage = () => {
     const navigate = useNavigate();
@@ -28,13 +27,9 @@ const ResetPasswordPage = () => {
 
     const isFormValid = newPassword.trim() !== '' && confirmPassword.trim() !== '' && newPassword === confirmPassword;
 
-    // TODO: 실제 API 연결
     const { mutateAsync, isPending } = useMutation({
         mutationFn: async (data: { email: string; newPassword: string; confirmPassword: string }) => {
-            // return setNewPassword(data);
-            console.log('Setting new password:', data);
-            // 임시 응답
-            return Promise.resolve();
+            return authApi.setNewPassword(data);
         },
     });
 
