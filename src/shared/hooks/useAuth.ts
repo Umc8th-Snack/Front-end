@@ -8,6 +8,7 @@ import type {
     SignupResponseTypes,
     SocialLoginResponseTypes,
 } from '../types/apiTypes';
+import { tokenUtils } from '../utils/auth';
 
 /**
  * 로그인 mutation 훅
@@ -106,8 +107,8 @@ export const useSignup = () => {
 
             // 자동 로그인 성공 시 토큰 저장
             if (data.loginData?.token) {
-                // 토큰 저장 로직 (tokenUtils.setAccessToken 등)
-                localStorage.setItem('accessToken', data.loginData.token);
+                // 토큰 저장
+                tokenUtils.setAccessToken(data.loginData.token);
 
                 // 사용자 정보 저장
                 if (data.loginData.data) {
