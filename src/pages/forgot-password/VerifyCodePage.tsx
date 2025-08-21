@@ -2,8 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// TODO: API import
-// import { verifyPasswordResetCode } from '@/shared/apis/auth';
+import { authApi } from '@/shared/apis/auth';
 
 const VerifyCodePage = () => {
     const navigate = useNavigate();
@@ -25,13 +24,9 @@ const VerifyCodePage = () => {
 
     const isFormValid = code.trim().length === 6; // 6자리 코드
 
-    // TODO: 실제 API 연결
     const { mutateAsync, isPending } = useMutation({
         mutationFn: async (data: { email: string; code: string }) => {
-            // return verifyPasswordResetCode(data.email, data.code);
-            console.log('Verifying code:', data);
-            // 임시 응답
-            return Promise.resolve({ verificationToken: 'temp-token' });
+            return authApi.verifyPasswordResetCode(data.email, data.code);
         },
     });
 
@@ -52,8 +47,24 @@ const VerifyCodePage = () => {
                 }, 1500);
             })
             .catch((err) => {
-                const msg = err instanceof Error ? err.message : '인증 코드가 올바르지 않습니다.';
-                setErrorMsg(msg);
+                // 에러 메시지를 더 구체적으로 표시
+                let errorMessage = '인증 코드가 올바르지 않습니다. 다시 확인해주세요.';
+
+                if (err instanceof Error) {
+                    // API에서 반환한 구체적인 에러 메시지가 있으면 사용
+                    if (err.message.includes('expired') || err.message.includes('만료')) {
+                        errorMessage = '인증 코드가 만료되었습니다. 이메일을 다시 요청해주세요.';
+                    } else if (err.message.includes('invalid') || err.message.includes('유효하지')) {
+                        errorMessage = '잘못된 인증 코드입니다. 6자리 숫자를 다시 확인해주세요.';
+                    } else if (err.message.includes('not found') || err.message.includes('찾을 수 없')) {
+                        errorMessage = '인증 요청을 찾을 수 없습니다. 처음부터 다시 시도해주세요.';
+                    } else if (err.message) {
+                        // 서버에서 보낸 메시지가 있으면 그대로 사용
+                        errorMessage = err.message;
+                    }
+                }
+
+                setErrorMsg(errorMessage);
             });
     };
 
