@@ -46,25 +46,59 @@ const Profile = () => {
     const currentImage = showDefault ? null : (localImageUrl ?? profile?.profileImage ?? null);
     const isDefaultView = showDefault || imageError || !currentImage;
 
+    // 파일 선택 개선 (모바일에서 카메라/갤러리 선택 지원, 데스크탑에서도 정상 동작)
     const openPicker = () => fileInputRef.current?.click();
 
     const onFileChange = async (file?: File) => {
         if (!file) return;
 
-        if (!ALLOWED.includes(file.type)) {
+        // 파일 타입 검증 강화
+        const fileType = file.type.toLowerCase();
+        if (!ALLOWED.includes(fileType)) {
             alert('JPG, JPEG, PNG, GIF, WEBP만 업로드 가능해요.');
             return;
         }
+
+        // 모바일 환경 감지
+        const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+        );
+
+        // 모바일과 데스크톱 동일한 파일 크기 제한 (5MB)
         if (file.size > MAX_MB * 1024 * 1024) {
             alert(`파일 크기는 최대 ${MAX_MB}MB까지 가능합니다.`);
             return;
         }
 
+        // 디버깅을 위한 파일 정보 로깅 (모바일에서 더 상세하게)
+        console.log('[Upload Info]', {
+            fileName: file.name,
+            fileSize: file.size,
+            fileType: file.type,
+            lastModified: file.lastModified,
+            isMobile: isMobileDevice,
+            ...(isMobileDevice && {
+                userAgent: navigator.userAgent.substring(0, 100) + '...',
+            }),
+        });
+
         try {
             setUploading(true);
             setProgress(0);
 
-            const result = await uploadProfileImage(file, setProgress);
+            // 업로드 시작 전 약간의 딜레이 (UI 반영, 모바일에서만)
+            if (isMobileDevice) {
+                await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+
+            const result = await uploadProfileImage(file, (progress) => {
+                setProgress(progress);
+                // 진행률 로깅 (모바일에서만 상세 로그)
+                if (isMobileDevice && progress % 10 === 0) {
+                    console.log(`Upload progress: ${progress}%`);
+                }
+            });
+
             await userApi.updateMyInfo({ profileImage: result.fileUrl });
 
             const bust = `?_=${Date.now()}`;
@@ -76,12 +110,29 @@ const Profile = () => {
                 prev ? { ...prev, profileImage: result.fileUrl } : prev
             );
             void qc.invalidateQueries({ queryKey: MY_QUERY_KEYS.USER_PROFILE });
+
+            // 성공 시 햅틱 피드백 (모바일에서만, 지원하는 경우)
+            if (isMobileDevice && 'vibrate' in navigator) {
+                navigator.vibrate(100);
+            }
         } catch (err: unknown) {
-            alert(getErrorMessage(err));
+            console.error('[File Upload Error]', err);
+
+            // 데스크탑/모바일 모두에서 친화적인 에러 메시지
+            let message = getErrorMessage(err);
+            if (message.includes('network') || message.includes('Network')) {
+                message = isMobileDevice ? 'WiFi나 데이터 연결을 확인해주세요.' : '네트워크 연결을 확인해주세요.';
+            } else if (message.includes('timeout') || message.includes('시간')) {
+                message = '업로드 시간이 초과됐어요. 다시 시도해주세요.';
+            }
+
+            alert(message);
         } finally {
             setUploading(false);
             setProgress(0);
-            if (fileInputRef.current) fileInputRef.current.value = '';
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
         }
     };
 

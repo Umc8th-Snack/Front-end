@@ -45,3 +45,20 @@ export type PaginationProps = {
     totalPages: number;
     onPageChange: (page: number) => void;
 };
+
+// 공통 응답 포맷
+export interface ApiEnvelope<T> {
+    isSuccess: boolean;
+    code: string;
+    message: string;
+    result: T;
+    error?: unknown;
+}
+
+// 업로드 결과 타입 (Swagger 스펙)
+export interface UploadProfileResult {
+    fileName: string;
+    fileUrl: string;
+    originalFileName: string;
+    fileSize: number;
+}

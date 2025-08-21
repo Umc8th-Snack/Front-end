@@ -67,23 +67,24 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
     return (
         <>
             <div className="mt-12 text-center">
-                <p className="text-36px-semibold text-black">스낵</p>
-                <p className="text-28px-medium mt-1 text-black">뉴스를 간식처럼,</p>
+                <p className="text-32px-semibold sm:text-36px-semibold text-black">스낵</p>
+                <p className="text-24px-medium sm:text-28px-medium mt-1 text-black">뉴스를 간식처럼,</p>
             </div>
 
             {/* 입력 필드 */}
-            <div className="mt-16 flex flex-col gap-2 px-12" onKeyDown={handleKeyDown}>
+            <div className="mt-3 flex flex-col gap-2 px-10 sm:mt-6 sm:px-12" onKeyDown={handleKeyDown}>
                 <InputBox
                     label="이메일"
                     name="email"
-                    placeholder="이메일을 입력해주세요"
+                    placeholder="이메일을 입력해 주세요"
                     onChange={handleChange}
                     value={formData.email}
                 />
+                <div className="mt-2 sm:mt-3"></div>
                 <InputBox
                     label="비밀번호"
                     name="password"
-                    placeholder="비밀번호를 입력해주세요"
+                    placeholder="비밀번호를 입력해 주세요"
                     type="password"
                     onChange={handleChange}
                     value={formData.password}
@@ -95,23 +96,23 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
                 )}
             </div>
 
-            {/* 비밀번호 찾기 */}
-            <div className="text-black-30 absolute right-0 bottom-[60px] left-0 text-center text-[18px]">
-                <button className="cursor-pointer hover:underline" onClick={handleForgotPasswordClick}>
-                    비밀번호를 잊으셨나요?
-                </button>
-            </div>
-
             {/* 로그인 버튼 */}
-            <div className="mt-8 flex px-12">
+            <div className="mt-8 mb-6 flex px-10 sm:mt-12 sm:px-12">
                 <button
                     onClick={handleLoginSubmit}
                     disabled={!isFormValid || isPending}
-                    className={`text-20px-medium h-[56px] w-full rounded-md py-3 text-white transition hover:opacity-70 ${
+                    className={`text-18px-medium h-[50px] w-full rounded-md py-3 text-white transition hover:opacity-70 ${
                         isFormValid && !isPending ? 'bg-main cursor-pointer' : 'bg-black-30 cursor-not-allowed'
                     }`}
                 >
                     {isPending ? '로그인 중...' : '로그인'}
+                </button>
+            </div>
+
+            {/* 비밀번호 찾기 */}
+            <div className="text-black-30 text-14px-medium mb-6 text-center">
+                <button className="cursor-pointer hover:underline" onClick={handleForgotPasswordClick}>
+                    비밀번호를 잊으셨나요?
                 </button>
             </div>
         </>

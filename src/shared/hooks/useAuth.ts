@@ -8,11 +8,14 @@ import type {
     SignupResponseTypes,
     SocialLoginResponseTypes,
 } from '../types/apiTypes';
+import { tokenUtils } from '../utils/auth';
 
 /**
  * 로그인 mutation 훅
  */
 export const useLogin = () => {
+    const queryClient = useQueryClient();
+
     return useMutation<{ data: LoginResponseTypes; token: string }, Error, LoginRequestTypes>({
         mutationFn: async (loginData: LoginRequestTypes) => {
             const response = await authApi.loginWithToken(loginData);
@@ -20,6 +23,20 @@ export const useLogin = () => {
         },
         onSuccess: (data) => {
             console.log('✅ [USE LOGIN] 로그인 뮤테이션 성공:', data);
+
+            // 토큰 저장
+            if (data.token) {
+                tokenUtils.setAccessToken(data.token);
+            }
+
+            // 사용자 정보 저장
+            if (data.data) {
+                localStorage.setItem('user', JSON.stringify(data.data));
+            }
+
+            // 헤더 업데이트를 위해 user 쿼리 무효화
+            void queryClient.invalidateQueries({ queryKey: ['user'] });
+            console.log('🔄 [USE LOGIN] 사용자 쿼리 무효화 - 헤더 업데이트');
         },
         onError: (error) => {
             console.error('❌ [USE LOGIN] 로그인 뮤테이션 실패:', error);
@@ -68,16 +85,66 @@ export const useReissueToken = () => {
 };
 
 /**
- * 회원가입 mutation 훅
+ * 회원가입 mutation 훅 (자동 로그인 포함)
  */
 export const useSignup = () => {
-    return useMutation<SignupResponseTypes, Error, SignupRequestTypes>({
+    const queryClient = useQueryClient();
+
+    return useMutation<
+        { signupData: SignupResponseTypes; loginData?: { data: LoginResponseTypes; token: string } },
+        Error,
+        SignupRequestTypes
+    >({
         mutationFn: async (signupData: SignupRequestTypes) => {
-            const response = await authApi.signup(signupData);
-            return response;
+            // 1단계: 회원가입
+            const signupResponse = await authApi.signup(signupData);
+            console.log('✅ [USE SIGNUP] 회원가입 성공:', signupResponse);
+
+            try {
+                // 2단계: 자동 로그인 시도
+                const loginResponse = await authApi.loginWithToken({
+                    email: signupData.email,
+                    password: signupData.password,
+                });
+                console.log('✅ [USE SIGNUP] 자동 로그인 성공:', loginResponse);
+
+                return {
+                    signupData: signupResponse,
+                    loginData: loginResponse,
+                };
+            } catch (loginError) {
+                // 로그인 실패해도 회원가입은 성공으로 처리
+                console.warn('⚠️ [USE SIGNUP] 자동 로그인 실패, 회원가입만 완료:', loginError);
+                return {
+                    signupData: signupResponse,
+                };
+            }
         },
         onSuccess: (data) => {
             console.log('✅ [USE SIGNUP] 회원가입 뮤테이션 성공:', data);
+
+            // 자동 로그인 성공 시 토큰 저장
+            if (data.loginData?.token) {
+                // 토큰 저장
+                tokenUtils.setAccessToken(data.loginData.token);
+
+                // 사용자 정보 저장
+                if (data.loginData.data) {
+                    localStorage.setItem('user', JSON.stringify(data.loginData.data));
+                }
+
+                console.log('✅ [USE SIGNUP] 토큰 및 사용자 정보 저장 완료');
+
+                // 헤더 업데이트를 위해 user 쿼리 무효화
+                void queryClient.invalidateQueries({ queryKey: ['user'] });
+                console.log('🔄 [USE SIGNUP] 사용자 쿼리 무효화 - 헤더 업데이트');
+
+                // AuthContext 업데이트를 위해 페이지 새로고침
+                // TODO: AuthContext의 login 함수를 직접 호출하는 방법으로 개선 가능
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 100);
+            }
         },
         onError: (error) => {
             console.error('❌ [USE SIGNUP] 회원가입 뮤테이션 실패:', error);

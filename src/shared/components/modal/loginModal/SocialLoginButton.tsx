@@ -24,7 +24,7 @@ const SocialLoginButton = ({
     return (
         <button
             onClick={onClick}
-            className={`flex items-center justify-center gap-3 h-[${height}] w-[${width}] ${borderColor} rounded-[8px] ${bgColor} ${textColor} cursor-pointer transition hover:opacity-70`}
+            className={`flex items-center justify-center gap-3 ${height} ${width} ${borderColor} rounded-[8px] ${bgColor} ${textColor} cursor-pointer transition hover:opacity-70`}
         >
             {icon && <span> {icon}</span>}
             <span>{text}</span>

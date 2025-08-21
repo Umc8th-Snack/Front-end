@@ -45,17 +45,6 @@ const api = {
     },
 
     /**
-     * POST 요청 (표준 API 응답 형식)
-     */
-    postStandard: async <T = unknown>(url: string, data?: unknown, options?: ApiRequestOptionsTypes): Promise<T> => {
-        const response: AxiosResponse<ApiResponseTypes<T>> = await axiosInstance.post(url, data, {
-            headers: options?.headers,
-            timeout: options?.timeout,
-        });
-        return response.data.result;
-    },
-
-    /**
      * PUT 요청
      */
     put: async <T = unknown>(url: string, data?: unknown, options?: ApiRequestOptionsTypes): Promise<T> => {

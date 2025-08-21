@@ -43,7 +43,7 @@ const ConsentModal = ({ onClose }: ConsentModalProps) => {
         >
             <div
                 ref={modalRef}
-                className="relative h-[250px] w-[440px] rounded-[10px] bg-white shadow-[0px_2.5px_2.5px_rgba(0,0,0,0.25)]"
+                className="relative h-auto max-h-screen w-[80%] max-w-[335px] rounded-[10px] bg-white px-8 py-6 shadow-[0px_2.5px_2.5px_rgba(0,0,0,0.25)] sm:px-10 sm:py-8"
             >
                 {/* 닫기 버튼 */}
                 <button
@@ -54,21 +54,22 @@ const ConsentModal = ({ onClose }: ConsentModalProps) => {
                 </button>
 
                 {/* 제목 */}
-                <div className="text-28px-semibold absolute top-[25px] left-1/2 h-[42px] w-[159px] -translate-x-1/2">
-                    정보 동의 설정
-                </div>
+                <div className="text-20px-semibold sm:text-24px-semibold mb-6 text-center">정보 동의 설정</div>
 
-                {/* PR #67의 토글 스위치 UI 사용 */}
-                <div className="mt-[125px] flex flex-col items-center space-y-4">
+                <div className="flex flex-col items-center space-y-4 pt-2 pb-3 sm:pb-1">
                     {/* 개인정보 수집 및 이용 동의 */}
-                    <div className="flex w-[348px] items-center justify-between">
-                        <span className="text-24px-medium text-black-70 ml-[2px]">개인정보 수집 및 이용 동의</span>
+                    <div className="flex w-full items-center justify-between">
+                        <span className="text-16px-medium sm:text-18px-medium text-black-70">
+                            개인정보 수집 및 이용 동의
+                        </span>
                         <ToggleSwitch checked={personalInfoConsent} onChange={setPersonalInfoConsent} />
                     </div>
 
                     {/* 광고성 정보 수신 동의 */}
-                    <div className="flex w-[348px] items-center justify-between">
-                        <span className="text-24px-medium text-black-70 ml-[2px]">광고성 정보 수신 동의</span>
+                    <div className="flex w-full items-center justify-between">
+                        <span className="text-16px-medium sm:text-18px-medium text-black-70">
+                            광고성 정보 수신 동의
+                        </span>
                         <ToggleSwitch checked={adInfoConsent} onChange={setAdInfoConsent} />
                     </div>
                 </div>
