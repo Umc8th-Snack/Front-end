@@ -7,6 +7,8 @@ const PasswordChangePage = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [errorMsg, setErrorMsg] = useState<string | null>(null);
+    const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
     const isFormValid =
         currentPassword.trim() !== '' &&
@@ -14,23 +16,30 @@ const PasswordChangePage = () => {
         confirmPassword.trim() !== '' &&
         newPassword === confirmPassword;
 
-    const { mutate, isPending } = useMutation({
+    const { mutateAsync, isPending } = useMutation({
         mutationFn: changeMyPassword,
-        // onSuccess: (data) => {
-        //     // TODO: 토스트/알럿 등으로 메시지 노출
-        //     // ex) toast.success(data.message ?? '비밀번호가 변경되었습니다.');
-        //     // TODO: 필요하면 페이지 이동
-        // },
-        // onError: (err: any) => {
-        //     // TODO: 에러 처리 (백엔드 에러 메시지 매핑)
-        //     // ex) toast.error(err.response?.data?.message ?? '변경에 실패했습니다.');
-        // },
     });
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!isFormValid || isPending) return;
-        mutate({ currentPassword, newPassword, confirmPassword });
+
+        setErrorMsg(null);
+        setSuccessMsg(null);
+
+        void mutateAsync({ currentPassword, newPassword, confirmPassword })
+            .then(() => {
+                setSuccessMsg('비밀번호가 성공적으로 변경되었습니다.');
+                // 폼 초기화
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmPassword('');
+            })
+            .catch((err) => {
+                const msg =
+                    err instanceof Error ? err.message : '비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인해주세요.';
+                setErrorMsg(msg);
+            });
     };
 
     return (
@@ -86,6 +95,18 @@ const PasswordChangePage = () => {
                         <p className="mt-2 text-sm text-red-500">비밀번호가 일치하지 않습니다.</p>
                     )}
                 </div>
+
+                {/* 에러/성공 메시지 */}
+                {errorMsg && (
+                    <p className="text-sm text-red-500" role="alert">
+                        {errorMsg}
+                    </p>
+                )}
+                {successMsg && (
+                    <p className="text-sm text-green-600" role="status">
+                        {successMsg}
+                    </p>
+                )}
 
                 {/* 버튼 */}
                 <button
