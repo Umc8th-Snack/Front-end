@@ -3,7 +3,7 @@ import type { AxiosProgressEvent } from 'axios';
 import axiosInstance from '@/shared/apis/axios';
 
 import type { ApiEnvelope, UploadProfileResult } from '../types/types';
-// 이미지 압축 함수 추가
+// 이미지 압축 함수
 const compressImage = (file: File, maxWidth = 1024, quality = 0.8): Promise<File> => {
     return new Promise((resolve) => {
         const canvas = document.createElement('canvas');
@@ -40,7 +40,11 @@ const isMobile = (): boolean => {
 };
 
 /**
- * 모바일 최적화된 프로필 이미지 업로드
+ * 프로필 이미지 업로드 (이미지 압축 기능 포함)
+ * - POST /api/files/upload/profile
+ * - 필드명: file
+ * - 허용: JPEG/JPG/PNG/GIF/WEBP, 최대 5MB
+ * - 큰 이미지는 자동 압축
  */
 export const uploadProfileImage = async (
     file: File,
@@ -53,8 +57,8 @@ export const uploadProfileImage = async (
 
     let processedFile = file;
 
-    // 모바일에서는 파일 크기 제한을 더 엄격하게
-    const maxSize = isMobile() ? 3 * 1024 * 1024 : 5 * 1024 * 1024; // 모바일: 3MB, 데스크톱: 5MB
+    // 모바일과 데스크톱 동일한 파일 크기 제한
+    const maxSize = 5 * 1024 * 1024; // 5MB
 
     // 파일이 너무 크면 압축 시도
     if (file.size > maxSize) {
@@ -69,7 +73,7 @@ export const uploadProfileImage = async (
 
         // 압축 후에도 크면 에러
         if (processedFile.size > maxSize) {
-            throw new Error(`파일 크기는 ${maxSize / (1024 * 1024)}MB 이하만 허용됩니다.`);
+            throw new Error('파일 크기는 5MB 이하만 허용됩니다.');
         }
     }
 
@@ -125,20 +129,24 @@ export const uploadProfileImage = async (
             fileName: processedFile.name,
         });
 
-        // 모바일 특화 에러 메시지
+        // 에러 메시지 개선
         let errorMessage = '프로필 이미지 업로드 중 오류가 발생했습니다.';
 
         if (err?.code === 'NETWORK_ERROR' || err?.code === 'ERR_NETWORK') {
-            errorMessage = isMobile() ? '네트워크 연결을 확인하고 다시 시도해주세요.' : '네트워크 오류가 발생했습니다.';
-        } else if (status === 413) {
+            errorMessage = '네트워크 연결을 확인하고 다시 시도해주세요.';
+        } else if (err?.code === 'ERR_INTERNET_DISCONNECTED') {
+            errorMessage = '인터넷 연결이 끊어졌습니다.';
+        } else if (status === 413 || err?.message?.includes('too large')) {
             errorMessage = '파일이 너무 큽니다. 더 작은 이미지를 선택해주세요.';
         } else if (status === 0) {
-            errorMessage = '서버에 연결할 수 없습니다. 네트워크를 확인해주세요.';
+            errorMessage = '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.';
+        } else if (status === 502 || status === 503) {
+            errorMessage = '서버가 일시적으로 사용할 수 없습니다.';
         } else if (typeof data === 'string') {
             errorMessage = data;
         } else if (data?.message) {
             errorMessage = data.message;
-        } else if (err?.message) {
+        } else if (err?.message && !err.message.includes('Network Error')) {
             errorMessage = err.message;
         }
 
@@ -149,7 +157,6 @@ export const uploadProfileImage = async (
 /**
  * 프로필 이미지 삭제
  * - DELETE /api/files/profile?fileUrl=...
- *   (백엔드 스펙에 따라 경로/쿼리키가 다르면 여기를 맞춰주세요)
  */
 export const deleteProfileImage = async (fileUrl: string): Promise<void> => {
     try {
