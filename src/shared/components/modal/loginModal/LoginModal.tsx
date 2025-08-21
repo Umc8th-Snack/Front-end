@@ -89,14 +89,14 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                         </div>
 
                         {/* 소셜 로그인 버튼 */}
-                        <div className="text-20px-medium mt-5 flex flex-col items-center gap-4 sm:mt-10">
+                        <div className="text-18px-medium mt-5 flex flex-col items-center gap-4 sm:mt-10">
                             <SocialLoginButton
                                 text="Google 로그인"
                                 icon={<GoogleIcon />}
                                 bgColor="bg-white"
                                 textColor="text-black"
                                 width="w-[80%] sm:w-[90%] max-w-[280px]"
-                                height="h-14 sm:h-[56px]"
+                                height="h-13 sm:h-[50px]"
                                 borderColor="border-[1px] border-gray-500"
                                 onClick={handleGoogleLogin}
                             />
@@ -106,14 +106,14 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                                 bgColor="bg-main"
                                 textColor="text-white"
                                 width="w-[80%] sm:w-[90%] max-w-[280px]"
-                                height="h-14 sm:h-[56px]"
+                                height="h-13 sm:h-[50px]"
                                 borderColor="border-none"
                                 onClick={handleEmailLoginClick}
                             />
                         </div>
 
                         {/* 하단 회원가입 안내 */}
-                        <div className="text-black-30 sm:text-16px-medium text-14px-medium mt-4 mb-6 flex items-center justify-center gap-2 sm:mt-6 sm:gap-4">
+                        <div className="text-black-30 sm:text-16px-medium text-14px-medium mt-6 mb-10 flex items-center justify-center gap-2 sm:mt-6 sm:gap-4">
                             <span>아직 회원이 아니신가요?</span>
                             <button
                                 className="cursor-pointer text-black hover:underline"
