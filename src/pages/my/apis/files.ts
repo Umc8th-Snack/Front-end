@@ -1,8 +1,11 @@
 import type { AxiosProgressEvent } from 'axios';
 
+import api from '@/shared/apis/api';
 import axiosInstance from '@/shared/apis/axios';
+import type { ApiResponseTypes } from '@/shared/types/apiTypes';
 
-import type { ApiEnvelope, UploadProfileResult } from '../types/types';
+import type { UploadProfileResult } from '../types/types';
+
 // 이미지 압축 함수
 const compressImage = (file: File, maxWidth = 1024, quality = 0.8): Promise<File> => {
     return new Promise((resolve) => {
@@ -102,7 +105,7 @@ export const uploadProfileImage = async (
             userAgent: navigator.userAgent,
         });
 
-        const res = await axiosInstance.post<ApiEnvelope<UploadProfileResult>>(
+        const res = await axiosInstance.post<ApiResponseTypes<UploadProfileResult>>(
             '/api/files/upload/profile',
             form,
             config
@@ -160,13 +163,10 @@ export const uploadProfileImage = async (
  */
 export const deleteProfileImage = async (fileUrl: string): Promise<void> => {
     try {
-        const res = await axiosInstance.delete<ApiEnvelope<unknown>>('/api/files/profile', {
+        await api.delete<void>('/api/files/profile', {
             params: { fileUrl },
             headers: { Accept: '*/*' },
         });
-        if (!res.data?.isSuccess) {
-            throw new Error(res.data?.message ?? '프로필 이미지 삭제 실패');
-        }
     } catch (err: any) {
         const status = err?.response?.status;
         const data = err?.response?.data;

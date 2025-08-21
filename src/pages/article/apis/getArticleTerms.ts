@@ -1,8 +1,6 @@
 import type { GlossaryItem } from '@/pages/article/types/accordionTypes';
-
-import axiosInstance from '../../../shared/apis/axios';
+import api from '@/shared/apis/api';
 
 export const getArticleTerms = async (articleId: number): Promise<GlossaryItem[]> => {
-    const response = await axiosInstance.get(`/api/articles/${articleId}/terms`);
-    return response.data.result;
+    return api.get<GlossaryItem[]>(`/api/articles/${articleId}/terms`);
 };

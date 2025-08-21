@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { deleteProfileImage, uploadProfileImage } from '@/pages/my/apis/files';
-import { fetchUserProfile, updateUserProfile } from '@/pages/my/apis/user';
 import DefaultImage from '@/pages/my/assets/default-image.svg?react';
 import ProfileDeleteButton from '@/pages/my/assets/profileDeleteButton.svg?react';
 import { MY_QUERY_KEYS } from '@/pages/my/constants/queryConstants';
+import { userApi } from '@/shared/apis/user';
 
 const MAX_MB = 5;
 const ALLOWED = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
@@ -28,7 +28,7 @@ const Profile = () => {
         isError,
     } = useQuery({
         queryKey: MY_QUERY_KEYS.USER_PROFILE,
-        queryFn: fetchUserProfile,
+        queryFn: userApi.getMyInfo,
     });
 
     const [localImageUrl, setLocalImageUrl] = useState<string | null>(null);
@@ -99,7 +99,7 @@ const Profile = () => {
                 }
             });
 
-            await updateUserProfile({ profileImage: result.fileUrl });
+            await userApi.updateMyInfo({ profileImage: result.fileUrl });
 
             const bust = `?_=${Date.now()}`;
             setLocalImageUrl(result.fileUrl + bust);

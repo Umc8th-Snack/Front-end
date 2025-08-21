@@ -1,4 +1,4 @@
-import axiosInstance from '@/shared/apis/axios';
+import api from '@/shared/apis/api';
 
 export type CustomFeedArticle = {
     articleId: number;
@@ -16,8 +16,7 @@ export type CustomFeedResult = {
 };
 
 export const getCustomFeed = async (lastArticleId?: number) => {
-    const res = await axiosInstance.get('/api/feeds/personalized', {
+    return api.get<CustomFeedResult>('/api/feeds/personalized', {
         params: lastArticleId ? { lastArticleId } : {},
     });
-    return res.data.result as CustomFeedResult;
 };

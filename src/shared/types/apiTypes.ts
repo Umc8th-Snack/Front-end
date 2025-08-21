@@ -1,11 +1,11 @@
 import { AxiosError } from 'axios';
 
-// 기본 API 응답 타입
+// 기본 API 응답 타입 (통합)
 export interface ApiResponseTypes<T = unknown> {
     isSuccess: boolean;
     code: string;
     message: string;
-    result: T | null;
+    result: T;
     error?: unknown;
 }
 
@@ -73,15 +73,6 @@ export interface SignupResponseTypes {
     userId: number;
     email: string;
     nickname: string;
-}
-
-// API 표준 응답 타입 (API 명세 기준)
-export interface ApiStandardResponseTypes<T = unknown> {
-    isSuccess: boolean;
-    code: string;
-    message: string;
-    result: T;
-    error?: unknown;
 }
 
 // 소셜 로그인 응답 타입

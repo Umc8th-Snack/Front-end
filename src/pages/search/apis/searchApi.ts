@@ -1,6 +1,5 @@
 import type { SemanticSearchResponse } from '@/pages/search/types/searchTypes';
-
-import axiosInstance from '../../../shared/apis/axios';
+import api from '@/shared/apis/api';
 
 export async function semanticSearch(params: {
     query: string;
@@ -9,8 +8,7 @@ export async function semanticSearch(params: {
     threshold?: number;
 }): Promise<SemanticSearchResponse['result']> {
     const { query, page = 0, size = 10, threshold = 0.7 } = params;
-    const { data } = await axiosInstance.get<SemanticSearchResponse>('/api/articles/search', {
+    return api.get<SemanticSearchResponse['result']>('/api/articles/search', {
         params: { query, page, size, threshold },
     });
-    return data.result;
 }

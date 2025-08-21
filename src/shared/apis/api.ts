@@ -79,6 +79,7 @@ const api = {
      */
     delete: async <T = unknown>(url: string, options?: ApiRequestOptionsTypes): Promise<T> => {
         const response: AxiosResponse<ApiResponseTypes<T>> = await axiosInstance.delete(url, {
+            params: options?.params,
             headers: options?.headers,
             timeout: options?.timeout,
         });

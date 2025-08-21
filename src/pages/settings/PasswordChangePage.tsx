@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
-import { changeMyPassword } from '@/pages/settings/apis/auth';
+import { authApi } from '@/shared/apis/auth';
 
 const PasswordChangePage = () => {
     const [currentPassword, setCurrentPassword] = useState('');
@@ -17,7 +17,7 @@ const PasswordChangePage = () => {
         newPassword === confirmPassword;
 
     const { mutateAsync, isPending } = useMutation({
-        mutationFn: changeMyPassword,
+        mutationFn: authApi.changePassword,
     });
 
     const onSubmit = (e: React.FormEvent) => {

@@ -128,6 +128,34 @@ export const authApi = {
     },
 
     /**
+     * 회원 탈퇴
+     */
+    withdraw: async (password: string): Promise<void> => {
+        return api.post<void>('/api/users/me/withdraw', { password });
+    },
+
+    /**
+     * 비밀번호 변경
+     */
+    changePassword: async (payload: {
+        currentPassword: string;
+        newPassword: string;
+        confirmPassword: string;
+    }): Promise<void> => {
+        return api.patch<void>('/api/users/me/password', payload);
+    },
+
+    /**
+     * 이메일 변경
+     */
+    changeEmail: async (payload: {
+        newEmail: string;
+        password: string;
+    }): Promise<{ email: string; updatedAt: string }> => {
+        return api.patch<{ email: string; updatedAt: string }>('/api/users/me/email', payload);
+    },
+
+    /**
      * 비밀번호 재설정 - 인증 코드 발송 (인증 불필요)
      * 로그인하지 않은 사용자가 비밀번호를 찾을 때 사용
      */
