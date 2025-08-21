@@ -47,20 +47,7 @@ const Profile = () => {
     const isDefaultView = showDefault || imageError || !currentImage;
 
     // 파일 선택 개선 (모바일에서 카메라/갤러리 선택 지원, 데스크탑에서도 정상 동작)
-    const openPicker = () => {
-        if (fileInputRef.current) {
-            // 모든 환경에서 이미지 파일 선택 가능
-            fileInputRef.current.accept = 'image/*';
-
-            // iOS에서만 카메라 직접 촬영 지원 추가
-            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-            if (isIOS) {
-                fileInputRef.current.capture = 'environment'; // 후면 카메라 우선
-            }
-
-            fileInputRef.current.click();
-        }
-    };
+    const openPicker = () => fileInputRef.current?.click();
 
     const onFileChange = async (file?: File) => {
         if (!file) return;
@@ -77,10 +64,9 @@ const Profile = () => {
             navigator.userAgent
         );
 
-        // 모바일과 데스크탑 모두에서 파일 크기 제한 적용
-        const maxSize = isMobileDevice ? 3 : MAX_MB;
-        if (file.size > maxSize * 1024 * 1024) {
-            alert(`파일 크기는 최대 ${maxSize}MB까지 가능합니다.`);
+        // 모바일과 데스크톱 동일한 파일 크기 제한 (5MB)
+        if (file.size > MAX_MB * 1024 * 1024) {
+            alert(`파일 크기는 최대 ${MAX_MB}MB까지 가능합니다.`);
             return;
         }
 
