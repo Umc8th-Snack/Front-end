@@ -14,6 +14,8 @@ import { tokenUtils } from '../utils/auth';
  * 로그인 mutation 훅
  */
 export const useLogin = () => {
+    const queryClient = useQueryClient();
+
     return useMutation<{ data: LoginResponseTypes; token: string }, Error, LoginRequestTypes>({
         mutationFn: async (loginData: LoginRequestTypes) => {
             const response = await authApi.loginWithToken(loginData);
@@ -21,6 +23,20 @@ export const useLogin = () => {
         },
         onSuccess: (data) => {
             console.log('✅ [USE LOGIN] 로그인 뮤테이션 성공:', data);
+
+            // 토큰 저장
+            if (data.token) {
+                tokenUtils.setAccessToken(data.token);
+            }
+
+            // 사용자 정보 저장
+            if (data.data) {
+                localStorage.setItem('user', JSON.stringify(data.data));
+            }
+
+            // 헤더 업데이트를 위해 user 쿼리 무효화
+            void queryClient.invalidateQueries({ queryKey: ['user'] });
+            console.log('🔄 [USE LOGIN] 사용자 쿼리 무효화 - 헤더 업데이트');
         },
         onError: (error) => {
             console.error('❌ [USE LOGIN] 로그인 뮤테이션 실패:', error);
@@ -72,6 +88,8 @@ export const useReissueToken = () => {
  * 회원가입 mutation 훅 (자동 로그인 포함)
  */
 export const useSignup = () => {
+    const queryClient = useQueryClient();
+
     return useMutation<
         { signupData: SignupResponseTypes; loginData?: { data: LoginResponseTypes; token: string } },
         Error,
@@ -116,6 +134,16 @@ export const useSignup = () => {
                 }
 
                 console.log('✅ [USE SIGNUP] 토큰 및 사용자 정보 저장 완료');
+
+                // 헤더 업데이트를 위해 user 쿼리 무효화
+                void queryClient.invalidateQueries({ queryKey: ['user'] });
+                console.log('🔄 [USE SIGNUP] 사용자 쿼리 무효화 - 헤더 업데이트');
+
+                // AuthContext 업데이트를 위해 페이지 새로고침
+                // TODO: AuthContext의 login 함수를 직접 호출하는 방법으로 개선 가능
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 100);
             }
         },
         onError: (error) => {

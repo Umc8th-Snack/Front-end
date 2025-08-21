@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { deleteAccount } from '@/pages/settings/apis/auth';
 import DeleteAccountModal from '@/pages/settings/components/DeleteAccountModal/DeleteAccountModal';
+import { tokenUtils } from '@/shared/utils/auth';
 
 const DeleteAccountPage = () => {
     const [password, setPassword] = useState('');
@@ -11,7 +11,6 @@ const DeleteAccountPage = () => {
 
     const isFormValid = password.trim() !== '';
 
-    const navigate = useNavigate();
     const queryClient = useQueryClient();
 
     //  비밀번호 틀리면 서버에서 온 메시지를 alert로 보여줌
@@ -19,13 +18,19 @@ const DeleteAccountPage = () => {
         mutationFn: (pw: string) => deleteAccount(pw),
         onSuccess: () => {
             // 토큰/캐시 정리
-            localStorage.removeItem('accessToken');
+            tokenUtils.removeAccessToken(); // tokenUtils 사용
+            localStorage.removeItem('user'); // 사용자 정보도 삭제
 
             queryClient.clear();
 
             setIsModalOpen(false);
             alert('회원 탈퇴가 완료되었습니다.');
-            void navigate('/', { replace: true });
+
+            // AuthContext 업데이트를 위해 페이지 새로고침
+            // navigate 대신 window.location.href 사용
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 100);
         },
         onError: (error: unknown) => {
             setIsModalOpen(false);
