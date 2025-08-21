@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
-import { changeMyPassword } from '@/pages/settings/apis/auth';
+import { authApi } from '@/shared/apis/auth';
 
 const PasswordChangePage = () => {
     const [currentPassword, setCurrentPassword] = useState('');
@@ -15,7 +15,7 @@ const PasswordChangePage = () => {
         newPassword === confirmPassword;
 
     const { mutate, isPending } = useMutation({
-        mutationFn: changeMyPassword,
+        mutationFn: authApi.changePassword,
         // onSuccess: (data) => {
         //     // TODO: 토스트/알럿 등으로 메시지 노출
         //     // ex) toast.success(data.message ?? '비밀번호가 변경되었습니다.');

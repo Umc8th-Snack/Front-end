@@ -126,4 +126,32 @@ export const authApi = {
             token: accessToken,
         };
     },
+
+    /**
+     * 회원 탈퇴
+     */
+    withdraw: async (password: string): Promise<void> => {
+        return api.post<void>('/api/users/me/withdraw', { password });
+    },
+
+    /**
+     * 비밀번호 변경
+     */
+    changePassword: async (payload: {
+        currentPassword: string;
+        newPassword: string;
+        confirmPassword: string;
+    }): Promise<void> => {
+        return api.patch<void>('/api/users/me/password', payload);
+    },
+
+    /**
+     * 이메일 변경
+     */
+    changeEmail: async (payload: {
+        newEmail: string;
+        password: string;
+    }): Promise<{ email: string; updatedAt: string }> => {
+        return api.patch<{ email: string; updatedAt: string }>('/api/users/me/email', payload);
+    },
 };

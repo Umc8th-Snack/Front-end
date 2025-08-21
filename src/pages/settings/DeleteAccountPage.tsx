@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteAccount } from '@/pages/settings/apis/auth';
 import DeleteAccountModal from '@/pages/settings/components/DeleteAccountModal/DeleteAccountModal';
+import { authApi } from '@/shared/apis/auth';
 
 const DeleteAccountPage = () => {
     const [password, setPassword] = useState('');
@@ -16,7 +16,7 @@ const DeleteAccountPage = () => {
 
     //  비밀번호 틀리면 서버에서 온 메시지를 alert로 보여줌
     const { mutate, isPending } = useMutation({
-        mutationFn: (pw: string) => deleteAccount(pw),
+        mutationFn: (pw: string) => authApi.withdraw(pw),
         onSuccess: () => {
             // 토큰/캐시 정리
             localStorage.removeItem('accessToken');
