@@ -12,7 +12,7 @@ interface EmailSignupFormProps {
 }
 
 const EmailSignupForm = ({ onSignupComplete }: EmailSignupFormProps) => {
-    const { mutate: signupMutate, isPending, error } = useSignup();
+    const { mutate: signupMutate, isPending } = useSignup();
 
     const [formData, setFormData] = useState({
         email: '',
@@ -22,6 +22,7 @@ const EmailSignupForm = ({ onSignupComplete }: EmailSignupFormProps) => {
     });
 
     const [nicknameError, setNicknameError] = useState<string>('');
+    const [apiError, setApiError] = useState<string>('');
 
     const showPasswordError = formData.password.length > 0 && !isPasswordValid(formData.password);
 
@@ -38,6 +39,11 @@ const EmailSignupForm = ({ onSignupComplete }: EmailSignupFormProps) => {
             const error = validateNickname(value);
             setNicknameError(error);
         }
+
+        // 입력 시 API 에러 초기화
+        if (apiError) {
+            setApiError('');
+        }
     };
 
     const handleSignupSubmit = () => {
@@ -52,15 +58,24 @@ const EmailSignupForm = ({ onSignupComplete }: EmailSignupFormProps) => {
             onSuccess: (response) => {
                 console.log('✅ [SIGNUP FORM] 회원가입 API 성공:', response);
                 console.log('🎉 [SIGNUP FORM] 회원가입 완료 화면으로 이동');
+                setApiError(''); // 성공 시 에러 초기화
                 onSignupComplete();
             },
             onError: (error) => {
                 console.error('❌ [SIGNUP FORM] 회원가입 실패:', error);
 
-                // 에러 메시지에 따른 닉네임 에러 처리
-                const errorMessage = (error as any)?.response?.data?.message || '';
+                // 서버에서 받은 에러 메시지 추출
+                const errorResponse = error as Error & {
+                    response?: { data?: { message?: string } };
+                };
+                const errorMessage =
+                    errorResponse?.response?.data?.message || errorResponse?.message || '회원가입에 실패했습니다.';
+
+                // 닉네임 관련 에러는 닉네임 필드에, 나머지는 일반 에러로 표시
                 if (errorMessage.includes('닉네임') || errorMessage.includes('nickname')) {
-                    setNicknameError('이미 사용중인 닉네임입니다.');
+                    setNicknameError(errorMessage);
+                } else {
+                    setApiError(errorMessage);
                 }
             },
         });
@@ -142,11 +157,7 @@ const EmailSignupForm = ({ onSignupComplete }: EmailSignupFormProps) => {
                         className="text-14px-medium sm:text-16px-medium hover:border-main focus:ring-main w-full rounded-md border border-[#B2B2B2] px-3 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
                     />
                 </div>
-                {error && (
-                    <div className="mt-2 px-2 text-sm text-red-500">
-                        회원가입에 실패했습니다. 입력 정보를 확인해 주세요.
-                    </div>
-                )}
+                {apiError && <div className="mt-2 px-2 text-sm text-red-500">{apiError}</div>}
             </div>
 
             {/* 회원가입 버튼 */}
