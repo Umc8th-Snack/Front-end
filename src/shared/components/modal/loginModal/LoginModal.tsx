@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import GoogleIcon from '@/assets/GoogleIcon.svg?react';
 import XIcon from '@/assets/XIcon.svg?react';
@@ -19,7 +19,6 @@ type ModalMode = 'social' | 'emailLogin' | 'emailSignup' | 'signupComplete';
 
 const LoginModal = ({ isOpen, onClose }: ModalProps) => {
     const [modalMode, setModalMode] = useState<ModalMode>('social');
-    if (!isOpen) return null;
 
     const handleEmailLoginClick = () => {
         setModalMode('emailLogin');
@@ -39,17 +38,18 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
         window.location.href = getGoogleAuthUrl();
     };
 
-    const handleClose = () => {
-        // 모달 닫을 때 상태 초기화
+    const handleClose = useCallback(() => {
         setModalMode('social');
         onClose();
-    };
+    }, [onClose]);
 
     const handleOverlayKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Escape') {
             handleClose();
         }
     };
+
+    if (!isOpen) return null;
 
     return (
         <div
@@ -61,9 +61,7 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
             aria-label="Close modal"
         >
             <div
-                className={`relative w-[440px] rounded-[15px] bg-white shadow-xl ${
-                    modalMode === 'signupComplete' ? 'h-[484px]' : 'h-[640px]'
-                }`}
+                className="relative h-auto max-h-screen w-[85%] max-w-[380px] overflow-y-auto rounded-[15px] bg-white shadow-xl sm:w-[380px]"
                 onClick={(e) => e.stopPropagation()}
                 onKeyDown={(e) => e.stopPropagation()}
                 tabIndex={-1}
@@ -81,24 +79,24 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                 {modalMode === 'social' && (
                     <>
                         <div className="mt-12 text-center">
-                            <p className="text-36px-semibold text-black">스낵</p>
-                            <p className="text-28px-medium mt-1 text-black">뉴스를 간식처럼,</p>
+                            <p className="text-32px-semibold sm:text-36px-semibold text-black">스낵</p>
+                            <p className="text-24px-medium sm:text-28px-medium mt-1 text-black">뉴스를 간식처럼,</p>
                         </div>
 
                         {/* 로고 */}
-                        <div className="mt-18 flex justify-center">
+                        <div className="mt-5 flex justify-center sm:mt-10">
                             <SnackIcon />
                         </div>
 
                         {/* 소셜 로그인 버튼 */}
-                        <div className="text-20px-medium mt-18 flex flex-col items-center gap-4">
+                        <div className="text-20px-medium mt-5 flex flex-col items-center gap-4 sm:mt-10">
                             <SocialLoginButton
                                 text="Google 로그인"
                                 icon={<GoogleIcon />}
                                 bgColor="bg-white"
                                 textColor="text-black"
-                                width="320px"
-                                height="56px"
+                                width="w-[80%] sm:w-[90%] max-w-[280px]"
+                                height="h-14 sm:h-[56px]"
                                 borderColor="border-[1px] border-gray-500"
                                 onClick={handleGoogleLogin}
                             />
@@ -107,15 +105,15 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                                 text="이메일 로그인"
                                 bgColor="bg-main"
                                 textColor="text-white"
-                                width="320px"
-                                height="56px"
+                                width="w-[80%] sm:w-[90%] max-w-[280px]"
+                                height="h-14 sm:h-[56px]"
                                 borderColor="border-none"
                                 onClick={handleEmailLoginClick}
                             />
                         </div>
 
                         {/* 하단 회원가입 안내 */}
-                        <div className="text-black-30 text-18px-medium mt-15 flex items-center justify-center gap-4">
+                        <div className="text-black-30 sm:text-16px-medium text-14px-medium mt-4 mb-6 flex items-center justify-center gap-2 sm:mt-6 sm:gap-4">
                             <span>아직 회원이 아니신가요?</span>
                             <button
                                 className="cursor-pointer text-black hover:underline"
