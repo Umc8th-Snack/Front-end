@@ -9,6 +9,7 @@ const ForgotPasswordPage = () => {
     const [email, setEmail] = useState('');
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
+    const [isEmailSent, setIsEmailSent] = useState(false);
 
     // 이메일 형식 검증
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,21 +25,27 @@ const ForgotPasswordPage = () => {
         e.preventDefault();
         if (!isFormValid || isPending) return;
 
+        // 이미 이메일이 전송된 경우 다음 페이지로 이동
+        if (isEmailSent) {
+            void navigate('/forgot-password/verify');
+            return;
+        }
+
         setErrorMsg(null);
         setSuccessMsg(null);
 
         void mutateAsync(email)
             .then(() => {
                 setSuccessMsg('인증 코드가 이메일로 전송되었습니다.');
-                // 이메일 저장 후 다음 페이지로 이동
+                // 이메일 저장
                 sessionStorage.setItem('resetEmail', email);
-                setTimeout(() => {
-                    void navigate('/forgot-password/verify');
-                }, 1500);
+                // 전송 완료 상태로 변경
+                setIsEmailSent(true);
             })
             .catch((err) => {
                 const msg = err instanceof Error ? err.message : '이메일 전송에 실패했습니다. 다시 시도해주세요.';
                 setErrorMsg(msg);
+                setIsEmailSent(false);
             });
     };
 
@@ -79,14 +86,14 @@ const ForgotPasswordPage = () => {
                 {/* 버튼 */}
                 <button
                     type="submit"
-                    disabled={!isFormValid || isPending}
+                    disabled={(!isFormValid && !isEmailSent) || isPending}
                     className={`text-24px-medium mt-6 h-[68px] w-full rounded-[8px] py-2 text-white transition-colors ${
-                        isFormValid && !isPending
+                        (isFormValid || isEmailSent) && !isPending
                             ? 'hover:bg-main cursor-pointer bg-blue-500'
                             : 'bg-black-30 cursor-not-allowed'
                     }`}
                 >
-                    {isPending ? '전송 중...' : '전송'}
+                    {isPending ? '전송 중...' : isEmailSent ? '다음' : '전송'}
                 </button>
             </form>
         </div>
