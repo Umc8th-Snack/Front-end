@@ -68,16 +68,54 @@ export const useReissueToken = () => {
 };
 
 /**
- * 회원가입 mutation 훅
+ * 회원가입 mutation 훅 (자동 로그인 포함)
  */
 export const useSignup = () => {
-    return useMutation<SignupResponseTypes, Error, SignupRequestTypes>({
+    return useMutation<
+        { signupData: SignupResponseTypes; loginData?: { data: LoginResponseTypes; token: string } },
+        Error,
+        SignupRequestTypes
+    >({
         mutationFn: async (signupData: SignupRequestTypes) => {
-            const response = await authApi.signup(signupData);
-            return response;
+            // 1단계: 회원가입
+            const signupResponse = await authApi.signup(signupData);
+            console.log('✅ [USE SIGNUP] 회원가입 성공:', signupResponse);
+
+            try {
+                // 2단계: 자동 로그인 시도
+                const loginResponse = await authApi.loginWithToken({
+                    email: signupData.email,
+                    password: signupData.password,
+                });
+                console.log('✅ [USE SIGNUP] 자동 로그인 성공:', loginResponse);
+
+                return {
+                    signupData: signupResponse,
+                    loginData: loginResponse,
+                };
+            } catch (loginError) {
+                // 로그인 실패해도 회원가입은 성공으로 처리
+                console.warn('⚠️ [USE SIGNUP] 자동 로그인 실패, 회원가입만 완료:', loginError);
+                return {
+                    signupData: signupResponse,
+                };
+            }
         },
         onSuccess: (data) => {
             console.log('✅ [USE SIGNUP] 회원가입 뮤테이션 성공:', data);
+
+            // 자동 로그인 성공 시 토큰 저장
+            if (data.loginData?.token) {
+                // 토큰 저장 로직 (tokenUtils.setAccessToken 등)
+                localStorage.setItem('accessToken', data.loginData.token);
+
+                // 사용자 정보 저장
+                if (data.loginData.data) {
+                    localStorage.setItem('user', JSON.stringify(data.loginData.data));
+                }
+
+                console.log('✅ [USE SIGNUP] 토큰 및 사용자 정보 저장 완료');
+            }
         },
         onError: (error) => {
             console.error('❌ [USE SIGNUP] 회원가입 뮤테이션 실패:', error);
