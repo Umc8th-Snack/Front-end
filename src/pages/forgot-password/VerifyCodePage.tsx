@@ -46,22 +46,23 @@ const VerifyCodePage = () => {
                     void navigate('/forgot-password/reset');
                 }, 1500);
             })
-            .catch((err) => {
-                // 에러 메시지를 더 구체적으로 표시
-                let errorMessage = '인증 코드가 올바르지 않습니다. 다시 확인해주세요.';
+            .catch((err: any) => {
+                // 서버 에러 응답 구조에 따른 메시지 처리
+                let errorMessage = '인증 코드 확인에 실패했습니다.';
 
-                if (err instanceof Error) {
-                    // API에서 반환한 구체적인 에러 메시지가 있으면 사용
-                    if (err.message.includes('expired') || err.message.includes('만료')) {
-                        errorMessage = '인증 코드가 만료되었습니다. 이메일을 다시 요청해주세요.';
-                    } else if (err.message.includes('invalid') || err.message.includes('유효하지')) {
-                        errorMessage = '잘못된 인증 코드입니다. 6자리 숫자를 다시 확인해주세요.';
-                    } else if (err.message.includes('not found') || err.message.includes('찾을 수 없')) {
-                        errorMessage = '인증 요청을 찾을 수 없습니다. 처음부터 다시 시도해주세요.';
-                    } else if (err.message) {
-                        // 서버에서 보낸 메시지가 있으면 그대로 사용
-                        errorMessage = err.message;
-                    }
+                // axios 에러 응답에서 code와 message 확인
+                const errorCode = err?.response?.data?.code;
+                const serverMessage = err?.response?.data?.message;
+
+                if (errorCode === 'USER_2671') {
+                    // 인증코드 불일치
+                    errorMessage = '인증 코드가 일치하지 않습니다. 이메일로 받은 6자리 숫자를 다시 확인해주세요.';
+                } else if (errorCode === 'USER_2672') {
+                    // 인증코드 만료
+                    errorMessage = '인증 코드의 유효 시간이 만료되었습니다. 처음부터 다시 시도해주세요.';
+                } else if (serverMessage) {
+                    // 서버에서 보낸 다른 메시지가 있으면 사용
+                    errorMessage = serverMessage;
                 }
 
                 setErrorMsg(errorMessage);
