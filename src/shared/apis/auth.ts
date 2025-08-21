@@ -126,4 +126,25 @@ export const authApi = {
             token: accessToken,
         };
     },
+
+    /**
+     * 비밀번호 재설정 인증 코드 발송
+     */
+    sendPasswordResetCode: async (email: string): Promise<void> => {
+        return api.postStandard('/api/users/password-reset/send-code', { email });
+    },
+
+    /**
+     * 비밀번호 재설정 인증 코드 검증
+     */
+    verifyPasswordResetCode: async (email: string, code: string): Promise<{ verificationToken: string }> => {
+        return api.postStandard('/api/users/password-reset/verify-code', { email, code });
+    },
+
+    /**
+     * 새 비밀번호 설정
+     */
+    setNewPassword: async (data: { email: string; newPassword: string; confirmPassword: string }): Promise<void> => {
+        return api.postStandard('/api/users/password-reset/set-new-password', data);
+    },
 };
