@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { deleteProfileImage, uploadProfileImage } from '@/pages/my/apis/files';
-import { fetchUserProfile, updateUserProfile } from '@/pages/my/apis/user';
 import DefaultImage from '@/pages/my/assets/default-image.svg?react';
 import ProfileDeleteButton from '@/pages/my/assets/profileDeleteButton.svg?react';
 import { QUERY_KEYS } from '@/pages/my/constants/queryConstants';
+import { userApi } from '@/shared/apis/user';
 
 const MAX_MB = 5;
 const ALLOWED = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
@@ -30,7 +30,7 @@ const Profile = () => {
         isError,
     } = useQuery({
         queryKey: QUERY_KEYS.USER_PROFILE,
-        queryFn: fetchUserProfile,
+        queryFn: userApi.getMyInfo,
     });
 
     // 업로드/삭제에 따른 즉시 반영용 로컬 상태
@@ -81,7 +81,7 @@ const Profile = () => {
             const result = await uploadProfileImage(file, setProgress);
 
             // 2) 내 정보 수정 API로 프로필 이미지 URL 저장
-            await updateUserProfile({ profileImage: result.fileUrl });
+            await userApi.updateMyInfo({ profileImage: result.fileUrl });
 
             // 3) 즉시 반영(캐시 버스터로 캐시 무효화) + 기본이미지 락 해제
             const bust = `?_=${Date.now()}`;

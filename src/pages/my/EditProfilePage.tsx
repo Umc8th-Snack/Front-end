@@ -2,8 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { fetchUserProfile, updateUserProfile } from '@/pages/my/apis/user';
 import { QUERY_KEYS } from '@/pages/my/constants/queryConstants';
+import { userApi } from '@/shared/apis/user';
 
 const EditProfilePage = () => {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ const EditProfilePage = () => {
 
     const { data: me } = useQuery({
         queryKey: QUERY_KEYS.USER_PROFILE,
-        queryFn: fetchUserProfile,
+        queryFn: userApi.getMyInfo,
     });
 
     const [form, setForm] = useState({
@@ -37,7 +37,7 @@ const EditProfilePage = () => {
 
     const { mutate, isPending } = useMutation({
         mutationFn: () =>
-            updateUserProfile({
+            userApi.updateMyInfo({
                 nickname: form.nickname,
                 introduction: form.introduction,
             }),
