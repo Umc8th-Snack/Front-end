@@ -1,6 +1,6 @@
 import { CATEGORY_CODE_TO_NAME } from '@/pages/home/constants/categories';
-import type { MainFeedEnvelope, MainFeedParams, MainFeedResult } from '@/pages/home/types/feedTypes';
-import axiosInstance from '@/shared/apis/axios';
+import type { MainFeedParams, MainFeedResult } from '@/pages/home/types/feedTypes';
+import api from '@/shared/apis/api';
 
 const safeHas = (obj: object, key: PropertyKey): boolean => Object.prototype.hasOwnProperty.call(obj, key);
 
@@ -21,7 +21,5 @@ export const fetchMainFeed = async (params: MainFeedParams): Promise<MainFeedRes
     for (const nm of names) search.append('category', nm);
     if (params.lastArticleId != null) search.append('lastArticleId', String(params.lastArticleId));
 
-    const res = await axiosInstance.get<MainFeedEnvelope>(`/api/feeds/main?${search.toString()}`);
-    if (!res.data?.isSuccess) throw new Error(res.data?.message || '메인 피드 조회 실패');
-    return res.data.result;
+    return api.get<MainFeedResult>(`/api/feeds/main?${search.toString()}`);
 };

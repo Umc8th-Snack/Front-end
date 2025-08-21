@@ -1,15 +1,7 @@
 import type { AxiosProgressEvent } from 'axios';
 
+import api from '@/shared/apis/api';
 import axiosInstance from '@/shared/apis/axios';
-
-// 공통 응답 포맷
-export interface ApiEnvelope<T> {
-    isSuccess: boolean;
-    code: string;
-    message: string;
-    result: T;
-    error?: unknown;
-}
 
 // 업로드 결과 타입 (Swagger 스펙)
 export interface UploadProfileResult {
@@ -38,7 +30,8 @@ export const uploadProfileImage = async (
     form.append('file', file);
 
     try {
-        const res = await axiosInstance.post<ApiEnvelope<UploadProfileResult>>('/api/files/upload/profile', form, {
+        // 파일 업로드는 progress 추적이 필요해 axiosInstance 직접 사용
+        const res = await axiosInstance.post('/api/files/upload/profile', form, {
             headers: { Accept: '*/*' },
             onUploadProgress: (e: AxiosProgressEvent) => {
                 if (onProgress && typeof e.total === 'number' && e.total > 0) {
@@ -50,7 +43,7 @@ export const uploadProfileImage = async (
         if (!res.data?.isSuccess) {
             throw new Error(res.data?.message ?? '프로필 이미지 업로드 실패');
         }
-        return res.data.result;
+        return res.data.result as UploadProfileResult;
     } catch (err: any) {
         const status = err?.response?.status;
         const data = err?.response?.data;
@@ -70,13 +63,10 @@ export const uploadProfileImage = async (
  */
 export const deleteProfileImage = async (fileUrl: string): Promise<void> => {
     try {
-        const res = await axiosInstance.delete<ApiEnvelope<unknown>>('/api/files/profile', {
+        await api.delete<void>('/api/files/profile', {
             params: { fileUrl },
             headers: { Accept: '*/*' },
         });
-        if (!res.data?.isSuccess) {
-            throw new Error(res.data?.message ?? '프로필 이미지 삭제 실패');
-        }
     } catch (err: any) {
         const status = err?.response?.status;
         const data = err?.response?.data;

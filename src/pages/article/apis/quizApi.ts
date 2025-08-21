@@ -1,4 +1,4 @@
-import axiosInstance from '@/shared/apis/axios';
+import api from '@/shared/apis/api';
 
 import type { QuizGradingResult, QuizResult } from '../types/quizTypes';
 
@@ -13,13 +13,12 @@ export const getQuizByArticleId = async (articleId: number): Promise<QuizResult>
     console.log('articleId:', articleId);
 
     try {
-        const response = await axiosInstance.get(`/api/articles/${articleId}/quiz`);
-        console.log('API 응답 성공:', response);
-        console.log('응답 데이터:', response.data);
-        console.log('응답 result:', response.data.result);
+        const result = await api.get<QuizResult>(`/api/articles/${articleId}/quiz`);
+        console.log('API 응답 성공');
+        console.log('응답 result:', result);
         console.log('====================');
 
-        return response.data.result;
+        return result;
     } catch (error) {
         console.error('=== 퀴즈 API 에러 ===');
         console.error('에러 발생:', error);
@@ -44,14 +43,14 @@ export const submitQuizAnswers = async (
     console.log('submittedAnswers:', submittedAnswers);
 
     try {
-        const response = await axiosInstance.post(`/api/quizzes/${articleId}/submit`, {
+        const result = await api.post<QuizGradingResult>(`/api/quizzes/${articleId}/submit`, {
             submittedAnswers,
         });
-        console.log('채점 API 응답 성공:', response);
-        console.log('응답 데이터:', response.data);
+        console.log('채점 API 응답 성공');
+        console.log('응답 result:', result);
         console.log('====================');
 
-        return response.data.result;
+        return result;
     } catch (error) {
         console.error('=== 퀴즈 채점 API 에러 ===');
         console.error('에러 발생:', error);
