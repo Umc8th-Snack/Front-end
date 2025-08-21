@@ -38,10 +38,11 @@ const VerifyCodePage = () => {
         setSuccessMsg(null);
 
         void mutateAsync({ email, code })
-            .then((result) => {
+            .then(() => {
                 setSuccessMsg('인증이 완료되었습니다.');
-                // 토큰 저장 후 다음 페이지로 이동
-                sessionStorage.setItem('resetToken', result.verificationToken);
+                // 서버가 토큰을 반환하지 않으므로 인증 완료 상태만 저장
+                sessionStorage.setItem('verificationComplete', 'true');
+                sessionStorage.setItem('verifiedCode', code);
                 setTimeout(() => {
                     void navigate('/forgot-password/reset');
                 }, 1500);

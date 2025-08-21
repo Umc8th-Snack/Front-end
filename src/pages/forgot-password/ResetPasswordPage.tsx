@@ -12,12 +12,12 @@ const ResetPasswordPage = () => {
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-    // 이메일과 토큰 정보 가져오기 (sessionStorage)
+    // 이메일 정보 가져오기 (sessionStorage)
     useEffect(() => {
         const savedEmail = sessionStorage.getItem('resetEmail');
-        const savedToken = sessionStorage.getItem('resetToken');
+        const verificationComplete = sessionStorage.getItem('verificationComplete');
 
-        if (!savedEmail || !savedToken) {
+        if (!savedEmail || !verificationComplete) {
             // 정보가 없으면 처음부터 다시
             void navigate('/forgot-password');
             return;
