@@ -10,41 +10,35 @@ const DeleteAccountPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const isFormValid = password.trim() !== '';
-
     const queryClient = useQueryClient();
 
-    //  비밀번호 틀리면 서버에서 온 메시지를 alert로 보여줌
     const { mutate, isPending } = useMutation({
         mutationFn: (pw: string) => authApi.withdraw(pw),
         onSuccess: () => {
             // 토큰/캐시 정리
-            tokenUtils.removeAccessToken(); // tokenUtils 사용
-            localStorage.removeItem('user'); // 사용자 정보도 삭제
-
+            tokenUtils.removeAccessToken();
+            localStorage.removeItem('user');
             queryClient.clear();
 
             setIsModalOpen(false);
             alert('회원 탈퇴가 완료되었습니다.');
 
-            // AuthContext 업데이트를 위해 페이지 새로고침
-            // navigate 대신 window.location.href 사용
+            // AuthContext 동기화
             setTimeout(() => {
                 window.location.href = '/';
             }, 100);
         },
         onError: (error: unknown) => {
             setIsModalOpen(false);
-
-            // DeleteAccount에서 throw한 Error(message)를 그대로 출력
             if (error instanceof Error) {
-                alert(error.message); // 예: "비밀번호가 올바르지 않습니다"
+                alert(error.message);
             } else {
                 alert('회원 탈퇴에 실패했습니다. 다시 시도해주세요.');
             }
         },
     });
 
-    const handleOpenModal = (e: React.FormEvent) => {
+    const handleOpenModal: React.FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         if (isFormValid) setIsModalOpen(true);
     };
@@ -54,7 +48,6 @@ const DeleteAccountPage = () => {
     };
 
     const handleConfirmDelete = () => {
-        // 모달의 "회원 탈퇴" 버튼 클릭 시 실제 API 호출
         mutate(password);
     };
 
@@ -63,36 +56,43 @@ const DeleteAccountPage = () => {
     };
 
     return (
-        <div className="mt-20 flex min-h-screen flex-col items-center">
-            <h2 className="text-36px-semibold">회원 탈퇴</h2>
-            <p className="text-24px-medium text-black-70">탈퇴 시 계정이 삭제됩니다.</p>
+        <div className="mt-3 flex min-h-screen flex-col items-center px-10 sm:mt-10 sm:px-12">
+            {/* 헤더: 모바일 포함 중앙 정렬, 데스크탑 기존 토큰 유지 */}
+            <h2 className="sm:text-32px-semibold text-24px-semibold text-center">회원 탈퇴</h2>
+            <p className="sm:text-20px-medium text-16px-medium text-black-70 text-center">탈퇴 시 계정이 삭제됩니다.</p>
 
-            <form onSubmit={handleOpenModal} className="mt-22 w-[432px] space-y-6">
+            <form
+                onSubmit={handleOpenModal}
+                className="mx-auto mt-8 w-full max-w-[432px] space-y-4 sm:mt-8 sm:space-y-6"
+            >
                 <div>
-                    <label htmlFor="password" className="text-24px-medium">
+                    <label htmlFor="password" className="text-18px-medium sm:text-20px-medium block pb-1 md:text-left">
                         비밀번호
                     </label>
                     <input
                         id="password"
                         type="password"
-                        className="hover:border-main focus:ring-main border-black-30 text-24px-medium placeholder-black-30 mt-2 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none focus:ring-1"
+                        className="text-14px-medium sm:text-18px-medium hover:border-main focus:ring-main w-full rounded-lg border border-[#B2B2B2] px-3 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
                         placeholder="비밀번호를 입력해주세요"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="current-password"
                     />
                 </div>
 
-                <button
-                    type="submit"
-                    disabled={!isFormValid || isPending}
-                    className={`text-24px-medium mt-6 h-[68px] w-full rounded-[8px] py-2 text-white transition-colors ${
-                        isFormValid && !isPending
-                            ? 'hover:bg-main cursor-pointer bg-blue-500'
-                            : 'bg-black-30 cursor-not-allowed'
-                    }`}
-                >
-                    {isPending ? '처리 중...' : '회원 탈퇴'}
-                </button>
+                <div className="mt-8 mb-10 flex sm:mt-12">
+                    <button
+                        type="submit"
+                        disabled={!isFormValid || isPending}
+                        className={`text-16px-medium sm:text-18px-medium h-[55px] w-full rounded-lg py-3 text-white transition-colors sm:h-[60px] ${
+                            isFormValid && !isPending
+                                ? 'bg-main hover:bg-main-dark cursor-pointer'
+                                : 'bg-black-30 cursor-not-allowed'
+                        }`}
+                    >
+                        {isPending ? '처리 중...' : '회원 탈퇴'}
+                    </button>
+                </div>
             </form>
 
             {isModalOpen && (
