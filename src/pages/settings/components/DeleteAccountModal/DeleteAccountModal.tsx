@@ -66,7 +66,7 @@ const DeleteAccountModal = ({ onClose, onConfirmDelete, onCancel, isLoading }: D
                         onClick={onConfirmDelete}
                         disabled={isLoading}
                         type="button"
-                        className="text-16px-medium bg-danger/90 sm:text-18px-medium h-[50px] w-full cursor-pointer rounded-[8px] text-white hover:bg-[#d93025] disabled:opacity-60"
+                        className="text-16px-medium bg-danger sm:text-18px-medium h-[50px] w-full cursor-pointer rounded-[8px] text-white hover:bg-[#d93025] disabled:opacity-60"
                     >
                         {isLoading ? '처리 중...' : '회원 탈퇴'}
                     </button>
