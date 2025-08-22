@@ -1,14 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import ToggleSwitch from '@/shared/components/button/ToggleSwitch';
-
 function useSplitFirstLine(text: string, font: string, maxWidth: number) {
-    const [first, setFirst] = useState<string>('');
-    const [rest, setRest] = useState<string>('');
+    const [first, setFirst] = useState('');
+    const [rest, setRest] = useState('');
 
     useEffect(() => {
-        if (!text) {
-            setFirst('');
+        if (!text || !maxWidth) {
+            setFirst(text || '');
             setRest('');
             return;
         }
@@ -36,15 +34,7 @@ function useSplitFirstLine(text: string, font: string, maxWidth: number) {
     return { first, rest };
 }
 
-export default function TitleWithToggle({
-    title,
-    onToggleChange,
-    checked = false,
-}: {
-    title: string;
-    onToggleChange: (v: boolean) => void;
-    checked?: boolean;
-}) {
+export default function TitleWithToggle({ title }: { title: string }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [width, setWidth] = useState(0);
 
@@ -62,20 +52,17 @@ export default function TitleWithToggle({
 
     return (
         <div ref={containerRef} className="w-full">
-            {/* 첫 줄 전체 */}
             <h1 className="text-24px-semibold md:text-28px-semibold lg:text-36px-semibold col-span-2 leading-tight">
                 {first}
             </h1>
 
-            {/* 두 번째 줄 + 토글 */}
-            <div className="grid grid-cols-[1fr_auto] gap-4">
-                <span className="text-36px-semibold self-center leading-none break-words">{rest}</span>
-                {/* lg 이상에서만 토글 표시 */}
-                <div className="mt-[-40px] hidden items-center gap-2 self-center lg:flex">
-                    <span className="text-20px-medium text-black-70 leading-none">메모장</span>
-                    <ToggleSwitch onChange={onToggleChange} checked={checked} />
+            {rest && (
+                <div>
+                    <span className="text-24px-semibold md:text-28px-semibold lg:text-36px-semibold leading-none break-words">
+                        {rest}
+                    </span>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
