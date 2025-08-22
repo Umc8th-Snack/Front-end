@@ -10,9 +10,11 @@ import LoginModal from '@/shared/components/modal/loginModal/LoginModal';
 import HamburgerMenu from '@/shared/components/Navbar/HamburgerMenu';
 import SearchBar from '@/shared/components/Navbar/SearchBar';
 import { useAuth } from '@/shared/context/AuthContext';
+import { useUserInfo } from '@/shared/hooks/useUserInfo';
 
 const Navbar = () => {
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated } = useAuth();
+    const { data: me } = useUserInfo(isAuthenticated);
     const location = useLocation();
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -100,7 +102,7 @@ const Navbar = () => {
                     {isAuthenticated ? (
                         <>
                             <p>
-                                <span className="font-bold">{user?.nickname}</span>님
+                                <span className="font-bold">{me?.nickname}</span>님
                             </p>
                             <Link
                                 to="/mypage"
@@ -153,7 +155,7 @@ const Navbar = () => {
                         <>
                             {/* 태블릿에서만 닉네임 표시 */}
                             <p className="text-16px-medium">
-                                <span className="font-bold">{user?.nickname}</span>님
+                                <span className="font-bold">{me?.nickname}</span>님
                             </p>
                             <button
                                 onClick={handleHamburgerToggle}
