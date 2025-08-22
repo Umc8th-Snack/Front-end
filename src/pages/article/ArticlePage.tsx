@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import ArticleLayout from '@/layout/ArticleLayout';
 import { getArticleDetail } from '@/pages/article/apis/articleApi';
@@ -13,6 +13,7 @@ import FloatingMemoButton from '@/shared/components/button/FloatingMemoButton';
 import MemoPad from '@/shared/components/modal/MemoPad/MemoPad';
 
 const ArticlePage = () => {
+    const navigate = useNavigate();
     const { articleId } = useParams<{ articleId: string }>();
     const [article, setArticle] = useState<ArticleDetail | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -52,9 +53,9 @@ const ArticlePage = () => {
                     <p className="text-18px-medium mb-8">기사 정보를 불러오지 못했어요.</p>
                     <button
                         className="text-16px-medium bg-main cursor-pointer rounded-xl border border-black/10 px-4 py-2 text-white"
-                        onClick={() => location.reload()}
+                        onClick={() => void navigate(-1)}
                     >
-                        다시 시도하기
+                        뒤로 돌아가기
                     </button>
                 </div>
             </div>
