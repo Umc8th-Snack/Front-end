@@ -14,16 +14,22 @@ interface TodayGreetingBannerProps {
 const TodayGreetingBanner = ({ nickname, variant = 'home' }: TodayGreetingBannerProps) => {
     const today = new Date();
 
+    // ✅ Auth 상태에서만 쿼리 실행 여부를 결정
+    const { user, isAuthenticated, loading } = useAuth();
+
+    // ✅ “프로필 조회가 정말 필요한가?”를 먼저 결정
+    // - custom-feed: 항상 필요 (닉네임 표시)
+    // - home: props.nickname이 없을 때만 필요
+    const needProfile = (variant === 'custom-feed' || !nickname) && isAuthenticated && !loading;
+
     const { data: me } = useQuery({
         queryKey: MY_QUERY_KEYS.USER_PROFILE,
-        queryFn: userApi.getMyInfo,
-        // 캐시 구독만 목적이면 staleTime을 길게 줘도 OK
+        queryFn: userApi.getMyInfo, // GET /api/users/me
+        enabled: needProfile, // ⭐ 첫 진입에 불필요한 호출 방지
         staleTime: 5 * 60 * 1000,
     });
 
-    const { user } = useAuth();
-
-    // 닉네임 결정 로직: 캐시 우선 -> AuthContext -> props
+    // 닉네임 결정: 쿼리 캐시 -> AuthContext -> props (home)
     const cachedNickname = me?.nickname ?? user?.nickname ?? '';
     const effectiveNickname = variant === 'custom-feed' ? cachedNickname : (nickname ?? cachedNickname);
 
