@@ -1,5 +1,4 @@
-// shared/components/modal/DeleteAccountModal/DeleteAccountModal.tsx
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import XIcon from '@/shared/assets/icons/close-x.svg?react';
 
@@ -7,13 +6,13 @@ interface DeleteAccountModalProps {
     onClose: () => void;
     onConfirmDelete: () => void;
     onCancel: () => void;
-    isLoading?: boolean; // 로딩 시 비활성화용
+    isLoading?: boolean;
 }
 
 const DeleteAccountModal = ({ onClose, onConfirmDelete, onCancel, isLoading }: DeleteAccountModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
 
-    // ESC로 닫기 (로딩 중에는 닫기 비활성화)
+    // ESC로 닫기 (로딩 중 비활성화)
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape' && !isLoading) onClose();
@@ -22,58 +21,66 @@ const DeleteAccountModal = ({ onClose, onConfirmDelete, onCancel, isLoading }: D
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [onClose, isLoading]);
 
-    // 바깥 클릭 시 닫기 (로딩 중에는 닫기 비활성화)
-    const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (isLoading) return;
-        if (modalRef.current && !modalRef.current.contains(e.target as Node)) onClose();
-    };
-
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-            onClick={handleOverlayClick}
-            tabIndex={-1}
-            role="button"
-            aria-label="Close modal"
+            className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto px-4 py-6 sm:py-8"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-modal-title"
+            aria-describedby="delete-modal-desc"
         >
-            <div ref={modalRef} className="relative h-[420px] w-[600px] rounded-[15px] bg-white shadow-md">
-                {/* 닫기 버튼 */}
+            {/* ✅ 오버레이를 버튼으로 분리: a11y 규칙 충족 */}
+            <button
+                type="button"
+                onClick={onClose}
+                disabled={isLoading}
+                aria-label="배경 클릭하여 닫기"
+                className="fixed inset-0 bg-black/50 focus:outline-none disabled:cursor-not-allowed"
+            />
+
+            <div
+                ref={modalRef}
+                className="relative z-10 w-full max-w-[600px] rounded-2xl bg-white p-5 text-center shadow-md sm:p-6 md:p-8"
+            >
+                {/* 닫기 아이콘 버튼 */}
                 <button
                     onClick={onClose}
                     disabled={isLoading}
-                    className="absolute top-[12px] right-[8px] cursor-pointer disabled:opacity-50"
+                    className="absolute top-3 right-3 inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-black/5 disabled:opacity-50"
                     aria-label="닫기"
+                    type="button"
                 >
                     <XIcon />
                 </button>
 
-                {/* 문구 */}
-                <div className="text-28px-semibold absolute top-[53px] left-1/2 h-[126px] w-[245px] -translate-x-1/2">
+                <h2 id="delete-modal-title" className="md:text-28px-semibold mt-2 text-2xl font-semibold">
                     정말 탈퇴하시겠어요?
-                </div>
+                </h2>
 
-                <div className="text-20px-medium text-black-70 absolute top-[111px] left-1/2 w-[262px] -translate-x-1/2 text-center">
-                    탈퇴 버튼 선택 시, <br />
+                <p id="delete-modal-desc" className="text-black-70 md:text-20px-medium mt-3 text-base">
+                    탈퇴 버튼 선택 시, <br className="hidden sm:block" />
                     계정은 삭제되며 복구되지 않아요.
+                </p>
+
+                <div className="mt-6 flex flex-col items-stretch gap-3 sm:mt-8">
+                    <button
+                        onClick={onConfirmDelete}
+                        disabled={isLoading}
+                        type="button"
+                        className="bg-danger h-12 w-full rounded-[8px] text-white hover:bg-[#d93025] disabled:opacity-60 md:h-[68px] md:w-[432px] md:self-center"
+                    >
+                        <span className="md:text-24px-medium text-base">{isLoading ? '처리 중...' : '회원 탈퇴'}</span>
+                    </button>
+
+                    <button
+                        onClick={onCancel}
+                        disabled={isLoading}
+                        type="button"
+                        className="bg-black-30 hover:bg-black-50 h-12 w-full rounded-[8px] text-white disabled:opacity-60 md:h-[68px] md:w-[432px] md:self-center"
+                    >
+                        <span className="md:text-24px-medium text-base">취소</span>
+                    </button>
                 </div>
-
-                {/* 회원 탈퇴 */}
-                <button
-                    onClick={onConfirmDelete}
-                    disabled={isLoading}
-                    className="bg-danger absolute top-[209px] left-1/2 flex h-[68px] w-[432px] -translate-x-1/2 items-center justify-center rounded-[8px] text-white hover:bg-[#d93025] disabled:opacity-60"
-                >
-                    <span className="text-24px-medium">{isLoading ? '처리 중...' : '회원 탈퇴'}</span>
-                </button>
-
-                {/* 취소 */}
-                <button
-                    onClick={onCancel}
-                    disabled={isLoading}
-                    className="bg-black-30 group hover:bg-black-50 absolute top-[299px] left-1/2 flex h-[68px] w-[432px] -translate-x-1/2 items-center justify-center rounded-[8px] text-white disabled:opacity-60"
-                >
-                    <span className="text-24px-medium group-hover:text-white">취소</span>
-                </button>
             </div>
         </div>
     );
