@@ -50,20 +50,26 @@ const ForgotPasswordPage = () => {
     };
 
     return (
-        <div className="mt-20 flex min-h-screen flex-col items-center">
-            <h2 className="text-36px-semibold">비밀번호 찾기</h2>
-            <p className="text-24px-medium text-black-70">입력하신 이메일 주소로 비밀번호를 재설정 할 수 있어요.</p>
+        <div className="mt-6 flex min-h-screen flex-col items-center px-10 sm:mt-10 sm:px-12">
+            <h2 className="text-24px-semibold sm:text-32px-semibold">비밀번호 찾기</h2>
+            <p className="sm:text-20px-medium text-16px-medium text-black-70 pt-1 text-center sm:pt-3">
+                입력하신 이메일 주소로 <br className="sm:hidden" />
+                비밀번호를 재설정 할 수 있어요.
+            </p>
 
-            <form onSubmit={handleSubmit} className="mt-12 w-[432px] space-y-6">
+            <form onSubmit={handleSubmit} className="mx-auto mt-8 w-full max-w-[432px] space-y-4 sm:space-y-6">
                 {/* 이메일 입력 */}
                 <div>
-                    <label htmlFor="email" className="text-24px-medium">
+                    <label
+                        htmlFor="email"
+                        className="text-18px-medium sm:text-20px-medium block pb-1 text-base md:text-left"
+                    >
                         이메일
                     </label>
                     <input
                         id="email"
                         type="email"
-                        className="hover:border-main focus:ring-main border-black-30 text-24px-medium placeholder-black-30 mt-2 h-[68px] w-full rounded-[8px] border px-3 py-2 outline-none focus:ring-1"
+                        className="text-14px-medium sm:text-18px-medium hover:border-main focus:ring-main w-full rounded-lg border border-[#B2B2B2] px-3 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
                         placeholder="이메일을 입력해주세요"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -73,28 +79,30 @@ const ForgotPasswordPage = () => {
 
                 {/* 에러/성공 메시지 */}
                 {errorMsg && (
-                    <p className="text-sm text-red-500" role="alert">
+                    <p className="text-center text-sm text-red-500 md:text-left md:text-base" role="alert">
                         {errorMsg}
                     </p>
                 )}
                 {successMsg && (
-                    <p className="text-sm text-green-600" role="status">
+                    <p className="text-center text-sm text-green-600 md:text-left md:text-base" role="status">
                         {successMsg}
                     </p>
                 )}
 
                 {/* 버튼 */}
-                <button
-                    type="submit"
-                    disabled={(!isFormValid && !isEmailSent) || isPending}
-                    className={`text-24px-medium mt-6 h-[68px] w-full rounded-[8px] py-2 text-white transition-colors ${
-                        (isFormValid || isEmailSent) && !isPending
-                            ? 'hover:bg-main cursor-pointer bg-blue-500'
-                            : 'bg-black-30 cursor-not-allowed'
-                    }`}
-                >
-                    {isPending ? '전송 중...' : isEmailSent ? '다음' : '전송'}
-                </button>
+                <div className="mt-8 mb-10 flex sm:mt-12">
+                    <button
+                        type="submit"
+                        disabled={(!isFormValid && !isEmailSent) || isPending}
+                        className={`text-16px-medium sm:text-18px-medium h-[55px] w-full rounded-lg py-3 text-white transition-colors sm:h-[60px] ${
+                            (isFormValid || isEmailSent) && !isPending
+                                ? 'hover:bg-main/70 bg-main cursor-pointer'
+                                : 'bg-black-30 cursor-not-allowed'
+                        }`}
+                    >
+                        {isPending ? '전송 중...' : isEmailSent ? '다음' : '전송'}
+                    </button>
+                </div>
             </form>
         </div>
     );
