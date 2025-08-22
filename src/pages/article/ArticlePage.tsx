@@ -26,6 +26,10 @@ const ArticlePage = () => {
     const handleToggleChange = (checked: boolean) => {
         setIsMemoPadOpen(checked);
     };
+    // 페이지 로드 시 스크롤을 맨 위로 이동
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [articleId]);
 
     useEffect(() => {
         const fetchData = async () => {
