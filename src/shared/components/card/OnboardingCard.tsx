@@ -22,7 +22,7 @@ const cards = [
 ];
 
 export default function OnboardingCard() {
-    const [emblaRef, embla] = useEmblaCarousel({ loop: false, align: 'start' });
+    const [emblaRef, embla] = useEmblaCarousel({ loop: false, align: 'center' });
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
@@ -69,7 +69,7 @@ export default function OnboardingCard() {
                             return (
                                 <div
                                     key={card.id}
-                                    className="scroll-snap-center flex h-[240px] flex-shrink-0 flex-col rounded-[16px] sm:h-[260px] sm:rounded-[20px] lg:h-[280px] lg:rounded-[24px]"
+                                    className="scroll-snap-center flex h-[240px] w-full flex-shrink-0 flex-col rounded-[16px] sm:h-[260px] sm:w-auto sm:rounded-[20px] lg:h-[280px] lg:w-auto lg:rounded-[24px]"
                                 >
                                     <IconComponent className="h-full w-full object-contain" />
                                 </div>
