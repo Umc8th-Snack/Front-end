@@ -78,12 +78,9 @@ const Navbar = () => {
 
                 {/* 모바일: 검색바를 로고와 햄버거 메뉴 아래로 이동 */}
                 <div className="mt-4 md:hidden">
-                    {/* 모바일에서 비로그인 상태일 때는 검색바 숨김 */}
-                    {isAuthenticated && (
-                        <div className="w-full">
-                            <SearchBar />
-                        </div>
-                    )}
+                    <div className="w-full">
+                        <SearchBar />
+                    </div>
                 </div>
 
                 {/* PC/태블릿: 기존 레이아웃 유지 */}
