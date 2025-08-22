@@ -34,8 +34,8 @@ function ArticleHeader({ title, category, originalLink, isNotepadEnabled, onNote
                     )}
                 </div>
 
-                {/* ✅ 토글: 같은 선상의 가장 우측 */}
-                <div className="flex items-center justify-end gap-2">
+                {/* ✅ 토글: PC에서만 표시 (lg 이상) */}
+                <div className="hidden items-center justify-end gap-2 lg:flex">
                     <span className="text-20px-medium text-black-70 leading-none">메모장</span>
                     <ToggleSwitch checked={isNotepadEnabled} onChange={onNotepadToggle} />
                 </div>
