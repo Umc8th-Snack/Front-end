@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { AxiosError } from 'axios';
 
 import { userApi, type UserInfoResponse } from '../apis/user';
 
@@ -83,6 +84,32 @@ export const useWithdraw = () => {
         onError: (error) => {
             console.error('❌ [USE WITHDRAW] 회원 탈퇴 실패:', error);
             alert('회원 탈퇴에 실패했습니다. 비밀번호를 확인해주세요.');
+        },
+    });
+};
+
+type ChangeEmailVars = { newEmail: string; currentPassword: string }; // ← password → currentPassword 로 변경
+type ApiErrorBody = {
+    code: string;
+    message: string;
+    error?: string;
+};
+
+export const useChangeEmail = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation<void, AxiosError<ApiErrorBody>, ChangeEmailVars>({
+        mutationFn: userApi.changeEmail,
+        onSuccess: (_data, variables) => {
+            queryClient.setQueryData<UserInfoResponse>(['user', 'me'], (prev) =>
+                prev ? { ...prev, email: variables.newEmail } : prev
+            );
+            void queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
+        },
+        onError: (err) => {
+            const code = err.response?.data?.code;
+            const msg = err.response?.data?.message;
+            console.error('[useChangeEmail] error:', code, msg, err);
         },
     });
 };

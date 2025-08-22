@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useChangeEmail } from './hooks/useChangeEmail';
+import { useChangeEmail } from '@/shared/hooks/useUser';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -10,24 +10,21 @@ const EmailChangePage = () => {
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-    const { mutateAsync, isPending } = useChangeEmail();
-
     const isFormValid = emailRegex.test(newEmail.trim()) && currentPassword.trim().length > 0;
 
-    // Promise를 반환하지 않는 동기 핸들러 (eslint: no-misused-promises 대응)
+    const { mutateAsync, isPending } = useChangeEmail();
+
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-
         if (!isFormValid || isPending) return;
+
         setErrorMsg(null);
         setSuccessMsg(null);
 
-        void mutateAsync({
-            newEmail: newEmail.trim(),
-            currentPassword,
-        })
-            .then((result) => {
-                setSuccessMsg(`이메일이 ${result.email} 로 변경되었습니다.`);
+        void mutateAsync({ newEmail: newEmail.trim(), currentPassword: currentPassword.trim() })
+            .then(() => {
+                // 훅에서 캐시 갱신/무효화 수행됨
+                setSuccessMsg(`이메일이 ${newEmail.trim()} 로 변경되었습니다.`);
                 setNewEmail('');
                 setCurrentPassword('');
             })
@@ -43,7 +40,7 @@ const EmailChangePage = () => {
             <p className="text-24px-medium text-black-70">변경하실 새로운 이메일을 설정해 주세요.</p>
 
             <form className="mt-10 w-[432px] space-y-6" onSubmit={handleSubmit}>
-                {/* 새 이메일 입력 */}
+                {/* 새 이메일 */}
                 <div>
                     <label htmlFor="newEmail" className="text-24px-medium">
                         새 이메일
@@ -59,7 +56,7 @@ const EmailChangePage = () => {
                     />
                 </div>
 
-                {/* 현재 비밀번호 입력 */}
+                {/* 현재 비밀번호 */}
                 <div>
                     <label htmlFor="currentPassword" className="text-24px-medium">
                         현재 비밀번호

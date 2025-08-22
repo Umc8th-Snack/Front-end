@@ -17,9 +17,10 @@ const ScrapButton = ({ articleId, onSuccess, onError }: ScrapButtonProps) => {
         let mounted = true;
         const fetchScrapStatus = async () => {
             try {
-                const { data } = await getScrapExists(articleId);
+                setLoading(true);
+                const res = await getScrapExists(articleId);
                 if (!mounted) return;
-                setIsScrapped(Boolean(data?.result?.scrapped));
+                setIsScrapped(Boolean(res?.scrapped));
             } catch (_e) {
                 if (!mounted) return;
                 onError?.('스크랩 상태를 불러오지 못했어요.');

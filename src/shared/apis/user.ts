@@ -1,5 +1,4 @@
 import api from './api';
-
 /**
  * 사용자 정보 응답 타입
  */
@@ -47,7 +46,7 @@ export const userApi = {
         confirmPassword: string;
     }): Promise<void> => {
         console.log('🔐 [USER API] 비밀번호 변경 요청');
-        await api.patch('/users/me/password', data);
+        await api.patch('/api/users/me/password', data);
         console.log('✅ [USER API] 비밀번호 변경 성공');
     },
 
@@ -58,5 +57,14 @@ export const userApi = {
         console.log('🚪 [USER API] 회원 탈퇴 요청');
         await api.post('/api/users/me/withdraw', { password });
         console.log('✅ [USER API] 회원 탈퇴 완료');
+    },
+
+    /**
+     *이메일 변경
+     */
+    changeEmail: async (data: { newEmail: string; currentPassword: string }): Promise<void> => {
+        console.log('✉️ [USER API] 이메일 변경 요청:', data);
+        await api.patch('/api/users/me/email', data); // Content-Type: application/json
+        console.log('✅ [USER API] 이메일 변경 성공');
     },
 };
