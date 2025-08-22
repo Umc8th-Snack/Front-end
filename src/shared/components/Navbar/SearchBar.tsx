@@ -16,6 +16,7 @@ const SearchBar = () => {
     const [historyItems, setHistoryItems] = useState<string[]>([]);
     // 바깥 클릭 감지
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
     // 로그인 사용자만 드롭다운 사용
     const { isAuthenticated } = useAuth();
 
@@ -33,6 +34,7 @@ const SearchBar = () => {
 
             // 검색 후 드롭다운 닫기
             setOpen(false);
+            setKeyword('');
         }
     };
 
@@ -58,6 +60,7 @@ const SearchBar = () => {
         <div ref={wrapperRef} className="relative w-full md:max-w-[455px] lg:max-w-[555px]">
             <div className="border-main flex h-[35px] w-full gap-4 rounded-full border px-4 py-2 outline-none focus:ring-1 focus:ring-blue-400 md:h-[40px] md:max-w-[455px] md:min-w-[300px] lg:h-[45px] lg:max-w-[555px] lg:min-w-[400px]">
                 <input
+                    ref={inputRef}
                     type="text"
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
@@ -84,9 +87,9 @@ const SearchBar = () => {
                     inputValue={keyword}
                     items={historyItems}
                     onSelect={(q) => {
-                        setKeyword(q);
                         void navigate(`/search?query=${encodeURIComponent(q)}`);
                         setOpen(false);
+                        setKeyword('');
                     }}
                 />
             )}
