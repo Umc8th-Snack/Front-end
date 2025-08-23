@@ -1,3 +1,4 @@
+// SearchPage.tsx
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
@@ -8,9 +9,9 @@ import { semanticSearch } from './apis/searchApi';
 
 const SearchPage = () => {
     const [params] = useSearchParams();
-    const initialQuery = params.get('query') ?? '';
-    const [query, setQuery] = useState(initialQuery);
-    const [threshold] = useState<number>(0.7);
+    const q = (params.get('query') ?? '').trim();
+
+    const threshold = 0.7;
     const page = 0;
     const size = 10;
 
@@ -18,29 +19,38 @@ const SearchPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [articles, setArticles] = useState<SemanticArticle[]>([]);
 
-    const runSearch = async () => {
-        const q = query.trim();
-        if (!q) return;
-        setLoading(true);
-        setError(null);
-        try {
-            const res = await semanticSearch({ query: q, page, size, threshold });
-            setArticles(res.articles);
-        } catch {
-            setError('검색 중 오류가 발생했습니다.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
-        void runSearch();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, threshold, initialQuery]);
+        const run = async () => {
+            if (!q) {
+                setArticles([]);
+                return;
+            }
+            setLoading(true);
+            setError(null);
+            console.log('[SearchPage] runSearch:start', { q, page, size, threshold });
 
-    useEffect(() => {
-        setQuery(initialQuery); // 주소창 쿼리 바뀌면 입력값 동기화
-    }, [initialQuery]);
+            try {
+                const result = await semanticSearch({ query: q, page, size, threshold });
+
+                console.log('[SearchPage] runSearch:done', {
+                    q_from_url: q,
+                    q_in_result: result.query,
+                    articles_len: result.articles.length,
+                    totalCount: result.totalCount,
+                });
+
+                setArticles(result.articles);
+            } catch (e) {
+                console.log('[SearchPage] runSearch:error', e);
+                setError('검색 중 오류가 발생했습니다.');
+                setArticles([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        void run();
+    }, [q, page, threshold]);
 
     return (
         <div className="mx-auto mt-10 max-w-[880px] px-4">
