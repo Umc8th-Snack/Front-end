@@ -67,11 +67,10 @@ const SearchBar = () => {
                     onFocus={handleFocus}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
+                            if ((e.nativeEvent as any).isComposing) return;
                             void goToSearch();
                         }
-                        if (e.key === 'Escape') {
-                            setOpen(false);
-                        }
+                        if (e.key === 'Escape') setOpen(false);
                     }}
                     placeholder="찾고 싶은 기사가 있나요?"
                     className="placeholder: text-14px-medium sm:text-16px-medium md:text-18px-medium lg:text-20px-medium text-main-70 w-full pl-1 outline-none focus:outline-none"
