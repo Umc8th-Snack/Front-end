@@ -52,4 +52,4 @@ export const handleGoogleCallback = async (code: string) => {
     }
 };
 
-//PAT 확인용 주석
+//PAT 확인용 주석  2트
