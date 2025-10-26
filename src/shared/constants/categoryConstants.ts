@@ -19,7 +19,7 @@ export const CATEGORY_MAP: Record<ApiCategory, ArticleCardCategory> = {
 export const mapApiCategoryToCardCategory = (apiCategory: string): ArticleCardCategory =>
     (CATEGORY_MAP as Record<string, ArticleCardCategory>)[apiCategory] ?? '기타';
 
-export const DEFAULT_SELECTED_CATEGORIES = ['정치'] as const;
+export const DEFAULT_SELECTED_CATEGORIES = ['정치', '경제', '사회', '생활/문화', '세계', 'IT/과학'] as const;
 
 export const CATEGORY_CODE_TO_KO: Record<string, ApiCategory> = {
     '100': '정치',
