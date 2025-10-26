@@ -5,13 +5,13 @@ import XIcon from '@/shared/assets/icons/close-x.svg?react';
 import GmailIcon from '@/shared/assets/icons/logo-gmail.svg?react';
 import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
 import TwitterIcon from '@/shared/assets/icons/logo-x.svg?react';
+import ShareToast from '@/shared/components/modal/ShareModal/ShareToast';
 import { handleGmailShare } from '@/shared/utils/gmailShare';
 import { handleKakaoShare } from '@/shared/utils/kakaoShare';
 import { handleTwitterShare } from '@/shared/utils/twitterShare';
 
 import CircleShareButton from './CircleShareButton';
 import CopyLinkBox from './CopyLinkBox';
-import ShareToast from './ShareToast';
 
 interface ShareModalProps {
     articleId: number;
