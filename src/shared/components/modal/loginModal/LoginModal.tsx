@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import GoogleIcon from '@/assets/GoogleIcon.svg?react';
 import XIcon from '@/assets/XIcon.svg?react';
 import SnackIcon from '@/shared/assets/snack.svg?react';
-import { getGoogleAuthUrl } from '@/shared/utils/googleAuth';
+import { getGoogleAuthUrl } from '@/shared/utils/shares/googleAuth';
 
 import EmailLoginForm from './EmailLoginForm';
 import EmailSignupForm from './EmailSignupForm';

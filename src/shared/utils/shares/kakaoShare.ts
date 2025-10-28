@@ -1,4 +1,4 @@
-import { loadKakaoSDK } from './loadKakaoSDK';
+import { loadKakaoSDK } from '../loadKakaoSDK';
 
 declare global {
     interface Window {
