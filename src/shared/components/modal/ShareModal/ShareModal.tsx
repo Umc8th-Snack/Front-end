@@ -6,8 +6,8 @@ import GmailIcon from '@/shared/assets/icons/logo-gmail.svg?react';
 import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
 import TwitterIcon from '@/shared/assets/icons/logo-x.svg?react';
 import ShareToast from '@/shared/components/modal/ShareModal/ShareToast';
-import { handleKakaoShare } from '@/shared/utils/kakaoShare';
 import { handleGmailShare } from '@/shared/utils/shares/gmailShare';
+import { handleKakaoShare } from '@/shared/utils/shares/kakaoShare';
 import { handleTwitterShare } from '@/shared/utils/shares/twitterShare';
 
 import CircleShareButton from './CircleShareButton';
