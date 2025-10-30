@@ -2,8 +2,10 @@ import React, { useCallback, useState } from 'react';
 
 import GoogleIcon from '@/assets/GoogleIcon.svg?react';
 import XIcon from '@/assets/XIcon.svg?react';
+import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
 import SnackIcon from '@/shared/assets/snack.svg?react';
 import { getGoogleAuthUrl } from '@/shared/utils/shares/googleAuth';
+import { redirectToKakaoLogin } from '@/shared/utils/shares/kakaoAuth';
 
 import EmailLoginForm from './EmailLoginForm';
 import EmailSignupForm from './EmailSignupForm';
@@ -30,6 +32,11 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
 
     const handleSignupComplete = () => {
         setModalMode('signupComplete');
+    };
+
+    const handleKakaoLogin = () => {
+        console.log('🟡 [LOGIN MODAL] Kakao 로그인 버튼 클릭');
+        redirectToKakaoLogin();
     };
 
     const handleGoogleLogin = () => {
@@ -91,8 +98,18 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
                         {/* 소셜 로그인 버튼 */}
                         <div className="text-18px-medium mt-5 flex flex-col items-center gap-4 sm:mt-10">
                             <SocialLoginButton
+                                text="카카오 로그인"
+                                icon={<KakaoIcon className="h-6 w-6" />}
+                                bgColor="bg-kakao-yellow"
+                                textColor="text-kakao-brown"
+                                width="w-[80%] sm:w-[90%] max-w-[280px]"
+                                height="h-13 sm:h-[50px]"
+                                borderColor="border-none"
+                                onClick={handleKakaoLogin}
+                            />
+                            <SocialLoginButton
                                 text="Google 로그인"
-                                icon={<GoogleIcon />}
+                                icon={<GoogleIcon className="h-6 w-6" />}
                                 bgColor="bg-white"
                                 textColor="text-black"
                                 width="w-[80%] sm:w-[90%] max-w-[280px]"
