@@ -4,8 +4,8 @@ import GoogleIcon from '@/assets/GoogleIcon.svg?react';
 import XIcon from '@/assets/XIcon.svg?react';
 import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
 import SnackIcon from '@/shared/assets/snack.svg?react';
-import { getGoogleAuthUrl } from '@/shared/utils/shares/googleAuth';
-import { redirectToKakaoLogin } from '@/shared/utils/shares/kakaoAuth';
+import { getGoogleAuthUrl } from '@/shared/utils/googleAuth';
+import { redirectToKakaoLogin } from '@/shared/utils/kakaoAuth';
 
 import EmailLoginForm from './EmailLoginForm';
 import EmailSignupForm from './EmailSignupForm';
