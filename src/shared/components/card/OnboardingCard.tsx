@@ -74,7 +74,9 @@ export default function OnboardingCard() {
                                 <div
                                     key={card.id}
                                     className={`scroll-snap-center flex h-[240px] w-full flex-shrink-0 flex-col rounded-[16px] sm:h-[260px] sm:w-auto sm:rounded-[20px] lg:h-[280px] lg:w-auto lg:rounded-[24px] ${
-                                        isCard0 ? 'cursor-pointer' : ''
+                                        isCard0
+                                            ? 'cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:shadow-sm'
+                                            : ''
                                     }`}
                                     onClick={
                                         isCard0
