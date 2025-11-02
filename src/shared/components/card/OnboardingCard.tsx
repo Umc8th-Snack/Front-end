@@ -12,6 +12,7 @@ import LeftActiveArrowIcon from '@/shared/assets/left-arrow-active.svg?react';
 import LeftInactiveArrowIcon from '@/shared/assets/left-arrow-inactive.svg?react';
 import RightActiveArrowIcon from '@/shared/assets/right-arrow-active.svg?react';
 import RightInactiveArrowIcon from '@/shared/assets/right-arrow-inactive.svg?react';
+import { SNACKER_NOTION_URL } from '@/shared/constants/urlConstants';
 
 const cards = [
     { id: 'card0', icon: OnBoardingCardSnacker, title: 'OnBoarding Card 0' },
@@ -67,11 +68,19 @@ export default function OnboardingCard() {
                     <div className="scroll-snap-x scroll-snap-mandatory flex gap-6 sm:gap-6 lg:gap-7">
                         {cards.map((card) => {
                             const IconComponent = card.icon;
+                            const isCard0 = card.id === 'card0';
 
                             return (
                                 <div
                                     key={card.id}
-                                    className="scroll-snap-center flex h-[240px] w-full flex-shrink-0 flex-col rounded-[16px] sm:h-[260px] sm:w-auto sm:rounded-[20px] lg:h-[280px] lg:w-auto lg:rounded-[24px]"
+                                    className={`scroll-snap-center flex h-[240px] w-full flex-shrink-0 flex-col rounded-[16px] sm:h-[260px] sm:w-auto sm:rounded-[20px] lg:h-[280px] lg:w-auto lg:rounded-[24px] ${
+                                        isCard0 ? 'cursor-pointer' : ''
+                                    }`}
+                                    onClick={
+                                        isCard0
+                                            ? () => window.open(SNACKER_NOTION_URL, '_blank', 'noopener,noreferrer')
+                                            : undefined
+                                    }
                                 >
                                     {/* SVG */}
                                     <IconComponent className="h-full w-full object-contain" />
