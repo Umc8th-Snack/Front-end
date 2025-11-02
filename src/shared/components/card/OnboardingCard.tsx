@@ -82,7 +82,7 @@ export default function OnboardingCard() {
                 </button>
 
                 {/* Embla 캐러셀 */}
-                <div className="overflow-visible rounded-[16px] sm:rounded-[20px] lg:rounded-[24px]" ref={emblaRef}>
+                <div className="overflow-hidden rounded-[16px] sm:rounded-[20px] lg:rounded-[24px]" ref={emblaRef}>
                     <div className="scroll-snap-x scroll-snap-mandatory flex gap-6 sm:gap-6 lg:gap-7">
                         {cards.map((card) => {
                             const IconComponent = card.icon;
@@ -91,7 +91,7 @@ export default function OnboardingCard() {
                             return (
                                 <div
                                     key={card.id}
-                                    className={`scroll-snap-center relative flex h-[240px] w-full flex-shrink-0 flex-col overflow-visible rounded-[16px] sm:h-[260px] sm:w-auto sm:rounded-[20px] lg:h-[280px] lg:w-auto lg:rounded-[24px] ${
+                                    className={`scroll-snap-center relative flex h-[240px] w-full flex-shrink-0 flex-col rounded-[16px] sm:h-[260px] sm:w-auto sm:rounded-[20px] lg:h-[280px] lg:w-auto lg:rounded-[24px] ${
                                         isCard0
                                             ? 'cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:shadow-sm'
                                             : ''
@@ -108,7 +108,7 @@ export default function OnboardingCard() {
                                     {/* 모바일/태블릿용 힌트*/}
                                     {isCard0 && showMobileHint && (
                                         <div
-                                            className={`pointer-events-none absolute -bottom-10 left-1/2 z-10 -translate-x-1/2 transition-opacity duration-300 lg:hidden ${
+                                            className={`pointer-events-none absolute bottom-0 left-1/2 z-10 -translate-x-1/2 transition-opacity duration-300 lg:hidden ${
                                                 fadeOut ? 'opacity-0' : 'opacity-100'
                                             }`}
                                         >
