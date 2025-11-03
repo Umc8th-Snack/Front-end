@@ -41,6 +41,7 @@ const HomePage = () => {
             }),
         getNextPageParam: (lastPage) => lastPage.nextCursorId ?? undefined,
         staleTime: 60 * 1000,
+        placeholderData: (previousData) => previousData,
     });
 
     const handleCategoryChange = (selected: string[]) => {
@@ -98,6 +99,9 @@ const HomePage = () => {
 
         return out;
     }, [data, isCategoryEmpty]);
+
+    const hasArticles = articles.length > 0;
+    const isInitialLoading = isLoading && !hasArticles;
 
     // 카테고리 미선택 상태: API 호출 없이 안내 문구만 렌더
     if (isCategoryEmpty) {
@@ -159,11 +163,11 @@ const HomePage = () => {
 
             {/* 기사 카드 그리드 */}
             <div className="mx-auto max-w-[1151px]">
-                {isLoading ? (
+                {isInitialLoading ? (
                     <div className="flex h-[400px] items-center justify-center">
                         <div className="text-24px-medium text-black-70">잠시만요, 스낵이 기사를 담는 중이에요…</div>
                     </div>
-                ) : isError ? (
+                ) : isError && !hasArticles ? (
                     <div className="flex h-[400px] items-center justify-center">
                         <div className="text-24px-medium text-danger/70">
                             {error instanceof Error
@@ -171,7 +175,7 @@ const HomePage = () => {
                                 : '앗, 뉴스를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.'}
                         </div>
                     </div>
-                ) : articles.length === 0 ? (
+                ) : !hasArticles ? (
                     <div className="flex h-[200px] items-center justify-center">
                         <div className="text-24px-medium text-black-70 text-center leading-relaxed">
                             <span className="block">아직 선택한 카테고리가 없어요.😭</span>
