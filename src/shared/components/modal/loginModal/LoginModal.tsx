@@ -4,6 +4,7 @@ import GoogleIcon from '@/assets/GoogleIcon.svg?react';
 import XIcon from '@/assets/XIcon.svg?react';
 import KakaoIcon from '@/shared/assets/icons/logo-kakao.svg?react';
 import SnackIcon from '@/shared/assets/snack.svg?react';
+import { LOGIN_PROVIDER_HINT_KEY } from '@/shared/constants/authConstants';
 import { getGoogleAuthUrl } from '@/shared/utils/googleAuth';
 import { redirectToKakaoLogin } from '@/shared/utils/kakaoAuth';
 
@@ -23,10 +24,12 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
     const [modalMode, setModalMode] = useState<ModalMode>('social');
 
     const handleEmailLoginClick = () => {
+        sessionStorage.removeItem(LOGIN_PROVIDER_HINT_KEY);
         setModalMode('emailLogin');
     };
 
     const handleEmailSignupClick = () => {
+        sessionStorage.removeItem(LOGIN_PROVIDER_HINT_KEY);
         setModalMode('emailSignup');
     };
 
@@ -36,11 +39,13 @@ const LoginModal = ({ isOpen, onClose }: ModalProps) => {
 
     const handleKakaoLogin = () => {
         console.log('🟡 [LOGIN MODAL] Kakao 로그인 버튼 클릭');
+        sessionStorage.setItem(LOGIN_PROVIDER_HINT_KEY, 'kakao');
         redirectToKakaoLogin();
     };
 
     const handleGoogleLogin = () => {
         console.log('🔵 [LOGIN MODAL] Google 로그인 버튼 클릭');
+        sessionStorage.setItem(LOGIN_PROVIDER_HINT_KEY, 'google');
         // Google OAuth 페이지로 리다이렉트
         window.location.href = getGoogleAuthUrl();
     };

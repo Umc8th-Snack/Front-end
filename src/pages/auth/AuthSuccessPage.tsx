@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { userApi } from '@/shared/apis/user';
-import { useAuth } from '@/shared/context/AuthContext';
+import { LOGIN_METHOD_STORAGE_KEY, LOGIN_PROVIDER_HINT_KEY } from '@/shared/constants/authConstants';
+import { type LoginMethod, useAuth } from '@/shared/context/AuthContext';
 import { tokenUtils } from '@/shared/utils/auth';
 
 const AuthSuccessPage = () => {
@@ -12,9 +13,34 @@ const AuthSuccessPage = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     useEffect(() => {
+        const toLoginMethod = (value: string | null | undefined): LoginMethod | null => {
+            if (value === 'email' || value === 'kakao' || value === 'google' || value === 'unknown') {
+                return value;
+            }
+            return null;
+        };
+
+        const determineLoginMethod = (): LoginMethod => {
+            const providerFromParam = toLoginMethod(searchParams.get('provider'));
+
+            const providerHintRaw = sessionStorage.getItem(LOGIN_PROVIDER_HINT_KEY);
+            const providerFromHint = toLoginMethod(providerHintRaw);
+            if (providerHintRaw) {
+                sessionStorage.removeItem(LOGIN_PROVIDER_HINT_KEY);
+            }
+
+            const storedMethod = toLoginMethod(localStorage.getItem(LOGIN_METHOD_STORAGE_KEY));
+
+            const resolvedMethod = providerFromParam ?? providerFromHint ?? storedMethod ?? 'unknown';
+            console.log('🧭 [AUTH SUCCESS] 로그인 방식 판별:', resolvedMethod);
+            return resolvedMethod;
+        };
+
         const handleAuthSuccess = async () => {
             console.log('🔄 [AUTH SUCCESS] OAuth 콜백 처리 시작');
             console.log('📝 [AUTH SUCCESS] URL 파라미터:', Object.fromEntries(searchParams));
+
+            const loginMethod = determineLoginMethod();
 
             // URL 파라미터에서 에러 확인
             const error = searchParams.get('error');
@@ -71,14 +97,12 @@ const AuthSuccessPage = () => {
 
                 // 토큰이 있으면 login 함수 호출, 없으면 사용자 정보만으로도 처리
                 if (accessToken || currentToken) {
-                    login(accessToken || currentToken || '', userData);
+                    login(accessToken || currentToken || '', userData, loginMethod);
                     console.log('✅ [AUTH SUCCESS] 로그인 완료 (토큰 저장)');
                 } else {
                     // HttpOnly 쿠키 방식인 경우, 토큰 없이 사용자 정보만 저장
-                    // 이 경우 AuthContext를 수정해야 할 수도 있음
                     console.log('✅ [AUTH SUCCESS] 로그인 완료 (HttpOnly 쿠키 방식)');
-                    // 임시로 빈 토큰으로 처리 (나중에 AuthContext 수정 필요)
-                    login('http-only-cookie', userData);
+                    login('http-only-cookie', userData, loginMethod);
                 }
 
                 console.log('🏠 [AUTH SUCCESS] 홈으로 이동');
@@ -97,7 +121,7 @@ const AuthSuccessPage = () => {
                             nickname: userInfo.nickname,
                             email: userInfo.email,
                         };
-                        login(existingToken, userData);
+                        login(existingToken, userData, loginMethod);
                         void navigate('/', { replace: true });
                         return;
                     } catch (retryError) {
