@@ -40,13 +40,7 @@ export const getSettingsData = ({ navigate, loginMethod, handleLogout }: GetSett
         const providerLabel = loginMethod === 'kakao' ? '카카오' : loginMethod === 'google' ? 'Google' : '소셜 로그인';
         sections.push({
             category: '계정',
-            items: [
-                { label: `${providerLabel} 계정으로 로그인 중이에요.`, kind: 'info' },
-                {
-                    label: '비밀번호와 이메일 변경은 연결된 소셜 서비스에서 진행할 수 있어요.',
-                    kind: 'info',
-                },
-            ],
+            items: [{ label: `${providerLabel} 계정으로 로그인 중이에요.`, kind: 'info' }],
         });
     }
 
