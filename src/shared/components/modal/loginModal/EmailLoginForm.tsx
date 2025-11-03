@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { LOGIN_PROVIDER_HINT_KEY } from '@/shared/constants/authConstants';
 import { useAuth } from '@/shared/context/AuthContext';
 import { useLogin } from '@/shared/hooks/useAuth';
 
@@ -36,7 +37,8 @@ const EmailLoginForm = ({ onClose }: EmailLoginFormProps) => {
 
                 if (response.token) {
                     console.log('🔐 [LOGIN FORM] AuthContext login 호출');
-                    login(response.token, response.data);
+                    sessionStorage.removeItem(LOGIN_PROVIDER_HINT_KEY);
+                    login(response.token, response.data, 'email');
                 } else {
                     console.error('❌ [LOGIN FORM] Access Token을 찾을 수 없습니다.');
                 }
