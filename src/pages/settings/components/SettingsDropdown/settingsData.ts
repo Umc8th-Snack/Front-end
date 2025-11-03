@@ -36,36 +36,52 @@ export const getSettingsData = ({ navigate, loginMethod, handleLogout }: GetSett
                 { label: '이메일 변경', path: '/settings/email' },
             ],
         });
+        sections.push({
+            category: '기타',
+            items: [
+                { label: '정보 동의 설정' },
+                { label: '회원 탈퇴', path: '/settings/delete' },
+                {
+                    label: '로그아웃',
+                    onClick: handleLogout
+                        ? () => {
+                              void handleLogout();
+                          }
+                        : () => {
+                              void (async () => {
+                                  // 폴백: handleLogout이 전달되지 않은 경우
+                                  localStorage.removeItem('accessToken');
+                                  localStorage.removeItem(LOGIN_METHOD_STORAGE_KEY);
+                                  void navigate('/');
+                              })();
+                          },
+                },
+            ],
+        });
     } else {
-        const providerLabel = loginMethod === 'kakao' ? '카카오' : loginMethod === 'google' ? 'Google' : '소셜 로그인';
         sections.push({
             category: '계정',
-            items: [{ label: `${providerLabel} 계정으로 로그인 중이에요.`, kind: 'info' }],
+            items: [
+                { label: '정보 동의 설정' },
+                { label: '회원 탈퇴', path: '/settings/delete' },
+                {
+                    label: '로그아웃',
+                    onClick: handleLogout
+                        ? () => {
+                              void handleLogout();
+                          }
+                        : () => {
+                              void (async () => {
+                                  // 폴백: handleLogout이 전달되지 않은 경우
+                                  localStorage.removeItem('accessToken');
+                                  localStorage.removeItem(LOGIN_METHOD_STORAGE_KEY);
+                                  void navigate('/');
+                              })();
+                          },
+                },
+            ],
         });
     }
-
-    sections.push({
-        category: '기타',
-        items: [
-            { label: '정보 동의 설정' },
-            { label: '회원 탈퇴', path: '/settings/delete' },
-            {
-                label: '로그아웃',
-                onClick: handleLogout
-                    ? () => {
-                          void handleLogout();
-                      }
-                    : () => {
-                          void (async () => {
-                              // 폴백: handleLogout이 전달되지 않은 경우
-                              localStorage.removeItem('accessToken');
-                              localStorage.removeItem(LOGIN_METHOD_STORAGE_KEY);
-                              void navigate('/');
-                          })();
-                      },
-            },
-        ],
-    });
 
     return sections;
 };
