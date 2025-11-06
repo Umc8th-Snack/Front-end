@@ -70,7 +70,7 @@ export async function semanticSearch(params: {
         }
 
         if (!data.isSuccess) {
-            throw createSemanticSearchError(data.message || '검색 요청이 실패했습니다.', data.code);
+            throw createSemanticSearchError(data.message || '검색 결과가 없습니다.', data.code);
         }
 
         // 일부 백엔드가 204에서 ''(빈 문자열) 또는 null을 반환할 수 있으니 방어
