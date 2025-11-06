@@ -5,7 +5,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import type { SemanticArticle } from '@/pages/search/types/searchTypes';
 import LoadingFallback from '@/routes/LoadingFallback';
 
-import { semanticSearch } from './apis/searchApi';
+import { isSemanticSearchApiError, semanticSearch } from './apis/searchApi';
 
 const SearchPage = () => {
     const [params] = useSearchParams();
@@ -22,9 +22,19 @@ const SearchPage = () => {
     useEffect(() => {
         const run = async () => {
             if (!q) {
+                setLoading(false);
+                setError(null);
                 setArticles([]);
                 return;
             }
+
+            if (q.length < 2) {
+                setLoading(false);
+                setError('검색어는 두 글자 이상이어야 합니다.');
+                setArticles([]);
+                return;
+            }
+
             setLoading(true);
             setError(null);
             console.log('[SearchPage] runSearch:start', { q, page, size, threshold });
@@ -42,8 +52,16 @@ const SearchPage = () => {
                 setArticles(result.articles);
             } catch (e) {
                 console.log('[SearchPage] runSearch:error', e);
-                setError('검색 중 오류가 발생했습니다.');
-                setArticles([]);
+                if (isSemanticSearchApiError(e) && e.code === 'FEED_9606') {
+                    setError('검색 결과가 없습니다');
+                    setArticles(e.payload?.articles ?? []);
+                } else if (e instanceof Error) {
+                    setError(e.message || '검색 중 오류가 발생했습니다.');
+                    setArticles([]);
+                } else {
+                    setError('검색 중 오류가 발생했습니다.');
+                    setArticles([]);
+                }
             } finally {
                 setLoading(false);
             }

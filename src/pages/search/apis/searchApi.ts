@@ -1,7 +1,27 @@
 import type { SemanticSearchResponse } from '@/pages/search/types/searchTypes';
-import api from '@/shared/apis/api';
+import axiosInstance from '@/shared/apis/axios';
 
 type Result = SemanticSearchResponse['result'];
+
+export type SemanticSearchApiError = Error & {
+    code?: string;
+    payload?: Result;
+};
+
+export const isSemanticSearchApiError = (error: unknown): error is SemanticSearchApiError => {
+    if (typeof error !== 'object' || error === null) {
+        return false;
+    }
+    const maybe = error as SemanticSearchApiError;
+    return 'code' in maybe || 'payload' in maybe;
+};
+
+const createSemanticSearchError = (message: string, code?: string, payload?: Result): SemanticSearchApiError => {
+    const error = new Error(message) as SemanticSearchApiError;
+    error.code = code;
+    error.payload = payload;
+    return error;
+};
 
 const normalizeResult = (raw: any, fallbackQuery = ''): Result => {
     const query = raw?.query ?? fallbackQuery ?? '';
@@ -33,13 +53,28 @@ export async function semanticSearch(params: {
     });
 
     try {
-        const res = await api.get<Result>('/api/articles/search', {
+        const response = await axiosInstance.get<SemanticSearchResponse>('/api/articles/search', {
             params: { query, page, size, ...(threshold !== undefined ? { threshold } : {}) },
-            // validateStatus 제거 (ApiRequestOptionsTypes에 없음)
         });
 
+        const data = response.data;
+
+        if (data.code === 'FEED_9606') {
+            const empty = normalizeResult({ query, articles: [], total_count: 0 }, query);
+            console.log('[semanticSearch] FEED_9606 mapped to empty', {
+                query_in_result: empty.query,
+                articles_len: empty.articles.length,
+                totalCount: empty.totalCount,
+            });
+            throw createSemanticSearchError('검색 결과가 없습니다.', data.code, empty);
+        }
+
+        if (!data.isSuccess) {
+            throw createSemanticSearchError(data.message || '검색 요청이 실패했습니다.', data.code);
+        }
+
         // 일부 백엔드가 204에서 ''(빈 문자열) 또는 null을 반환할 수 있으니 방어
-        const normalized = normalizeResult(res, query);
+        const normalized = normalizeResult(data.result, query);
 
         console.log('[semanticSearch] res', {
             query_in_result: normalized.query,
@@ -56,6 +91,11 @@ export async function semanticSearch(params: {
             console.log('[semanticSearch] 204 mapped to empty', empty);
             return empty;
         }
+
+        if (isSemanticSearchApiError(err)) {
+            throw err;
+        }
+
         console.log('[semanticSearch] error', err);
         throw err;
     }
