@@ -25,6 +25,14 @@ const SearchPage = () => {
                 setArticles([]);
                 return;
             }
+
+            // 검색어 길이 확인
+            if (q.length < 2) {
+                setError('2글자 이상으로 검색해 주세요.');
+                setArticles([]);
+                return;
+            }
+
             setLoading(true);
             setError(null);
             console.log('[SearchPage] runSearch:start', { q, page, size, threshold });
@@ -38,6 +46,11 @@ const SearchPage = () => {
                     articles_len: result.articles.length,
                     totalCount: result.totalCount,
                 });
+
+                // 검색 결과가 없을 때 문구 표시
+                if (result.articles.length === 0) {
+                    setError('검색 결과가 없습니다.');
+                }
 
                 setArticles(result.articles);
             } catch (e) {
