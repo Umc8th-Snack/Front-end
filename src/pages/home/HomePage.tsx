@@ -41,6 +41,7 @@ const HomePage = () => {
             }),
         getNextPageParam: (lastPage) => lastPage.nextCursorId ?? undefined,
         staleTime: 60 * 1000,
+        placeholderData: (previousData) => previousData,
     });
 
     const handleCategoryChange = (selected: string[]) => {
@@ -99,13 +100,16 @@ const HomePage = () => {
         return out;
     }, [data, isCategoryEmpty]);
 
+    const hasArticles = articles.length > 0;
+    const isInitialLoading = isLoading && !hasArticles;
+
     // 카테고리 미선택 상태: API 호출 없이 안내 문구만 렌더
     if (isCategoryEmpty) {
         return (
-            <div className="min-h-screen py-8">
+            <div className="min-h-screen px-4 py-8">
                 {/* 인사말 배너 */}
-                <div className="mx-auto mb-[51px] max-w-full sm:max-w-[800px] lg:max-w-[1121px]">
-                    <TodayGreetingBanner />
+                <div className="mx-auto mb-[51px] max-w-full lg:max-w-[1121px]">
+                    <TodayGreetingBanner variant="home" />
                 </div>
 
                 {/* 온보딩 카드 */}
@@ -114,7 +118,6 @@ const HomePage = () => {
                 </div>
 
                 {/* 카테고리 선택 */}
-
                 <div className="mx-auto mb-6 max-w-[1121px] px-4 sm:mb-12">
                     <CategoryChips
                         categories={[...API_FILTERABLE_CATEGORIES]}
@@ -134,86 +137,86 @@ const HomePage = () => {
                 </div>
             </div>
         );
+    } else {
+        return (
+            <div className="min-h-screen px-4 py-8">
+                {/* 인사말 배너 */}
+                <div className="mx-auto mb-[51px] max-w-full lg:max-w-[1121px]">
+                    <TodayGreetingBanner variant="home" />
+                </div>
+
+                {/* 온보딩 카드 */}
+                <div className="mb-20 sm:mb-24 lg:mb-[67px]">
+                    <OnboardingCard />
+                </div>
+
+                {/* 카테고리 선택 */}
+                <div className="mx-auto mb-6 max-w-[1121px] px-4 sm:mb-12">
+                    <CategoryChips
+                        categories={[...API_FILTERABLE_CATEGORIES]}
+                        selected={selectedCategories}
+                        onChange={handleCategoryChange}
+                    />
+                </div>
+
+                {/* 기사 카드 그리드 */}
+                <div className="mx-auto max-w-[1151px]">
+                    {isInitialLoading ? (
+                        <div className="flex h-[400px] items-center justify-center">
+                            <div className="text-24px-medium text-black-70">잠시만요, 스낵이 기사를 담는 중이에요…</div>
+                        </div>
+                    ) : isError && !hasArticles ? (
+                        <div className="flex h-[400px] items-center justify-center">
+                            <div className="text-24px-medium text-danger/70">
+                                {error instanceof Error
+                                    ? error.message
+                                    : '앗, 뉴스를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.'}
+                            </div>
+                        </div>
+                    ) : !hasArticles ? (
+                        <div className="flex h-[200px] items-center justify-center">
+                            <div className="text-24px-medium text-black-70 text-center leading-relaxed">
+                                <span className="block">아직 선택한 카테고리가 없어요.😭</span>
+                                <span className="block">관심 분야를 골라볼까요?</span>
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                                {articles
+                                    .filter(
+                                        (a) => typeof a.imageUrl === 'string' && /^https?:\/\//i.test(a.imageUrl.trim())
+                                    )
+                                    .map((article) => (
+                                        <button
+                                            key={article.articleId}
+                                            onClick={() => void navigate(`/articles/${article.articleId}`)}
+                                            className="cursor-pointer text-left"
+                                        >
+                                            <ArticleCard
+                                                title={article.title}
+                                                imageUrl={article.imageUrl!.trim()}
+                                                category={article.category}
+                                                size="main"
+                                            />
+                                        </button>
+                                    ))}
+                            </div>
+
+                            {/* 무한 스크롤 트리거 */}
+                            <div ref={loadMoreRef} className="mt-8 h-10">
+                                {isFetchingNextPage && (
+                                    <div className="flex items-center justify-center">
+                                        <div className="text-gray-500">더 많은 기사를 불러오는 중...</div>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </div>
+            </div>
+        );
     }
-
-    return (
-        <div className="min-h-screen px-4 py-8">
-            {/* 인사말 배너 */}
-            <div className="mx-auto mb-[51px] max-w-full lg:max-w-[1121px]">
-                <TodayGreetingBanner variant="home" />
-            </div>
-
-            {/* 온보딩 카드 */}
-            <div className="mb-20 sm:mb-24 lg:mb-[67px]">
-                <OnboardingCard />
-            </div>
-
-            {/* 카테고리 선택 */}
-            <div className="mx-auto mb-6 max-w-[1121px] sm:mb-12">
-                <CategoryChips
-                    categories={[...API_FILTERABLE_CATEGORIES]}
-                    selected={selectedCategories}
-                    onChange={handleCategoryChange}
-                />
-            </div>
-
-            {/* 기사 카드 그리드 */}
-            <div className="mx-auto max-w-[1151px]">
-                {isLoading ? (
-                    <div className="flex h-[400px] items-center justify-center">
-                        <div className="text-24px-medium text-black-70">잠시만요, 스낵이 기사를 담는 중이에요…</div>
-                    </div>
-                ) : isError ? (
-                    <div className="flex h-[400px] items-center justify-center">
-                        <div className="text-24px-medium text-danger/70">
-                            {error instanceof Error
-                                ? error.message
-                                : '앗, 뉴스를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.'}
-                        </div>
-                    </div>
-                ) : articles.length === 0 ? (
-                    <div className="flex h-[200px] items-center justify-center">
-                        <div className="text-24px-medium text-black-70 text-center leading-relaxed">
-                            <span className="block">아직 선택한 카테고리가 없어요.😭</span>
-                            <span className="block">관심 분야를 골라볼까요?</span>
-                        </div>
-                    </div>
-                ) : (
-                    <>
-                        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                            {articles
-                                .filter(
-                                    (a) => typeof a.imageUrl === 'string' && /^https?:\/\//i.test(a.imageUrl.trim())
-                                )
-                                .map((article) => (
-                                    <button
-                                        key={article.articleId}
-                                        onClick={() => void navigate(`/articles/${article.articleId}`)}
-                                        className="cursor-pointer text-left"
-                                    >
-                                        <ArticleCard
-                                            title={article.title}
-                                            imageUrl={article.imageUrl!.trim()}
-                                            category={article.category}
-                                            size="main"
-                                        />
-                                    </button>
-                                ))}
-                        </div>
-
-                        {/* 무한 스크롤 트리거 */}
-                        <div ref={loadMoreRef} className="mt-8 h-10">
-                            {isFetchingNextPage && (
-                                <div className="flex items-center justify-center">
-                                    <div className="text-gray-500">더 많은 기사를 불러오는 중...</div>
-                                </div>
-                            )}
-                        </div>
-                    </>
-                )}
-            </div>
-        </div>
-    );
 };
 
 export default HomePage;

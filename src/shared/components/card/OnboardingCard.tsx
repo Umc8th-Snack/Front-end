@@ -1,12 +1,13 @@
 import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback, useEffect, useState } from 'react';
 
-import OnBoardingCard0 from '@/assets/OnBoardingCard0.svg?react';
 import OnBoardingCard1 from '@/assets/OnBoardingCard1.svg?react';
 import OnBoardingCard2 from '@/assets/OnBoardingCard2.svg?react';
 import OnBoardingCard3 from '@/assets/OnBoardingCard3.svg?react';
 import OnBoardingCard4 from '@/assets/OnBoardingCard4.svg?react';
 import OnBoardingCard5 from '@/assets/OnBoardingCard5.svg?react';
+// import OnBoardingCard0 from '@/assets/OnBoardingCard0.svg?react';
+import OnBoardingCardSnacker from '@/assets/OnBoardingCardSnacker.svg?react';
 import LeftActiveArrowIcon from '@/shared/assets/left-arrow-active.svg?react';
 import LeftInactiveArrowIcon from '@/shared/assets/left-arrow-inactive.svg?react';
 import RightActiveArrowIcon from '@/shared/assets/right-arrow-active.svg?react';
@@ -14,7 +15,7 @@ import RightInactiveArrowIcon from '@/shared/assets/right-arrow-inactive.svg?rea
 import { SNACKER_NOTION_URL } from '@/shared/constants/urlConstants';
 
 const cards = [
-    { id: 'card0', icon: OnBoardingCard0, title: 'OnBoarding Card 0' },
+    { id: 'card0', icon: OnBoardingCardSnacker, title: 'OnBoarding Card 0' },
     { id: 'card1', icon: OnBoardingCard1, title: 'OnBoarding Card 1' },
     { id: 'card2', icon: OnBoardingCard2, title: 'OnBoarding Card 2' },
     { id: 'card3', icon: OnBoardingCard3, title: 'OnBoarding Card 3' },
@@ -26,6 +27,8 @@ export default function OnboardingCard() {
     const [emblaRef, embla] = useEmblaCarousel({ loop: false, align: 'center' });
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+    const [showMobileHint, setShowMobileHint] = useState(true);
+    const [fadeOut, setFadeOut] = useState(false);
 
     const scrollTo = useCallback((index: number) => embla?.scrollTo(index), [embla]);
     const scrollPrev = useCallback(() => embla?.scrollPrev(), [embla]);
@@ -40,6 +43,22 @@ export default function OnboardingCard() {
         setSelectedIndex(embla.selectedScrollSnap());
         embla.on('select', () => setSelectedIndex(embla.selectedScrollSnap()));
     }, [embla]);
+
+    // 모바일 힌트: 2초 후 fade-out 시작, 0.3초 후 완전히 사라짐
+    useEffect(() => {
+        const fadeTimer = setTimeout(() => {
+            setFadeOut(true);
+        }, 2000);
+
+        const hideTimer = setTimeout(() => {
+            setShowMobileHint(false);
+        }, 2300);
+
+        return () => {
+            clearTimeout(fadeTimer);
+            clearTimeout(hideTimer);
+        };
+    }, []);
 
     return (
         <section className="mx-auto flex h-[250px] max-w-full flex-col items-center space-y-6 sm:h-[260px] sm:max-w-[1000px] sm:space-y-8 sm:px-6 lg:h-[322px] lg:max-w-[1135px] lg:space-y-8 lg:px-8">
@@ -67,43 +86,40 @@ export default function OnboardingCard() {
                     <div className="scroll-snap-x scroll-snap-mandatory flex gap-6 sm:gap-6 lg:gap-7">
                         {cards.map((card) => {
                             const IconComponent = card.icon;
+                            const isCard0 = card.id === 'card0';
 
                             return (
                                 <div
                                     key={card.id}
-                                    className="scroll-snap-center flex h-[240px] w-full flex-shrink-0 flex-col rounded-[16px] sm:h-[260px] sm:w-auto sm:rounded-[20px] lg:h-[280px] lg:w-auto lg:rounded-[24px]"
+                                    className={`scroll-snap-center relative flex h-[240px] w-full flex-shrink-0 flex-col rounded-[16px] sm:h-[260px] sm:w-auto sm:rounded-[20px] lg:h-[280px] lg:w-auto lg:rounded-[24px] ${
+                                        isCard0
+                                            ? 'cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:shadow-sm'
+                                            : ''
+                                    }`}
+                                    onClick={
+                                        isCard0
+                                            ? () => window.open(SNACKER_NOTION_URL, '_blank', 'noopener,noreferrer')
+                                            : undefined
+                                    }
                                 >
-                                    {/* ✅ 변경1: absolute 대신 Grid로 같은 셀에 SVG와 오버레이를 겹치기 */}
-                                    <div className="grid h-full w-full overflow-hidden">
-                                        {/* SVG 그대로 */}
-                                        <IconComponent className="col-start-1 row-start-1 h-full w-full object-contain" />
+                                    {/* SVG */}
+                                    <IconComponent className="h-full w-full object-contain" />
 
-                                        {/* ✅ 변경2: card0에서만 보이는 오버레이(텍스트/버튼). SVG 바깥으로 못 나가게 overflow-hidden 상태 */}
-                                        {card.id === 'card0' && (
-                                            <div className="p-x-5 pointer-events-none z-[1] col-start-1 row-start-1 flex h-full w-full items-end p-8 sm:pb-10 sm:pl-10 lg:pb-12">
-                                                <div className="pointer-events-auto flex flex-wrap items-center gap-1 sm:gap-2 lg:gap-3">
-                                                    {/* 문장 부분 */}
-                                                    <p className="text-16px-medium sm:text-18px-medium lg:text-20px-medium flex flex-wrap items-center text-black">
-                                                        <span className="text-main font-semibold">SNACK</span>
-                                                        <span className="mr-1 font-medium">을 만든 </span>
-
-                                                        <span className="text-main font-semibold">SNACKER</span>
-                                                        <span className="font-medium">들을 소개합니다!</span>
-                                                    </p>
-
-                                                    {/* 버튼 */}
-                                                    <a
-                                                        href={SNACKER_NOTION_URL}
-                                                        target="_blank"
-                                                        rel="noreferrer noopener"
-                                                        className="bg-main text-14px-medium sm:text-16px-semibold focus-visible:ring-main/40 inline-flex h-8 items-center justify-center rounded-xl px-3 text-white shadow-[0_1px_2px_rgba(0,0,0,0.06)] transition-transform duration-150 hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white active:translate-y-[1px] sm:ml-3 sm:h-9 sm:px-4 lg:h-10 lg:px-5"
-                                                    >
-                                                        보러가기 &gt;
-                                                    </a>
-                                                </div>
+                                    {/* 모바일/태블릿용 힌트*/}
+                                    {isCard0 && showMobileHint && (
+                                        <div
+                                            className={`pointer-events-none absolute bottom-0 left-1/2 z-10 -translate-x-1/2 transition-opacity duration-300 lg:hidden ${
+                                                fadeOut ? 'opacity-0' : 'opacity-100'
+                                            }`}
+                                        >
+                                            {/* 말풍선 박스 */}
+                                            <div className="relative rounded-lg bg-black/70 px-3 py-1.5 text-center">
+                                                <span className="text-12px-medium text-white">스내커 보러가기</span>
+                                                {/* 말풍선 꼬리표 */}
+                                                <div className="absolute -top-2 left-1/2 h-0 w-0 -translate-x-1/2 border-r-[6px] border-b-[8px] border-l-[6px] border-transparent border-b-black/70"></div>
                                             </div>
-                                        )}
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })}

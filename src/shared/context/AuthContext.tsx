@@ -1,6 +1,7 @@
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { userApi } from '@/shared/apis/user';
+import { LOGIN_METHOD_STORAGE_KEY } from '@/shared/constants/authConstants';
 import { tokenUtils } from '@/shared/utils/auth';
 
 interface User {
@@ -9,12 +10,15 @@ interface User {
     email: string;
 }
 
+export type LoginMethod = 'email' | 'kakao' | 'google' | 'unknown';
+
 interface AuthContextType {
     isAuthenticated: boolean;
     user: User | null;
-    login: (token: string, user: User) => void;
+    login: (token: string, user: User, method: LoginMethod) => void;
     logout: () => void;
     loading: boolean;
+    loginMethod: LoginMethod | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,6 +31,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const isInitializing = useRef(false); // 중복 초기화 방지용 플래그
+    const [loginMethod, setLoginMethod] = useState<LoginMethod | null>(null);
 
     const isAuthenticated = !!user && tokenUtils.hasAccessToken();
 
@@ -40,6 +45,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         const initializeAuth = async () => {
             isInitializing.current = true; // 초기화 시작 표시
             console.log('🔄 [AUTH CONTEXT] 인증 상태 초기화 시작');
+
+            const savedLoginMethod = localStorage.getItem(LOGIN_METHOD_STORAGE_KEY) as LoginMethod | null;
+            if (savedLoginMethod) {
+                setLoginMethod(savedLoginMethod);
+            } else {
+                setLoginMethod(null);
+            }
 
             const token = tokenUtils.getAccessToken();
             if (token) {
@@ -76,10 +88,14 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
                         // 토큰은 있지만 사용자 정보를 가져올 수 없는 경우
                         console.log('⚠️ [AUTH CONTEXT] 토큰은 있지만 사용자 정보 없음');
                         tokenUtils.removeAccessToken(); // 유효하지 않은 토큰 제거
+                        localStorage.removeItem(LOGIN_METHOD_STORAGE_KEY);
+                        setLoginMethod(null);
                     }
                 }
             } else {
                 console.log('❌ [AUTH CONTEXT] 저장된 토큰 없음');
+                localStorage.removeItem(LOGIN_METHOD_STORAGE_KEY);
+                setLoginMethod(null);
             }
             setLoading(false);
             console.log('✅ [AUTH CONTEXT] 인증 상태 초기화 완료');
@@ -88,13 +104,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         void initializeAuth();
     }, []);
 
-    const login = useCallback((token: string, userData: User) => {
+    const login = useCallback((token: string, userData: User, method: LoginMethod) => {
         console.log('🔐 [AUTH CONTEXT] 로그인 처리 시작:', { userId: userData.userId, email: userData.email });
 
         // Access Token만 localStorage에 저장 (Refresh Token은 HttpOnly 쿠키로 자동 관리)
         tokenUtils.setAccessToken(token);
         localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem(LOGIN_METHOD_STORAGE_KEY, method);
         setUser(userData);
+        setLoginMethod(method);
 
         console.log('✅ [AUTH CONTEXT] 로그인 상태 업데이트 완료');
     }, []);
@@ -105,7 +123,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         // Access Token만 삭제 (Refresh Token은 서버에서 쿠키 무효화)
         tokenUtils.removeAccessToken();
         localStorage.removeItem('user');
+        localStorage.removeItem(LOGIN_METHOD_STORAGE_KEY);
         setUser(null);
+        setLoginMethod(null);
 
         console.log('✅ [AUTH CONTEXT] 로컬 상태 정리 완료');
         // NOTE: logout API 호출은 useLogout hook에서 처리
@@ -118,8 +138,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             login,
             logout,
             loading,
+            loginMethod,
         }),
-        [isAuthenticated, user, login, logout, loading]
+        [isAuthenticated, user, login, logout, loading, loginMethod]
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

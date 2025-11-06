@@ -1,8 +1,13 @@
+export interface SemanticKeyword {
+    word: string;
+    tfidf: number;
+}
+
 export interface SemanticArticle {
     title: string;
     summary: string;
     score: number;
-    keywords: string[] | null;
+    keywords: SemanticKeyword[] | null;
     article_id: number;
     published_at: string | null;
 }

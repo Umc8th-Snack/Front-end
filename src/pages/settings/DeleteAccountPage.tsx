@@ -3,13 +3,16 @@ import React, { useState } from 'react';
 
 import DeleteAccountModal from '@/pages/settings/components/DeleteAccountModal/DeleteAccountModal';
 import { authApi } from '@/shared/apis/auth';
+import { SOCIAL_LOGIN_WITHDRAW_PASSWORD } from '@/shared/constants/authConstants';
+import { useAuth } from '@/shared/context/AuthContext';
 import { tokenUtils } from '@/shared/utils/auth';
 
 const DeleteAccountPage = () => {
     const [password, setPassword] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { loginMethod } = useAuth();
 
-    const isFormValid = password.trim() !== '';
+    const isSocialLogin = loginMethod === 'kakao' || loginMethod === 'google';
     const queryClient = useQueryClient();
 
     const { mutate, isPending } = useMutation({
@@ -38,6 +41,8 @@ const DeleteAccountPage = () => {
         },
     });
 
+    const isFormValid = isSocialLogin || password.trim() !== '';
+
     const handleOpenModal: React.FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         if (isFormValid) setIsModalOpen(true);
@@ -48,7 +53,7 @@ const DeleteAccountPage = () => {
     };
 
     const handleConfirmDelete = () => {
-        mutate(password);
+        mutate(isSocialLogin ? SOCIAL_LOGIN_WITHDRAW_PASSWORD : password);
     };
 
     const handleCancelDelete = () => {
@@ -65,20 +70,25 @@ const DeleteAccountPage = () => {
                 onSubmit={handleOpenModal}
                 className="mx-auto mt-8 w-full max-w-[432px] space-y-4 sm:mt-8 sm:space-y-6"
             >
-                <div>
-                    <label htmlFor="password" className="text-18px-medium sm:text-20px-medium block pb-1 md:text-left">
-                        비밀번호
-                    </label>
-                    <input
-                        id="password"
-                        type="password"
-                        className="text-14px-medium sm:text-18px-medium hover:border-main focus:ring-main w-full rounded-lg border border-[#B2B2B2] px-3 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
-                        placeholder="비밀번호를 입력해주세요"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="current-password"
-                    />
-                </div>
+                {!isSocialLogin && (
+                    <div>
+                        <label
+                            htmlFor="password"
+                            className="text-18px-medium sm:text-20px-medium block pb-1 md:text-left"
+                        >
+                            비밀번호
+                        </label>
+                        <input
+                            id="password"
+                            type="password"
+                            className="text-14px-medium sm:text-18px-medium hover:border-main focus:ring-main w-full rounded-lg border border-[#B2B2B2] px-3 py-3 transition placeholder:text-[#B2B2B2] focus:ring-1 focus:outline-none"
+                            placeholder="비밀번호를 입력해주세요"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete="current-password"
+                        />
+                    </div>
+                )}
 
                 <div className="mt-8 mb-10 flex sm:mt-12">
                     <button

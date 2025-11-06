@@ -13,7 +13,7 @@ interface HamburgerMenuProps {
 const HamburgerMenu = ({ isOpen, onClose, onShowConsentModal }: HamburgerMenuProps) => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { logout: authLogout, user } = useAuth();
+    const { logout: authLogout, user, loginMethod } = useAuth();
     const logoutMutation = useLogout();
     const menuRef = useRef<HTMLDivElement>(null);
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -76,9 +76,25 @@ const HamburgerMenu = ({ isOpen, onClose, onShowConsentModal }: HamburgerMenuPro
         }
     };
 
+    const isSocialLogin = loginMethod === 'kakao' || loginMethod === 'google';
+
     const handleSettingsClick = () => {
         setIsSettingsOpen(!isSettingsOpen);
     };
+
+    const settingItems = isSocialLogin
+        ? [
+              { action: 'consent', label: '정보 동의 설정' },
+              { action: 'delete', label: '회원 탈퇴' },
+              { action: 'logout', label: '로그아웃' },
+          ]
+        : [
+              { action: 'password', label: '비밀번호 변경' },
+              { action: 'email', label: '이메일 변경' },
+              { action: 'consent', label: '정보 동의 설정' },
+              { action: 'delete', label: '회원 탈퇴' },
+              { action: 'logout', label: '로그아웃' },
+          ];
 
     const handleSettingItemClick = (action: string) => {
         setIsSettingsOpen(false);
@@ -210,36 +226,15 @@ const HamburgerMenu = ({ isOpen, onClose, onShowConsentModal }: HamburgerMenuPro
                                 {/* 설정 하위 메뉴 */}
                                 {isSettingsOpen && (
                                     <div className="mt-2 ml-4 space-y-2">
-                                        <button
-                                            onClick={() => handleSettingItemClick('password')}
-                                            className="block w-full cursor-pointer rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
-                                        >
-                                            비밀번호 변경
-                                        </button>
-                                        <button
-                                            onClick={() => handleSettingItemClick('email')}
-                                            className="block w-full cursor-pointer rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
-                                        >
-                                            이메일 변경
-                                        </button>
-                                        <button
-                                            onClick={() => handleSettingItemClick('consent')}
-                                            className="block w-full cursor-pointer rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
-                                        >
-                                            정보 동의 설정
-                                        </button>
-                                        <button
-                                            onClick={() => handleSettingItemClick('delete')}
-                                            className="block w-full cursor-pointer rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
-                                        >
-                                            회원 탈퇴
-                                        </button>
-                                        <button
-                                            onClick={() => handleSettingItemClick('logout')}
-                                            className="block w-full cursor-pointer rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
-                                        >
-                                            로그아웃
-                                        </button>
+                                        {settingItems.map((item) => (
+                                            <button
+                                                key={item.action}
+                                                onClick={() => handleSettingItemClick(item.action)}
+                                                className="block w-full cursor-pointer rounded-lg p-2 text-left text-sm transition-all duration-200 hover:bg-gray-50"
+                                            >
+                                                {item.label}
+                                            </button>
+                                        ))}
                                     </div>
                                 )}
                             </div>
