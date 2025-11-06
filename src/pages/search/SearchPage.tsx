@@ -8,7 +8,7 @@ import LoadingFallback from '@/routes/LoadingFallback';
 import { isSemanticSearchApiError, semanticSearch } from './apis/searchApi';
 
 const MIN_LENGTH_MESSAGE = '검색어는 두 글자 이상이어야 합니다.';
-const EMPTY_RESULT_MESSAGE = '검색할 내용이 없습니다.';
+const EMPTY_RESULT_MESSAGE = '검색 결과가 없습니다.';
 
 const SearchPage = () => {
     const [params] = useSearchParams();
@@ -64,10 +64,10 @@ const SearchPage = () => {
                     setError(EMPTY_RESULT_MESSAGE);
                     setArticles(e.payload?.articles ?? []);
                 } else if (e instanceof Error) {
-                    setError(e.message || '검색 중 오류가 발생했습니다.');
+                    setError(e.message || '검색 결과가 없습니다.');
                     setArticles([]);
                 } else {
-                    setError('검색 중 오류가 발생했습니다.');
+                    setError('검색 결과가 없습니다.');
                     setArticles([]);
                 }
             } finally {
