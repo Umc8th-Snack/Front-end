@@ -23,10 +23,11 @@ const SearchPage = () => {
         const run = async () => {
             if (!q) {
                 setArticles([]);
+                setError(null);
                 return;
             }
 
-            // 검색어 길이 확인
+            // 1) 2글자 미만 → 에러 문구
             if (q.length < 2) {
                 setError('2글자 이상으로 검색해 주세요.');
                 setArticles([]);
@@ -35,26 +36,29 @@ const SearchPage = () => {
 
             setLoading(true);
             setError(null);
-            console.log('[SearchPage] runSearch:start', { q, page, size, threshold });
 
             try {
                 const result = await semanticSearch({ query: q, page, size, threshold });
+                setArticles(result.articles ?? []);
+            } catch (e: any) {
+                const status = e?.response?.status;
+                const message = e?.response?.data?.message;
 
-                console.log('[SearchPage] runSearch:done', {
-                    q_from_url: q,
-                    q_in_result: result.query,
-                    articles_len: result.articles.length,
-                    totalCount: result.totalCount,
-                });
-
-                // 검색 결과가 없을 때 문구 표시
-                if (result.articles.length === 0) {
-                    setError('검색 결과가 없습니다.');
+                // 1️⃣ 검색 결과 없음 (빈 데이터)
+                if (status === 204) {
+                    setArticles([]);
+                    setError(null); // 에러 아님 → "검색 결과 없음" 표시
+                    return;
                 }
 
-                setArticles(result.articles);
-            } catch (e) {
-                console.log('[SearchPage] runSearch:error', e);
+                // 2️⃣ 백엔드가 검색어 부적절 판단
+                if (status === 400 && message?.includes('유효한 검색어')) {
+                    setError('유효한 검색어가 없습니다. 의미 있는 단어를 입력하세요.');
+                    setArticles([]);
+                    return;
+                }
+
+                // 3️⃣ 그 외 일반 오류
                 setError('검색 중 오류가 발생했습니다.');
                 setArticles([]);
             } finally {
