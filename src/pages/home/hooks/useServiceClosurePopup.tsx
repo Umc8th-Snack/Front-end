@@ -89,10 +89,8 @@ const ServiceClosureModal = ({ onClose, onDismissForToday }: ServiceClosureModal
                             <p>
                                 여러분이 남겨주신 응원과 피드백은 더 나은 서비스를 만들기 위한 소중한 밑거름이었습니다.
                             </p>
-                            <p>
-                                이번 경험을 바탕으로 앞으로도 당신의 일상을 돕는 제품을 만들기 위해 계속해서
-                                고민하겠습니다.
-                            </p>
+                            <p>이번 경험을 바탕으로 앞으로도 당신의 일상을 돕는 제품을 만들기 위해</p>
+                            <p>계속해서 고민하겠습니다.</p>
                             <p>다시 한 번 SNACK과 함께해 주신 모든 분들께 진심으로 감사드립니다.</p>
                             <p>SNACK 드림</p>
                         </div>
